@@ -1,1059 +1,1392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KIN by KR8TIV — AI That Actually Knows Your Industry</title>
-  <meta name="description" content="Meet KIN: Industry-specific AI agents that know your business cold. Free tier. No BS. Built by KR8TIV AI.">
-  <meta name="theme-color" content="#050510">
-  <meta property="og:title" content="KIN by KR8TIV — Your Industry. Your AI. Your KIN.">
-  <meta property="og:description" content="30 industry-specific AI agents. Free to start. Powered by KR8TIV AI.">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
-  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #050510;
-      --bg-elevated: #0a0a1a;
-      --purple: #9945FF;
-      --purple-dim: rgba(153, 69, 255, 0.15);
-      --green: #39FF14;
-      --green-dim: rgba(57, 255, 20, 0.1);
-      --text: #E8E8F0;
-      --text-dim: #8888A0;
-      --text-bright: #FFFFFF;
-      --border: rgba(255,255,255,0.06);
-      --glass: rgba(255,255,255,0.03);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ═══════ NAVIGATION ═══════ */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 20px 40px;
-      display: flex; align-items: center; justify-content: space-between;
-      backdrop-filter: blur(20px);
-      background: rgba(5,5,16,0.8);
-      border-bottom: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em;
-      color: var(--text-bright);
-    }
-    .nav-logo span { color: var(--purple); }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a {
-      color: var(--text-dim); text-decoration: none;
-      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text-bright); }
-    .nav-cta {
-      background: var(--purple) !important; color: #fff !important;
-      padding: 8px 20px; border-radius: 6px; font-weight: 600 !important;
-      transition: all 0.2s !important;
-    }
-    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    /* ═══════ HERO ═══════ */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; text-align: center;
-      padding: 120px 40px 80px;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; overflow: hidden; z-index: 0;
-    }
-    .hero-gradient {
-      position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
-      width: 900px; height: 900px;
-      background: radial-gradient(ellipse, rgba(153,69,255,0.12) 0%, rgba(57,255,20,0.04) 40%, transparent 70%);
-      filter: blur(80px); animation: pulse 8s ease-in-out infinite alternate;
-    }
-    @keyframes pulse {
-      from { opacity: 0.6; transform: translateX(-50%) scale(1); }
-      to { opacity: 1; transform: translateX(-50%) scale(1.1); }
-    }
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(153,69,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(153,69,255,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black, transparent);
-    }
-    .hero-content { position: relative; z-index: 1; max-width: 800px; }
-    .hero-badge {
-      display: inline-block;
-      background: var(--purple-dim); border: 1px solid rgba(153,69,255,0.3);
-      padding: 6px 16px; border-radius: 100px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; color: var(--purple); letter-spacing: 0.05em;
-      margin-bottom: 32px;
-    }
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 800; line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--text-bright);
-      margin-bottom: 24px;
-    }
-    .hero h1 .accent { color: var(--purple); }
-    .hero h1 .green { color: var(--green); }
-    .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      color: var(--text-dim); max-width: 560px; margin: 0 auto 48px;
-      line-height: 1.7; font-weight: 400;
-    }
-    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 32px; border-radius: 8px; font-weight: 600;
-      font-size: 0.95rem; text-decoration: none; transition: all 0.25s;
-      border: none; cursor: pointer; font-family: inherit;
-    }
-    .btn-primary {
-      background: var(--purple); color: #fff;
-      box-shadow: 0 0 30px rgba(153,69,255,0.3);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(153,69,255,0.4); }
-    .btn-ghost {
-      background: transparent; color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: rgba(255,255,255,0.2); background: var(--glass); }
-    .hero-note {
-      margin-top: 24px; font-size: 0.8rem; color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* ═══════ SECTIONS ═══════ */
-    section { padding: 120px 40px; position: relative; }
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; color: var(--purple);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700; letter-spacing: -0.02em;
-      color: var(--text-bright); margin-bottom: 16px;
-    }
-    .section-desc {
-      font-size: 1.05rem; color: var(--text-dim);
-      max-width: 600px; line-height: 1.7; margin-bottom: 64px;
-    }
-    .divider {
-      height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 0 40px;
-    }
-
-    /* ═══════ HOW IT WORKS ═══════ */
-    .steps {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px; max-width: 1100px; margin: 0 auto;
-    }
-    .step {
-      padding: 32px; border-radius: 12px;
-      background: var(--glass); border: 1px solid var(--border);
-      transition: all 0.3s;
-    }
-    .step:hover { border-color: rgba(153,69,255,0.2); transform: translateY(-4px); }
-    .step-num {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: 2.5rem; color: var(--purple); opacity: 0.3;
-      line-height: 1; margin-bottom: 16px;
-    }
-    .step h3 {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 1.15rem; color: var(--text-bright); margin-bottom: 8px;
-    }
-    .step p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
-
-    /* ═══════ KIN GRID ═══════ */
-    .kin-filter {
-      max-width: 400px; margin: 0 auto 48px; position: relative;
-    }
-    .kin-filter input {
-      width: 100%; padding: 14px 20px 14px 44px;
-      background: var(--glass); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-family: inherit;
-      font-size: 0.9rem; outline: none; transition: border-color 0.2s;
-    }
-    .kin-filter input:focus { border-color: var(--purple); }
-    .kin-filter input::placeholder { color: var(--text-dim); }
-    .kin-filter::before {
-      content: '⌕'; position: absolute; left: 16px; top: 50%;
-      transform: translateY(-50%); color: var(--text-dim); font-size: 1.1rem;
-    }
-    .kin-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px; max-width: 1200px; margin: 0 auto;
-    }
-    .kin-card {
-      padding: 24px; border-radius: 10px;
-      background: var(--glass); border: 1px solid var(--border);
-      cursor: pointer; transition: all 0.25s; position: relative;
-      overflow: hidden;
-    }
-    .kin-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, var(--purple-dim), transparent);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .kin-card:hover::before { opacity: 1; }
-    .kin-card:hover { border-color: rgba(153,69,255,0.3); transform: translateY(-2px); }
-    .kin-card.selected { border-color: var(--green); box-shadow: 0 0 20px var(--green-dim); }
-    .kin-card-inner { position: relative; z-index: 1; }
-    .kin-emoji { font-size: 1.8rem; margin-bottom: 12px; display: block; }
-    .kin-name {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 1.1rem; color: var(--text-bright); margin-bottom: 4px;
-    }
-    .kin-industry {
-      font-size: 0.78rem; color: var(--purple);
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.02em; margin-bottom: 8px;
-    }
-    .kin-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
-
-    /* ═══════ PRICING ═══════ */
-    .pricing-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px; max-width: 1200px; margin: 0 auto;
-    }
-    .price-card {
-      padding: 32px 24px; border-radius: 12px;
-      background: var(--glass); border: 1px solid var(--border);
-      position: relative; transition: all 0.3s;
-    }
-    .price-card:hover { transform: translateY(-4px); }
-    .price-card.featured {
-      border-color: var(--green);
-      background: linear-gradient(135deg, rgba(57,255,20,0.04), var(--glass));
-    }
-    .price-card.popular {
-      border-color: var(--purple);
-      background: linear-gradient(135deg, var(--purple-dim), var(--glass));
-    }
-    .price-badge {
-      position: absolute; top: -12px; right: 20px;
-      background: var(--green); color: #000;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; font-weight: 600;
-      padding: 4px 12px; border-radius: 100px;
-      letter-spacing: 0.05em;
-    }
-    .price-badge.purple { background: var(--purple); color: #fff; }
-    .price-tier {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 1.1rem; color: var(--text-bright); margin-bottom: 4px;
-    }
-    .price-vibe {
-      font-size: 0.78rem; color: var(--text-dim);
-      font-style: italic; margin-bottom: 20px;
-    }
-    .price-amount {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: 2.5rem; color: var(--text-bright); line-height: 1;
-    }
-    .price-amount span { font-size: 0.9rem; font-weight: 400; color: var(--text-dim); }
-    .price-brain {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; color: var(--purple);
-      margin: 12px 0 20px; letter-spacing: 0.02em;
-    }
-    .price-features { list-style: none; margin-bottom: 24px; }
-    .price-features li {
-      font-size: 0.85rem; color: var(--text-dim);
-      padding: 6px 0; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .price-features li::before { content: '→'; color: var(--purple); font-size: 0.8rem; }
-    .price-features li:last-child { border-bottom: none; }
-    .price-cta {
-      display: block; width: 100%; padding: 12px;
-      text-align: center; border-radius: 8px;
-      text-decoration: none; font-weight: 600; font-size: 0.9rem;
-      transition: all 0.2s; border: none; cursor: pointer;
-      font-family: inherit;
-    }
-    .price-cta-primary {
-      background: var(--purple); color: #fff;
-    }
-    .price-cta-green {
-      background: var(--green); color: #000;
-    }
-    .price-cta-ghost {
-      background: transparent; color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .price-cta:hover { transform: translateY(-1px); opacity: 0.9; }
-    .price-upsell {
-      margin-top: 12px; font-size: 0.75rem; color: var(--text-dim);
-      text-align: center; font-style: italic;
-    }
-
-    /* ═══════ EVOLUTION ═══════ */
-    .evo-track {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0; max-width: 900px; margin: 0 auto; flex-wrap: wrap;
-    }
-    .evo-stage {
-      text-align: center; padding: 24px 16px; flex: 1; min-width: 140px;
-      position: relative;
-    }
-    .evo-icon { font-size: 2.5rem; margin-bottom: 8px; display: block; }
-    .evo-label {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 0.9rem; color: var(--text-bright);
-    }
-    .evo-sub {
-      font-size: 0.75rem; color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .evo-arrow {
-      color: var(--purple); font-size: 1.5rem; opacity: 0.4;
-      flex-shrink: 0;
-    }
-
-    /* ═══════ FAQ ═══════ */
-    .faq-list { max-width: 700px; margin: 0 auto; }
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-      padding: 24px 0; cursor: pointer;
-    }
-    .faq-q {
-      font-family: 'Syne', sans-serif; font-weight: 600;
-      font-size: 1.05rem; color: var(--text-bright);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .faq-q::after {
-      content: '+'; color: var(--purple); font-size: 1.4rem;
-      transition: transform 0.2s;
-    }
-    .faq-item.open .faq-q::after { transform: rotate(45deg); }
-    .faq-a {
-      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
-      font-size: 0.9rem; color: var(--text-dim); line-height: 1.7;
-    }
-    .faq-item.open .faq-a { max-height: 200px; padding-top: 12px; }
-
-    /* ═══════ CTA SECTION ═══════ */
-    .cta-section {
-      text-align: center; padding: 120px 40px;
-      background: linear-gradient(180deg, var(--bg), var(--bg-elevated));
-    }
-    .cta-section h2 {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(2rem, 4vw, 3rem); color: var(--text-bright);
-      margin-bottom: 16px; letter-spacing: -0.02em;
-    }
-
-    /* ═══════ FOOTER ═══════ */
-    footer {
-      padding: 48px 40px; text-align: center;
-      border-top: 1px solid var(--border);
-    }
-    .footer-brand {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 0.9rem; color: var(--text-dim); margin-bottom: 8px;
-    }
-    .footer-brand span { color: var(--purple); }
-    .footer-links { display: flex; gap: 24px; justify-content: center; margin: 16px 0; }
-    .footer-links a {
-      color: var(--text-dim); text-decoration: none; font-size: 0.8rem;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--text-bright); }
-    .footer-tagline {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; color: var(--text-dim); opacity: 0.5;
-      margin-top: 16px;
-    }
-
-    /* ═══════ RESPONSIVE ═══════ */
-    @media (max-width: 768px) {
-      nav { padding: 16px 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a:not(.nav-cta) { display: none; }
-      section { padding: 80px 20px; }
-      .hero { padding: 100px 20px 60px; }
-      .hero-actions { flex-direction: column; align-items: center; }
-      .btn { width: 100%; justify-content: center; max-width: 300px; }
-      .kin-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .evo-track { flex-direction: column; }
-      .evo-arrow { transform: rotate(90deg); }
-    }
-
-    /* ═══════ LOADER ═══════ */
-    .loader {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .loader-inner { text-align: center; }
-    .loader-brand {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: 1.2rem; color: var(--purple);
-      letter-spacing: 0.2em; margin-bottom: 24px;
-    }
-    .loader-counter {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 5rem; font-weight: 500;
-      color: var(--text-bright); line-height: 1;
-    }
-
-    /* ═══════ CUSTOM CURSOR ═══════ */
-    .cursor {
-      position: fixed; width: 20px; height: 20px;
-      border: 1.5px solid #fff; border-radius: 50%;
-      pointer-events: none; z-index: 9998;
-      mix-blend-mode: difference;
-      transition: width 0.3s cubic-bezier(0.25,1,0.5,1),
-                  height 0.3s cubic-bezier(0.25,1,0.5,1),
-                  border-width 0.3s;
-      transform: translate(-50%, -50%);
-      will-change: left, top;
-    }
-    .cursor--hover { width: 56px; height: 56px; border-width: 1px; }
-    @media (pointer: coarse) { .cursor { display: none; } }
-
-    /* ═══════ GRAIN ═══════ */
-    .grain {
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 9997;
-    }
-    .grain::before {
-      content: ''; position: absolute; inset: -100%;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      opacity: 0.035;
-      animation: grain-anim 8s steps(10) infinite;
-    }
-    @keyframes grain-anim {
-      0%, 100% { transform: translate(0, 0); }
-      10% { transform: translate(-5%, -10%); }
-      20% { transform: translate(-15%, 5%); }
-      30% { transform: translate(7%, -25%); }
-      40% { transform: translate(-5%, 25%); }
-      50% { transform: translate(-15%, 10%); }
-      60% { transform: translate(15%, 0%); }
-      70% { transform: translate(0%, 15%); }
-      80% { transform: translate(3%, 35%); }
-      90% { transform: translate(-10%, 10%); }
-    }
-
-    /* ═══════ ANIMATIONS ═══════ */
-    .reveal { opacity: 0; }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .float { animation: float 6s ease-in-out infinite; }
-
-    /* ═══════ REDUCED MOTION ═══════ */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      .loader { display: none; }
-      .cursor { display: none; }
-      .grain { display: none; }
-      .reveal { opacity: 1; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIN — AI Agents That Know Your Industry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #050510;
+            --primary: #9945FF;
+            --accent: #39FF14;
+            --text-primary: rgba(255,255,255,0.9);
+            --text-body: rgba(255,255,255,0.5);
+            --text-subtle: rgba(255,255,255,0.25);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+        }
+        
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        
+        #cursor.hover {
+            width: 56px;
+            height: 56px;
+        }
+        
+        /* Film Grain */
+        #grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 9998;
+            animation: grain 0.5s steps(6) infinite;
+        }
+        
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            20% { transform: translate(-15%, 5%); }
+            30% { transform: translate(7%, -25%); }
+            40% { transform: translate(-5%, 25%); }
+            50% { transform: translate(-15%, 10%); }
+            60% { transform: translate(15%, 0%); }
+            70% { transform: translate(0%, 15%); }
+            80% { transform: translate(3%, 25%); }
+            90% { transform: translate(-10%, 10%); }
+        }
+        
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        #loader .brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            letter-spacing: 0.3em;
+        }
+        
+        #loader .counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 5rem;
+            color: var(--text-primary);
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4rem;
+            z-index: 1000;
+            transition: backdrop-filter 0.3s ease;
+        }
+        
+        nav.scrolled {
+            backdrop-filter: blur(20px);
+            background: rgba(5,5,16,0.8);
+        }
+        
+        nav .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        
+        nav .logo .kin {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        nav .logo .by {
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+        
+        nav .links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        nav .links a {
+            color: var(--text-body);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        nav .links a:hover {
+            color: var(--text-primary);
+        }
+        
+        nav .cta-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        nav .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(153,69,255,0.3);
+        }
+        
+        /* Hero */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        #hero canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #hero .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+        
+        #hero .badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        #hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: clamp(4rem, 10vw, 8rem);
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+        
+        #hero .subtitle {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        #hero .subtext {
+            font-size: 0.9rem;
+            font-weight: 300;
+            opacity: 0.3;
+            margin-bottom: 2.5rem;
+        }
+        
+        #hero .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        #hero .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        #hero .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(153,69,255,0.4);
+        }
+        
+        #hero .btn-ghost {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        #hero .btn-ghost:hover {
+            border-color: rgba(255,255,255,0.5);
+        }
+        
+        #hero .note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            opacity: 0.4;
+        }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            margin: 4rem auto;
+            max-width: 80%;
+        }
+        
+        /* Section Base */
+        section {
+            padding: 12rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 4rem;
+        }
+        
+        /* How It Works */
+        #how-it-works .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+        
+        .step {
+            position: relative;
+            padding: 2rem;
+        }
+        
+        .step .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.12;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .step h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .step p {
+            font-weight: 300;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-body);
+            max-width: 540px;
+        }
+        
+        /* KIN Types */
+        #kin-types .search {
+            margin-bottom: 3rem;
+        }
+        
+        #kin-types input {
+            width: 100%;
+            max-width: 600px;
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        #kin-types input:focus {
+            border-color: var(--primary);
+        }
+        
+        #kin-types .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .kin-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 3px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .kin-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .kin-card.selected {
+            border-left-color: var(--accent) !important;
+            box-shadow: 0 0 24px rgba(57,255,20,0.2);
+        }
+        
+        .kin-card .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kin-card .industry {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+        }
+        
+        .kin-card .description {
+            font-weight: 300;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-body);
+        }
+        
+        /* Pricing */
+        #pricing .cards {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+        }
+        
+        .pricing-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2.5rem;
+            min-width: 280px;
+            flex: 1;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .pricing-card .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            letter-spacing: 0.1em;
+        }
+        
+        .pricing-card .badge.free {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .pricing-card .badge.popular {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .pricing-card .price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-card .tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-subtle);
+            margin-bottom: 1rem;
+        }
+        
+        .pricing-card .model {
+            font-size: 0.9rem;
+            color: var(--text-body);
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-card .cta {
+            display: block;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+        
+        .pricing-card .cta:hover {
+            transform: translateY(-2px);
+        }
+        
+        .pricing-card .cta.green {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .pricing-card .cta.purple {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Presale */
+        #presale {
+            text-align: center;
+        }
+        
+        #presale .description {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-body);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        #presale .tiers {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+        
+        .tier {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            min-width: 200px;
+        }
+        
+        .tier .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tier .price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tier .benefit {
+            font-size: 0.85rem;
+            color: var(--text-subtle);
+        }
+        
+        #presale .cta {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        #presale .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(153,69,255,0.4);
+        }
+        
+        /* Evolution */
+        #evolution {
+            padding: 8rem 4rem;
+        }
+        
+        #evolution .timeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 4rem;
+        }
+        
+        #evolution .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .stage {
+            position: relative;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stage .icon {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+        
+        .stage .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stage .desc {
+            font-size: 0.85rem;
+            color: var(--text-subtle);
+        }
+        
+        /* FAQ */
+        #faq .accordion {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem 0;
+            cursor: pointer;
+        }
+        
+        .faq-item .question {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-item .icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.open .icon {
+            transform: rotate(45deg);
+        }
+        
+        .faq-item .answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            font-weight: 300;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-body);
+            padding-top: 0;
+        }
+        
+        .faq-item.open .answer {
+            max-height: 500px;
+            padding-top: 1.5rem;
+        }
+        
+        /* Final CTA */
+        #final-cta {
+            text-align: center;
+            padding: 12rem 4rem;
+        }
+        
+        #final-cta h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 2rem;
+        }
+        
+        #final-cta .wallet {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-subtle);
+            margin-top: 2rem;
+            word-break: break-all;
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+        
+        #final-cta .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        #final-cta .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(57,255,20,0.4);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        footer .brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        footer .links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        
+        footer .links a {
+            color: var(--text-body);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        footer .links a:hover {
+            color: var(--text-primary);
+        }
+        
+        footer .tagline {
+            font-size: 0.85rem;
+            color: var(--text-subtle);
+            margin-top: 1.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            section { padding: 6rem 2rem; }
+            nav { padding: 0 2rem; }
+            #how-it-works .grid { grid-template-columns: 1fr; }
+            #kin-types .grid { grid-template-columns: 1fr; }
+            #pricing .cards { flex-direction: column; }
+            #presale .tiers { flex-direction: column; align-items: center; }
+            #evolution .timeline { flex-direction: column; gap: 2rem; }
+            #evolution .timeline::before { display: none; }
+        }
+    </style>
 </head>
 <body>
-
-<!-- LOADER -->
-<div class="loader" id="loader">
-  <div class="loader-inner">
-    <div class="loader-brand">KIN</div>
-    <div class="loader-counter" id="loaderCounter">0</div>
-  </div>
-</div>
-
-<!-- CUSTOM CURSOR -->
-<div class="cursor" id="cursor"></div>
-
-<!-- GRAIN OVERLAY -->
-<div class="grain"></div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo"><span>KIN</span> by KR8TIV</div>
-  <div class="nav-links">
-    <a href="#types">Types</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="#start" class="nav-cta" data-magnetic>Get Started Free</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="hero-gradient"></div>
-    <div class="hero-grid"></div>
-  </div>
-  <div class="hero-content">
-    <div class="hero-badge reveal" id="heroBadge">NOW IN BETA — 30 INDUSTRIES</div>
-    <h1 class="reveal" id="heroTitle">Meet <span class="accent">KIN</span>.</h1>
-    <p class="hero-sub reveal" id="heroSub">An AI agent that actually knows your industry. Not another chatbot that googles things and pretends to have opinions.</p>
-    <div class="hero-actions reveal" id="heroActions">
-      <a href="#pricing" class="btn btn-primary" data-magnetic data-magnetic>Get Your Free KIN →</a>
-      <a href="#types" class="btn btn-ghost" data-magnetic>See All 30 Types</a>
+    <div id="cursor"></div>
+    <div id="grain">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+        </svg>
     </div>
-    <p class="hero-note reveal" id="heroNote">No credit card. No contracts. No "synergy."</p>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div style="max-width:1100px;margin:0 auto;">
-    <div class="section-label reveal">// how it works</div>
-    <h2 class="section-title reveal">Four steps. Zero complexity.</h2>
-    <p class="section-desc reveal">We handle the infrastructure, the AI, and the nerdy stuff. You handle being good at your job.</p>
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-num">01</div>
-        <h3>Pick Your KIN</h3>
-        <p>Choose from 30 industry specialists. Each one is built different — trained on the stuff that actually matters in your field.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">02</div>
-        <h3>It Hatches</h3>
-        <p>Your KIN deploys in its own secure container. Dedicated resources, always on. We handle the servers so you don't have to.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">03</div>
-        <h3>It Learns You</h3>
-        <p>Every conversation makes it sharper. Your KIN builds memory about your business, your style, your goals. It gets you.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">04</div>
-        <h3>You Win</h3>
-        <p>Better decisions. Less busywork. An unfair advantage that compounds daily. Also, more coffee breaks.</p>
-      </div>
+    
+    <div id="loader">
+        <div class="brand">KIN</div>
+        <div class="counter">0</div>
     </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- KIN TYPES -->
-<section id="types">
-  <div style="max-width:1200px;margin:0 auto;">
-    <div class="section-label reveal">// choose your kin</div>
-    <h2 class="section-title reveal">30 specialists. One mission.</h2>
-    <p class="section-desc reveal">Every KIN is an expert in its field. Pick the one that matches your world.</p>
-    <div class="kin-filter">
-      <input type="text" id="kinSearch" placeholder="Search industries..." autocomplete="off">
-    </div>
-    <div class="kin-grid" id="kinGrid"></div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div style="max-width:1200px;margin:0 auto;">
-    <div class="section-label reveal">// pricing</div>
-    <h2 class="section-title reveal">Start free. Scale when you're ready.</h2>
-    <p class="section-desc reveal">Your KIN grows with you. Upgrade the brain when you need more power.</p>
-    <div class="pricing-grid">
-
-      <!-- FREE -->
-      <div class="price-card featured">
-        <div class="price-badge">FREE FOREVER</div>
-        <div class="price-tier">Free</div>
-        <div class="price-vibe">"Your KIN has baby teeth"</div>
-        <div class="price-amount">$0<span>/mo</span></div>
-        <div class="price-brain">brain: Kimi K2.5</div>
-        <ul class="price-features">
-          <li>24/7 chat access</li>
-          <li>50 messages per day</li>
-          <li>1 industry specialty</li>
-          <li>Basic memory</li>
-          <li>Community support</li>
-        </ul>
-        <a href="#start" class="price-cta price-cta-green" data-tier="free">Start Free →</a>
-      </div>
-
-      <!-- STARTER -->
-      <div class="price-card">
-        <div class="price-tier">Starter</div>
-        <div class="price-vibe">"Now it bites"</div>
-        <div class="price-amount">$29<span>/mo</span></div>
-        <div class="price-brain">brain: Claude Haiku</div>
-        <ul class="price-features">
-          <li>Unlimited messages</li>
-          <li>Daily industry briefs</li>
-          <li>Own container</li>
-          <li>1 integration</li>
-          <li>Email support</li>
-        </ul>
-        <a href="#start" class="price-cta price-cta-primary" data-tier="starter">Get Started →</a>
-        <p class="price-upsell">↑ Upgrade unlocks unlimited chat</p>
-      </div>
-
-      <!-- GROWTH -->
-      <div class="price-card popular">
-        <div class="price-badge purple">MOST POPULAR</div>
-        <div class="price-tier">Growth</div>
-        <div class="price-vibe">"Full fangs mode"</div>
-        <div class="price-amount">$59<span>/mo</span></div>
-        <div class="price-brain">brain: Claude Sonnet</div>
-        <ul class="price-features">
-          <li>Everything in Starter</li>
-          <li>Weekly strategy calls</li>
-          <li>Long-term memory</li>
-          <li>3 integrations</li>
-          <li>Priority support</li>
-        </ul>
-        <a href="#start" class="price-cta price-cta-primary" data-tier="growth">Get Started →</a>
-        <p class="price-upsell">↑ Your KIN remembers everything now</p>
-      </div>
-
-      <!-- PRO -->
-      <div class="price-card">
-        <div class="price-tier">Pro</div>
-        <div class="price-vibe">"Your KIN has a job now"</div>
-        <div class="price-amount">$99<span>/mo</span></div>
-        <div class="price-brain">brain: Claude Sonnet + tools</div>
-        <ul class="price-features">
-          <li>Everything in Growth</li>
-          <li>Web browsing</li>
-          <li>Custom workflows</li>
-          <li>Unlimited integrations</li>
-          <li>Dedicated resources</li>
-        </ul>
-        <a href="#start" class="price-cta price-cta-primary" data-tier="pro">Get Started →</a>
-        <p class="price-upsell">↑ Your KIN can browse the internet</p>
-      </div>
-
-      <!-- ENTERPRISE -->
-      <div class="price-card">
-        <div class="price-tier">Enterprise</div>
-        <div class="price-vibe">"Your KIN runs the company"</div>
-        <div class="price-amount">$249<span>/mo</span></div>
-        <div class="price-brain">brain: Claude Opus</div>
-        <ul class="price-features">
-          <li>Everything in Pro</li>
-          <li>Opus-level intelligence</li>
-          <li>Custom training</li>
-          <li>API access</li>
-          <li>White-glove onboarding</li>
-          <li>SLA guarantee</li>
-        </ul>
-        <a href="#start" class="price-cta price-cta-ghost" data-tier="enterprise">Contact Us →</a>
-        <p class="price-upsell">↑ The smartest AI brain available</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- EVOLUTION -->
-<section>
-  <div style="max-width:900px;margin:0 auto;text-align:center;">
-    <div class="section-label reveal">// evolution</div>
-    <h2 class="section-title reveal">Your KIN grows with you.</h2>
-    <p class="section-desc reveal" style="margin:0 auto 48px;">Upgrade the brain. Keep the soul. Your KIN's memory and personality carry forward.</p>
-    <div class="evo-track">
-      <div class="evo-stage fade-in">
-        <span class="evo-icon float" style="animation-delay:0s">🥚</span>
-        <div class="evo-label">Free</div>
-        <div class="evo-sub">baby teeth</div>
-      </div>
-      <span class="evo-arrow">→</span>
-      <div class="evo-stage fade-in">
-        <span class="evo-icon float" style="animation-delay:0.5s">🐣</span>
-        <div class="evo-label">Starter</div>
-        <div class="evo-sub">now it bites</div>
-      </div>
-      <span class="evo-arrow">→</span>
-      <div class="evo-stage fade-in">
-        <span class="evo-icon float" style="animation-delay:1s">🦎</span>
-        <div class="evo-label">Growth</div>
-        <div class="evo-sub">full fangs</div>
-      </div>
-      <span class="evo-arrow">→</span>
-      <div class="evo-stage fade-in">
-        <span class="evo-icon float" style="animation-delay:1.5s">🐲</span>
-        <div class="evo-label">Pro</div>
-        <div class="evo-sub">employed</div>
-      </div>
-      <span class="evo-arrow">→</span>
-      <div class="evo-stage fade-in">
-        <span class="evo-icon float" style="animation-delay:2s">🐉</span>
-        <div class="evo-label">Enterprise</div>
-        <div class="evo-sub">in charge</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- FAQ -->
-<section id="faq">
-  <div style="max-width:700px;margin:0 auto;">
-    <div class="section-label reveal">// faq</div>
-    <h2 class="section-title reveal">Questions you probably have.</h2>
-    <div class="faq-list">
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Is this actually real?</div>
-        <div class="faq-a">Yes. Your KIN runs on real infrastructure, powered by real AI models, in its own dedicated container. The only fake thing here is our confidence in our pricing — we probably undercharged.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">What AI models does it use?</div>
-        <div class="faq-a">Free tier runs on Kimi K2.5 — solid, capable, costs us nothing. Paid tiers upgrade to Claude by Anthropic (Haiku → Sonnet → Opus). Yes, the good stuff. The difference is like going from a Honda to a Tesla to a spaceship.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Do I need to be technical?</div>
-        <div class="faq-a">Can you send a text message? Congrats, you're qualified. Your KIN lives on Telegram. Talk to it like you'd talk to a really smart coworker who never sleeps.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">Can I switch KIN types?</div>
-        <div class="faq-a">Yep. Your MarKIN wants to become a CryptoKIN? Identity crisis accepted. Your memory carries over — it just learns a new specialty.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">What's the catch with the free tier?</div>
-        <div class="faq-a">50 messages a day and a slightly less powerful brain. That's it. No hidden fees. No "free trial that auto-charges." We're not your gym membership.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">What if my KIN gets too smart?</div>
-        <div class="faq-a">Then you upgrade to Enterprise and let it run things. That's called delegation, and it's what successful people do.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('open')">
-        <div class="faq-q">What about the NFT?</div>
-        <div class="faq-a">Each KIN can be minted as a compressed NFT on Solana — your portable proof of ownership. Trade it, keep it, show it off. Your KIN, your asset. Costs fractions of a penny to mint.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- CTA -->
-<section class="cta-section" id="start">
-  <div class="section-label reveal">// ready?</div>
-  <h2>Your industry deserves better AI.</h2>
-  <p class="section-desc reveal" style="margin:0 auto 40px;text-align:center;">Pick a KIN. Start for free. See what happens when AI actually understands what you do.</p>
-  <div class="hero-actions">
-    <a class="btn btn-primary" data-magnetic id="ctaBtn">Get Your Free KIN →</a>
-  </div>
-  <div style="margin-top:32px;text-align:center;">
-    <p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-dim);margin-bottom:8px;">Also accept SOL payments</p>
-    <code style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--purple);background:var(--glass);padding:8px 16px;border-radius:6px;border:1px solid var(--border);display:inline-block;word-break:break-all;">5Y4Lr4a2dm1GXhtrd3qwCErBi9MT29n9Ns8KdTRzccrG</code>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand"><span>KIN</span> by KR8TIV AI</div>
-  <div class="footer-links">
-    <a href="https://kr8tiv.ai" target="_blank">KR8TIV AI</a>
-    <a href="https://x.com/kr8tivai" target="_blank">@kr8tivai</a>
-    <a href="https://x.com/aurora_ventures" target="_blank">@aurora_ventures</a>
-    <a href="mailto:lucidbloks@gmail.com">Contact</a>
-  </div>
-  <p class="footer-tagline">Surfing the singularity since 2024. Built different. Literally.</p>
-</footer>
-
-<script>
-// ═══════ GSAP + LENIS + CURSOR + MAGNETIC ═══════
-
-document.addEventListener('DOMContentLoaded', () => {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ── LOADER ──
-  if (!prefersReduced) {
-    const loader = document.getElementById('loader');
-    const counter = document.getElementById('loaderCounter');
-    let progress = { value: 0 };
-
-    gsap.to(progress, {
-      value: 100, duration: 1.8, ease: 'power2.inOut',
-      onUpdate: () => { counter.textContent = Math.round(progress.value); }
-    });
-
-    gsap.to(loader, {
-      yPercent: -100, duration: 0.8, ease: 'power3.inOut', delay: 2.0,
-      onComplete: () => { loader.style.display = 'none'; initAnimations(); }
-    });
-  } else {
-    document.getElementById('loader').style.display = 'none';
-    document.querySelectorAll('.reveal').forEach(el => el.style.opacity = '1');
-  }
-
-  // ── LENIS SMOOTH SCROLL ──
-  if (typeof Lenis !== 'undefined' && !prefersReduced) {
-    const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
-
-  // ── CUSTOM CURSOR ──
-  if (window.matchMedia('(pointer: fine)').matches) {
-    const cursor = document.getElementById('cursor');
-    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-
-    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
-    function renderCursor() {
-      cursorX += (mouseX - cursorX) * 0.15;
-      cursorY += (mouseY - cursorY) * 0.15;
-      cursor.style.left = cursorX + 'px';
-      cursor.style.top = cursorY + 'px';
-      requestAnimationFrame(renderCursor);
-    }
-    renderCursor();
-
-    document.querySelectorAll('a, button, .kin-card, .price-cta, .faq-item').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-    });
-  }
-
-  // ── MAGNETIC BUTTONS ──
-  if (!prefersReduced) {
-    document.querySelectorAll('[data-magnetic]').forEach(el => {
-      let rect;
-      el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
-      el.addEventListener('mousemove', e => {
-        if (!rect) return;
-        const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
-        const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
-        gsap.to(el, { x, y, duration: 0.3, ease: 'power2.out' });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
-      });
-    });
-  }
-
-  // ── GSAP SCROLL ANIMATIONS ──
-  function initAnimations() {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Hero cascade
-    const heroTl = gsap.timeline({ delay: 0.2 });
-    heroTl
-      .from('#heroBadge', { x: -40, opacity: 0, duration: 0.6, ease: 'power3.out' })
-      .from('#heroTitle', { y: 60, opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
-      .from('#heroSub', { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
-      .from('#heroActions', { y: 30, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-      .from('#heroNote', { opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2')
-      .from('nav', { y: -40, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.8');
-
-    // Reveal on scroll — section labels, titles, descriptions
-    gsap.utils.toArray('.section-label.reveal, .section-title.reveal, .section-desc.reveal').forEach(el => {
-      gsap.from(el, {
-        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
-      });
-    });
-
-    // Steps stagger
-    gsap.utils.toArray('.step.reveal').forEach((el, i) => {
-      gsap.from(el, {
-        y: 50, opacity: 0, duration: 0.8, ease: 'power3.out', delay: i * 0.12,
-        scrollTrigger: { trigger: el, start: 'top 85%' }
-      });
-    });
-
-    // KIN cards stagger
-    ScrollTrigger.create({
-      trigger: '#kinGrid',
-      start: 'top 80%',
-      onEnter: () => {
-        gsap.from('.kin-card', {
-          y: 40, opacity: 0, duration: 0.6, stagger: 0.04, ease: 'power3.out'
+    
+    <nav>
+        <div class="logo">
+            <span class="kin">KIN</span>
+            <span class="by">by KR8TIV</span>
+        </div>
+        <div class="links">
+            <a href="#kin-types">Types</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="#final-cta" class="cta-btn">Start Free</a>
+        </div>
+    </nav>
+    
+    <section id="hero">
+        <canvas id="particleCanvas"></canvas>
+        <div class="content">
+            <div class="badge">NOW IN BETA — 30 INDUSTRIES</div>
+            <h1>Meet KIN.</h1>
+            <p class="subtitle">An AI agent that actually knows your industry.</p>
+            <p class="subtext">Not another chatbot that googles things.</p>
+            <div class="buttons">
+                <a href="#final-cta" class="btn-primary">Start Free →</a>
+                <a href="#how-it-works" class="btn-ghost">Explore</a>
+            </div>
+            <p class="note">No credit card. No contracts. No synergy.</p>
+        </div>
+    </section>
+    
+    <div class="divider"></div>
+    
+    <section id="how-it-works">
+        <div class="label">// HOW IT WORKS</div>
+        <h2 class="section-title">Four steps. Zero complexity.</h2>
+        <div class="grid">
+            <div class="step">
+                <div class="number">01</div>
+                <h3>Pick</h3>
+                <p>Choose from 30 industry-trained agents. Each KIN knows your domain cold — not generic AI playing pretend.</p>
+            </div>
+            <div class="step">
+                <div class="number">02</div>
+                <h3>Hatch</h3>
+                <p>Your KIN spins up in seconds. No setup. No training. No configuration hell. Just ready.</p>
+            </div>
+            <div class="step">
+                <div class="number">03</div>
+                <h3>Learn</h3>
+                <p>It adapts to your workflow, your voice, your business. Gets smarter every conversation.</p>
+            </div>
+            <div class="step">
+                <div class="number">04</div>
+                <h3>Win</h3>
+                <p>Ship faster. Scale smarter. Focus on what matters. Let KIN handle the rest.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="kin-types">
+        <div class="label">// CHOOSE YOUR KIN</div>
+        <h2 class="section-title">30 specialists. One mission.</h2>
+        <div class="search">
+            <input type="text" id="kinSearch" placeholder="Search by industry or specialty...">
+        </div>
+        <div class="grid" id="kinGrid"></div>
+    </section>
+    
+    <section id="pricing">
+        <div class="label">// PRICING</div>
+        <h2 class="section-title">Start free. Scale when ready.</h2>
+        <div class="cards">
+            <div class="pricing-card">
+                <div class="badge free">FREE FOREVER</div>
+                <div class="price">$0</div>
+                <div class="tagline">baby teeth</div>
+                <div class="model">Kimi K2.5</div>
+                <a href="#final-cta" class="cta green">Start Now</a>
+            </div>
+            <div class="pricing-card">
+                <div class="price">$29</div>
+                <div class="tagline">now it bites</div>
+                <div class="model">Claude Haiku</div>
+                <a href="#final-cta" class="cta purple">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <div class="badge popular">POPULAR</div>
+                <div class="price">$59</div>
+                <div class="tagline">full fangs</div>
+                <div class="model">Claude Sonnet</div>
+                <a href="#final-cta" class="cta purple">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <div class="price">$99</div>
+                <div class="tagline">has a job now</div>
+                <div class="model">Sonnet + Tools</div>
+                <a href="#final-cta" class="cta purple">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <div class="price">$249</div>
+                <div class="tagline">runs the company</div>
+                <div class="model">Claude Opus</div>
+                <a href="#final-cta" class="cta purple">Get Started</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="presale">
+        <div class="label">// PRESALE</div>
+        <h2 class="section-title">Own your KIN forever.</h2>
+        <p class="description">Each KIN is minted as a compressed NFT on Solana. Tradeable. Portable. Yours.<br>Founding KINs get lifetime discounts.</p>
+        <div class="tiers">
+            <div class="tier">
+                <div class="name">Founding Egg</div>
+                <div class="price">0.5 SOL</div>
+                <div class="benefit">First 500 minted</div>
+            </div>
+            <div class="tier">
+                <div class="name">Founding Hatchling</div>
+                <div class="price">1 SOL</div>
+                <div class="benefit">Limited edition</div>
+            </div>
+            <div class="tier">
+                <div class="name">Founding Elder</div>
+                <div class="price">2.5 SOL</div>
+                <div class="benefit">Exclusive perks</div>
+            </div>
+        </div>
+        <a href="mailto:hello@kr8tiv.ai?subject=KIN Presale Interest" class="cta">Join the Presale</a>
+    </section>
+    
+    <section id="evolution">
+        <div class="label">// EVOLUTION</div>
+        <h2 class="section-title">From egg to empire.</h2>
+        <div class="timeline">
+            <div class="stage">
+                <div class="icon"></div>
+                <div class="name">Egg</div>
+                <div class="desc">Minted, waiting</div>
+            </div>
+            <div class="stage">
+                <div class="icon"></div>
+                <div class="name">Hatchling</div>
+                <div class="desc">Learning basics</div>
+            </div>
+            <div class="stage">
+                <div class="icon"></div>
+                <div class="name">Apprentice</div>
+                <div class="desc">Getting smart</div>
+            </div>
+            <div class="stage">
+                <div class="icon"></div>
+                <div class="name">Expert</div>
+                <div class="desc">Domain mastery</div>
+            </div>
+            <div class="stage">
+                <div class="icon"></div>
+                <div class="name">Elder</div>
+                <div class="desc">Running the show</div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="faq">
+        <div class="label">// FAQ</div>
+        <h2 class="section-title">Questions we keep getting.</h2>
+        <div class="accordion">
+            <div class="faq-item">
+                <div class="question">
+                    <span>What makes KIN different from ChatGPT?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">KIN isn't generic AI with a prompt. Each agent is trained on your industry's knowledge, workflows, and nuance. It's the difference between hiring a specialist and asking a smart friend who might google it.</div>
+            </div>
+            <div class="faq-item">
+                <div class="question">
+                    <span>Do I need to train it?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">Nope. Your KIN arrives pre-trained on your industry. You just pick, hatch, and go. It learns your specific workflow as you use it, but it already knows your domain.</div>
+            </div>
+            <div class="faq-item">
+                <div class="question">
+                    <span>Can I switch between KIN types?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">Absolutely. Subscription plans unlock multiple KINs. Run MarKIN for growth, FinKIN for budgets, and LawKIN for contracts — all at once.</div>
+            </div>
+            <div class="faq-item">
+                <div class="question">
+                    <span>What's this NFT thing about?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">Your KIN is minted as a compressed NFT on Solana. That means you own it — tradeable, portable, provably yours. Founding KINs from presale get lifetime perks.</div>
+            </div>
+            <div class="faq-item">
+                <div class="question">
+                    <span>Is my data safe?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">Yes. Your conversations stay yours. No training on your data. No sharing. Enterprise plans include private deployment options.</div>
+            </div>
+            <div class="faq-item">
+                <div class="question">
+                    <span>Can I cancel anytime?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">Of course. No contracts. No commitments. No "please don't go" emails. Cancel with one click.</div>
+            </div>
+            <div class="faq-item">
+                <div class="question">
+                    <span>What if my industry isn't listed?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="answer">We're adding new KIN types monthly. Email us at hello@kr8tiv.ai with your industry — if enough people ask, we build it.</div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="final-cta">
+        <h2>Ready to meet your KIN?</h2>
+        <p style="font-size: 1.1rem; color: var(--text-body); margin-bottom: 2rem;">Pick your specialist. Start building. No credit card required.</p>
+        <a href="https://kr8tiv.ai" class="btn">Start Free →</a>
+        <div class="wallet">Treasury: 62Bf2Dc9WWtKcE44YKR49uf7N71E5xKffHp4tpMmBoMv</div>
+    </section>
+    
+    <footer>
+        <div class="brand">KIN by KR8TIV AI</div>
+        <div class="links">
+            <a href="https://kr8tiv.ai">KR8TIV</a>
+            <a href="https://twitter.com/kr8tivai">Twitter</a>
+            <a href="mailto:hello@kr8tiv.ai">Contact</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+        </div>
+        <div class="tagline">Surfing the singularity since 2024</div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // KIN data
+        const kinTypes = [
+            {name: "MarKIN", industry: "Marketing & Growth", description: "Turns your 'we should post more' into an actual strategy", color: "#FF6B35"},
+            {name: "MedKIN", industry: "Healthcare", description: "Knows more about HIPAA than your compliance officer", color: "#00D4AA"},
+            {name: "LawKIN", industry: "Legal", description: "Reads the fine print so you don't have to", color: "#8B5CF6"},
+            {name: "FinKIN", industry: "Finance", description: "Your money deserves someone who pays attention", color: "#F59E0B"},
+            {name: "PropKIN", industry: "Real Estate", description: "Finds comps faster than your competitor finds excuses", color: "#10B981"},
+            {name: "FitKIN", industry: "Fitness & Wellness", description: "Like a personal trainer that won't judge your 3am pizza", color: "#EF4444"},
+            {name: "TechKIN", industry: "Technology & SaaS", description: "Debugs your code AND your architecture decisions", color: "#06B6D4"},
+            {name: "EduKIN", industry: "Education", description: "Makes learning not suck", color: "#3B82F6"},
+            {name: "RetailKIN", industry: "Retail & E-commerce", description: "Knows why people abandon carts", color: "#EC4899"},
+            {name: "FoodKIN", industry: "Restaurant & Food", description: "Your sous-chef that never calls in sick", color: "#F97316"},
+            {name: "TravelKIN", industry: "Travel & Tourism", description: "Plans trips better than that friend who 'knows a guy'", color: "#14B8A6"},
+            {name: "ConstKIN", industry: "Construction", description: "Keeps your project on time. Yes, seriously.", color: "#78716C"},
+            {name: "AutoKIN", industry: "Automotive", description: "Knows what that weird noise is", color: "#DC2626"},
+            {name: "BeautyKIN", industry: "Beauty & Salon", description: "Never double-books Karen's 2pm", color: "#D946EF"},
+            {name: "AgriKIN", industry: "Agriculture", description: "Your grandpa would be confused but impressed", color: "#84CC16"},
+            {name: "CryptoKIN", industry: "Crypto & DeFi", description: "Finds alpha. Avoids rugs. Doesn't FOMO at the top.", color: "#9945FF"},
+            {name: "ArtKIN", industry: "Art & Creative", description: "Your creative director for less than a latte", color: "#F43F5E"},
+            {name: "MusicKIN", industry: "Music Industry", description: "Gets your track on real playlists", color: "#7C3AED"},
+            {name: "GameKIN", industry: "Gaming", description: "Min-maxes everything", color: "#22D3EE"},
+            {name: "PetKIN", industry: "Pet Care", description: "Knows if Fluffy is sick or just dramatic", color: "#FB923C"},
+            {name: "CleanKIN", industry: "Cleaning Services", description: "Clean more, drive less", color: "#2DD4BF"},
+            {name: "PlumbKIN", industry: "Plumbing & HVAC", description: "Faster than water finds a crack", color: "#6366F1"},
+            {name: "DentKIN", industry: "Dental", description: "Open wide for efficiency", color: "#A7F3D0"},
+            {name: "PhotoKIN", industry: "Photography", description: "Edits your workflow, not your photos", color: "#A855F7"},
+            {name: "EventKIN", industry: "Events & Planning", description: "Makes it look effortless", color: "#F472B6"},
+            {name: "InsureKIN", industry: "Insurance", description: "Almost interesting. Almost.", color: "#0EA5E9"},
+            {name: "AccountKIN", industry: "Accounting & Tax", description: "Finds deductions your accountant missed", color: "#059669"},
+            {name: "HRKIN", industry: "Human Resources", description: "No more 'proficient in Word' 400 times", color: "#7DD3FC"},
+            {name: "LogiKIN", industry: "Logistics", description: "A to B without the crisis", color: "#FCD34D"},
+            {name: "GreenKIN", industry: "Sustainability", description: "Saves the planet AND your bottom line", color: "#4ADE80"}
+        ];
+        
+        // Render KIN cards
+        const kinGrid = document.getElementById('kinGrid');
+        kinTypes.forEach(kin => {
+            const card = document.createElement('div');
+            card.className = 'kin-card';
+            card.style.borderLeftColor = kin.color;
+            card.innerHTML = `
+                <div class="name">${kin.name}</div>
+                <div class="industry">${kin.industry}</div>
+                <div class="description">${kin.description}</div>
+            `;
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.kin-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+            kinGrid.appendChild(card);
         });
-      },
-      once: true
-    });
-
-    // Pricing cards
-    ScrollTrigger.create({
-      trigger: '.pricing-grid',
-      start: 'top 80%',
-      onEnter: () => {
-        gsap.from('.price-card', {
-          y: 50, opacity: 0, scale: 0.95, duration: 0.7, stagger: 0.1, ease: 'power3.out'
+        
+        // Search functionality
+        const kinSearch = document.getElementById('kinSearch');
+        kinSearch.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.kin-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
         });
-      },
-      once: true
-    });
-
-    // Evolution stages
-    gsap.utils.toArray('.evo-stage').forEach((el, i) => {
-      gsap.from(el, {
-        x: -30, opacity: 0, duration: 0.6, delay: i * 0.15, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
-      });
-    });
-
-    // FAQ items
-    gsap.utils.toArray('.faq-item').forEach((el, i) => {
-      gsap.from(el, {
-        y: 20, opacity: 0, duration: 0.5, delay: i * 0.08, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 90%' }
-      });
-    });
-
-    // Parallax on hero gradient
-    gsap.to('.hero-gradient', {
-      y: -150, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-    });
-
-    // Nav blur increase on scroll
-    ScrollTrigger.create({
-      start: 'top -80',
-      onUpdate: self => {
-        const nav = document.querySelector('nav');
-        if (self.direction === 1 && self.progress > 0) {
-          nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
-          nav.style.background = 'rgba(5,5,16,0.92)';
-        } else if (self.progress === 0) {
-          nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
-          nav.style.background = 'rgba(5,5,16,0.8)';
+        
+        // FAQ accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('open');
+            });
+        });
+        
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function updateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
+            requestAnimationFrame(updateCursor);
         }
-      }
-    });
-
-    // Make all reveals visible for any that GSAP doesn't catch
-    setTimeout(() => {
-      document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = '1'; });
-    }, 3000);
-  }
-
-  // If no GSAP loaded or reduced motion, show everything
-  if (prefersReduced || typeof gsap === 'undefined') {
-    document.querySelectorAll('.reveal').forEach(el => el.style.opacity = '1');
-  }
-});
-
-// KIN Data
-const KINS = [
-  { name: "MarKIN", industry: "Marketing & Growth", emoji: "📣", desc: "Turns your 'we should post more' into an actual strategy" },
-  { name: "MedKIN", industry: "Healthcare", emoji: "🏥", desc: "Knows more about HIPAA than your compliance officer" },
-  { name: "LawKIN", industry: "Legal", emoji: "⚖️", desc: "Reads the fine print so you don't have to. You're welcome." },
-  { name: "FinKIN", industry: "Finance", emoji: "💰", desc: "Your money deserves someone who actually pays attention" },
-  { name: "PropKIN", industry: "Real Estate", emoji: "🏠", desc: "Finds comps faster than your competitor finds excuses" },
-  { name: "FitKIN", industry: "Fitness & Wellness", emoji: "💪", desc: "Like a personal trainer but won't judge your 3am pizza" },
-  { name: "TechKIN", industry: "Technology & SaaS", emoji: "💻", desc: "Debugs your code AND your architecture decisions" },
-  { name: "EduKIN", industry: "Education", emoji: "📚", desc: "Makes learning not suck. Revolutionary, we know." },
-  { name: "RetailKIN", industry: "Retail & E-commerce", emoji: "🛒", desc: "Knows why people abandon carts (it's not always the shipping)" },
-  { name: "FoodKIN", industry: "Restaurant & Food", emoji: "🍳", desc: "Your sous-chef that never calls in sick" },
-  { name: "TravelKIN", industry: "Travel & Tourism", emoji: "✈️", desc: "Plans trips better than that friend who 'knows a guy'" },
-  { name: "ConstKIN", industry: "Construction", emoji: "🏗️", desc: "Keeps your project on time. Yes, seriously. Stop laughing." },
-  { name: "AutoKIN", industry: "Automotive", emoji: "🚗", desc: "Knows what that weird noise is. No, it's not 'fine.'" },
-  { name: "BeautyKIN", industry: "Beauty & Salon", emoji: "💅", desc: "Books clients, tracks trends, never double-books Karen's 2pm" },
-  { name: "AgriKIN", industry: "Agriculture", emoji: "🌾", desc: "Crop planning meets AI. Your grandpa would be confused but impressed." },
-  { name: "CryptoKIN", industry: "Crypto & DeFi", emoji: "🔗", desc: "Finds alpha. Avoids rugs. Doesn't FOMO at the top." },
-  { name: "ArtKIN", industry: "Art & Creative", emoji: "🎨", desc: "Your creative director that works for less than a latte" },
-  { name: "MusicKIN", industry: "Music Industry", emoji: "🎵", desc: "Gets your track on playlists. Real ones. Not your mom's." },
-  { name: "GameKIN", industry: "Gaming", emoji: "🎮", desc: "Min-maxes your game dev like it min-maxes everything" },
-  { name: "PetKIN", industry: "Pet Care", emoji: "🐾", desc: "Knows if Fluffy is actually sick or just being dramatic" },
-  { name: "CleanKIN", industry: "Cleaning Services", emoji: "🧹", desc: "Optimizes routes so you clean more and drive less" },
-  { name: "PlumbKIN", industry: "Plumbing & HVAC", emoji: "🔧", desc: "Dispatches jobs faster than water finds a crack" },
-  { name: "DentKIN", industry: "Dental", emoji: "🦷", desc: "Manages your practice. Open wide for efficiency." },
-  { name: "PhotoKIN", industry: "Photography", emoji: "📸", desc: "Edits your workflow, not your photos. You're the artist." },
-  { name: "EventKIN", industry: "Events & Planning", emoji: "🎪", desc: "Coordinates vendors so you can pretend it was effortless" },
-  { name: "InsureKIN", industry: "Insurance", emoji: "🛡️", desc: "Makes insurance almost interesting. Almost." },
-  { name: "AccountKIN", industry: "Accounting & Tax", emoji: "📊", desc: "Finds deductions your accountant missed. Awkward." },
-  { name: "HRKIN", industry: "Human Resources", emoji: "👥", desc: "Screens resumes so you don't read 'proficient in Word' 400 times" },
-  { name: "LogiKIN", industry: "Logistics", emoji: "📦", desc: "Gets your stuff from A to B without the existential crisis" },
-  { name: "GreenKIN", industry: "Sustainability", emoji: "🌱", desc: "Saves the planet AND your bottom line. Multitasker." },
-];
-
-let selectedKin = null;
-
-function renderKins(filter = '') {
-  const grid = document.getElementById('kinGrid');
-  const filtered = KINS.filter(k =>
-    k.name.toLowerCase().includes(filter) ||
-    k.industry.toLowerCase().includes(filter) ||
-    k.desc.toLowerCase().includes(filter)
-  );
-  grid.innerHTML = filtered.map(k => `
-    <div class="kin-card ${selectedKin === k.name ? 'selected' : ''}" onclick="selectKin('${k.name}')">
-      <div class="kin-card-inner">
-        <span class="kin-emoji">${k.emoji}</span>
-        <div class="kin-name">${k.name}</div>
-        <div class="kin-industry">${k.industry}</div>
-        <div class="kin-desc">${k.desc}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function selectKin(name) {
-  selectedKin = selectedKin === name ? null : name;
-  renderKins(document.getElementById('kinSearch').value.toLowerCase());
-}
-
-document.getElementById('kinSearch').addEventListener('input', e => {
-  renderKins(e.target.value.toLowerCase());
-});
-
-// CTA buttons
-document.querySelectorAll('.price-cta').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    const tier = btn.dataset.tier;
-    const kin = selectedKin || '[Choose a KIN above]';
-    const subject = encodeURIComponent(`KIN ${tier.toUpperCase()} — ${kin}`);
-    const body = encodeURIComponent(`I want to get my ${kin}!\n\nTier: ${tier}\nIndustry: ${kin}\n\n---\nKIN by KR8TIV AI`);
-    window.location.href = `mailto:lucidbloks@gmail.com?subject=${subject}&body=${body}`;
-  });
-});
-
-document.getElementById('ctaBtn').addEventListener('click', e => {
-  e.preventDefault();
-  const kin = selectedKin || '[Choose a KIN above]';
-  const subject = encodeURIComponent(`Free KIN — ${kin}`);
-  const body = encodeURIComponent(`I want my free ${kin}!\n\n---\nKIN by KR8TIV AI`);
-  window.location.href = `mailto:lucidbloks@gmail.com?subject=${subject}&body=${body}`;
-});
-
-// Init
-renderKins();
-</script>
+        updateCursor();
+        
+        // Cursor hover effects
+        document.querySelectorAll('a, button, .kin-card, .faq-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+        
+        // Hide cursor on touch devices
+        if ('ontouchstart' in window) {
+            cursor.style.display = 'none';
+        }
+        
+        // Three.js particle system
+        const canvas = document.getElementById('particleCanvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        const particleCount = 600;
+        const positions = new Float32Array(particleCount * 3);
+        const velocities = [];
+        
+        for (let i = 0; i < particleCount; i++) {
+            const radius = Math.random() * 15 + 5;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.random() * Math.PI;
+            
+            positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+            positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+            positions[i * 3 + 2] = radius * Math.cos(phi);
+            
+            velocities.push({
+                x: (Math.random() - 0.5) * 0.02,
+                y: (Math.random() - 0.5) * 0.02,
+                z: (Math.random() - 0.5) * 0.02
+            });
+        }
+        
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        const material = new THREE.PointsMaterial({
+            size: 1.5,
+            transparent: true,
+            opacity: 0.6,
+            color: 0x9945FF,
+            blending: THREE.AdditiveBlending
+        });
+        
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+        
+        camera.position.z = 30;
+        
+        let mouseXNorm = 0, mouseYNorm = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseXNorm = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseYNorm = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        let time = 0;
+        function animateParticles() {
+            time += 0.005;
+            const positions = particles.geometry.attributes.position.array;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                
+                // Breathing effect
+                const breathScale = 0.98 + Math.sin(time * 2) * 0.02;
+                
+                // Rotation
+                positions[i3] += velocities[i].x;
+                positions[i3 + 1] += velocities[i].y;
+                positions[i3 + 2] += velocities[i].z;
+                
+                // Mouse repulsion
+                const dx = positions[i3] / 5 - mouseXNorm * 15;
+                const dy = positions[i3 + 1] / 5 - mouseYNorm * 15;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 3) {
+                    const force = (3 - dist) / 3;
+                    positions[i3] += dx * force * 0.1;
+                    positions[i3 + 1] += dy * force * 0.1;
+                }
+                
+                // Apply breathing
+                positions[i3] *= breathScale;
+                positions[i3 + 1] *= breathScale;
+                positions[i3 + 2] *= breathScale;
+            }
+            
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // GSAP + Lenis setup
+        gsap.registerPlugin(ScrollTrigger);
+        
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+        
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+        
+        // Loader animation
+        const loader = document.getElementById('loader');
+        const counter = loader.querySelector('.counter');
+        
+        let count = 0;
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 15) + 5;
+            if (count >= 100) {
+                count = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    gsap.to(loader, {
+                        y: '-100%',
+                        duration: 1,
+                        ease: 'power3.inOut',
+                        onComplete: () => {
+                            loader.style.display = 'none';
+                            animateHero();
+                        }
+                    });
+                }, 300);
+            }
+            counter.textContent = count;
+        }, 50);
+        
+        function animateHero() {
+            const heroElements = [
+                '#hero .badge',
+                '#hero h1',
+                '#hero .subtitle',
+                '#hero .subtext',
+                '#hero .buttons',
+                '#hero .note'
+            ];
+            
+            gsap.from(heroElements, {
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: 'power3.out'
+            });
+        }
+        
+        // Nav blur on scroll
+        const nav = document.querySelector('nav');
+        ScrollTrigger.create({
+            start: 100,
+            onUpdate: (self) => {
+                if (self.scroll() > 100) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }
+        });
+        
+        // Fade particles on scroll
+        gsap.to(particles.material, {
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '#hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+        
+        // Section animations
+        gsap.utils.toArray('section').forEach(section => {
+            gsap.from(section.querySelector('.label'), {
+                opacity: 0,
+                y: 30,
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%'
+                }
+            });
+            
+            gsap.from(section.querySelector('.section-title'), {
+                opacity: 0,
+                y: 40,
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%'
+                },
+                delay: 0.1
+            });
+        });
+        
+        // Steps animation
+        gsap.from('.step', {
+            opacity: 0,
+            y: 50,
+            stagger: 0.15,
+            scrollTrigger: {
+                trigger: '#how-it-works',
+                start: 'top 60%'
+            }
+        });
+        
+        // KIN cards animation
+        gsap.from('.kin-card', {
+            opacity: 0,
+            y: 30,
+            stagger: 0.04,
+            scrollTrigger: {
+                trigger: '#kin-types',
+                start: 'top 60%'
+            }
+        });
+        
+        // Pricing cards animation
+        gsap.from('.pricing-card', {
+            opacity: 0,
+            scale: 0.95,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '#pricing',
+                start: 'top 60%'
+            }
+        });
+        
+        // Evolution timeline animation
+        gsap.from('.stage', {
+            opacity: 0,
+            x: -30,
+            stagger: 0.15,
+            scrollTrigger: {
+                trigger: '#evolution',
+                start: 'top 60%'
+            }
+        });
+        
+        // FAQ animation
+        gsap.from('.faq-item', {
+            opacity: 0,
+            y: 20,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '#faq',
+                start: 'top 60%'
+            }
+        });
+        
+        // Smooth anchor scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    lenis.scrollTo(target, { offset: -72 });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
