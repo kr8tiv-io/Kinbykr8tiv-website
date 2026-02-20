@@ -104,6 +104,19 @@
         footer { border-top: 1px solid var(--border); padding: 4rem; text-align: center; background: var(--surface); }
         footer a { color: var(--text-muted); text-decoration: none; margin: 0 1rem; transition: color 0.3s; cursor: none; }
         footer a:hover { color: var(--cyan); }
+        /* Problem-Solution Section */
+        .problem-section { padding: 0; overflow: hidden; }
+        .ps-slide { min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 4rem; position: relative; }
+        .ps-slide:first-child { padding-top: 10vh; }
+        .ps-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--magenta); margin-bottom: 1.5rem; display: block; }
+        .ps-label.solution { color: var(--gold); }
+        .ps-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.05; letter-spacing: -0.03em; max-width: 1000px; }
+        .ps-text.muted { color: var(--text-muted); }
+        .ps-text em { font-style: normal; color: var(--cyan); }
+        .ps-text.tension { color: var(--magenta); text-align: center; }
+        .ps-text.gold { color: var(--gold); text-align: center; }
+        .ps-divider { width: 80px; height: 2px; background: var(--border); margin: 0 auto; }
+        .ps-subtext { font-size: 1.3rem; color: var(--text-muted); max-width: 600px; margin-top: 1.5rem; text-align: center; }
         /* Logo Marquee */
         .trust-bar { padding: 2.5rem 0; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); overflow: hidden; background: var(--bg); }
         .trust-label { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3em; color: var(--text-muted); margin-bottom: 1.5rem; opacity: 0.5; }
@@ -188,6 +201,40 @@
             <div class="marquee-item"><span style="font-weight:800; font-style:italic;">Grok</span></div>
         </div>
     </div>
+
+    <section class="problem-section">
+        <div class="ps-slide" style="justify-content:flex-start;">
+            <div class="ps-block" data-ps="left">
+                <span class="ps-label">THE PROBLEM</span>
+                <h2 class="ps-text">AI is moving<br><em>insanely</em> fast.</h2>
+            </div>
+        </div>
+        <div class="ps-slide" style="justify-content:flex-end;">
+            <div class="ps-block" data-ps="right">
+                <h2 class="ps-text muted">Chatbots are already<br>obsolete.</h2>
+            </div>
+        </div>
+        <div class="ps-slide" style="justify-content:flex-start;">
+            <div class="ps-block" data-ps="left">
+                <h2 class="ps-text">AI is running entire businesses.<br>Building empires.<br><em>While people sleep.</em></h2>
+            </div>
+        </div>
+        <div class="ps-slide" style="justify-content:center; flex-direction:column; text-align:center;">
+            <div class="ps-block" data-ps="scale">
+                <h2 class="ps-text tension">It's too much.<br>Too fast.<br>You don't want to miss out.</h2>
+            </div>
+        </div>
+        <div class="ps-slide" style="min-height:50vh; justify-content:center;">
+            <div class="ps-divider" data-ps="fade"></div>
+        </div>
+        <div class="ps-slide" style="justify-content:center; flex-direction:column; text-align:center;">
+            <div class="ps-block" data-ps="solution">
+                <span class="ps-label solution">THE SOLUTION</span>
+                <h2 class="ps-text gold">We build you a friend<br>who handles everything.</h2>
+                <p class="ps-subtext">No servers. No API keys. No technical knowledge.<br>Just a companion who knows you — and works for you.</p>
+            </div>
+        </div>
+    </section>
 
     <section id="capabilities" style="background: var(--surface);">
         <h2 class="section-header gs-reveal">What Your KIN Actually Does</h2>
@@ -465,6 +512,36 @@
                 gsap.from(cards, {
                     scrollTrigger: { trigger: grid, start: "top 88%" },
                     y: 30, duration: 0.5, stagger: 0.1, ease: "power2.out"
+                });
+            }
+        });
+        // Problem-Solution scroll-driven animations
+        document.querySelectorAll('[data-ps]').forEach(el => {
+            const type = el.getAttribute('data-ps');
+            if (type === 'left') {
+                gsap.from(el, {
+                    scrollTrigger: { trigger: el, start: "top 85%", end: "top 40%", scrub: 1 },
+                    x: -120, opacity: 0, duration: 1
+                });
+            } else if (type === 'right') {
+                gsap.from(el, {
+                    scrollTrigger: { trigger: el, start: "top 85%", end: "top 40%", scrub: 1 },
+                    x: 120, opacity: 0, duration: 1
+                });
+            } else if (type === 'scale') {
+                gsap.from(el, {
+                    scrollTrigger: { trigger: el, start: "top 85%", end: "top 35%", scrub: 1 },
+                    scale: 0.6, opacity: 0, duration: 1
+                });
+            } else if (type === 'fade') {
+                gsap.from(el, {
+                    scrollTrigger: { trigger: el, start: "top 70%", end: "top 50%", scrub: 1 },
+                    scaleX: 0, opacity: 0, duration: 1
+                });
+            } else if (type === 'solution') {
+                gsap.from(el, {
+                    scrollTrigger: { trigger: el, start: "top 80%", end: "top 30%", scrub: 1.5 },
+                    y: 80, opacity: 0, scale: 0.9, duration: 1
                 });
             }
         });
