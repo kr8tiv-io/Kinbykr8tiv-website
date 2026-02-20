@@ -51,9 +51,7 @@
         .mint-card-video .fade { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, rgba(10,10,15,1)); }
         .mint-card-body { padding: 0 2.5rem; }
         .tier-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; }
-        .tier-price { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 3.5rem; letter-spacing: -0.04em; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-bottom: 0.3rem; }
-        /* Fallback for browsers that don't support background-clip text */
-        @supports not (-webkit-background-clip: text) { .tier-price { color: #fff; } }
+        .tier-price { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 3.5rem; letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.3rem; color: #fff; }
         .tier-sol { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); margin-bottom: 2.5rem; }
         .tier-features { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
         .tier-feature { display: flex; align-items: flex-start; gap: 0.75rem; }
@@ -193,7 +191,7 @@
                 </div>
                 <div class="mint-card-body">
                     <p class="tier-label" style="color:var(--gold);">Egg Tier</p>
-                    <div class="tier-price" style="background:linear-gradient(135deg, var(--gold), #fff);">2.5</div>
+                    <div class="tier-price" style="color:var(--gold);">2.5</div>
                     <p class="tier-sol">SOL</p>
                     <div class="tier-features">
                         <div class="tier-feature"><span style="color:var(--gold);">✦</span><span>Genesis KIN Avatar</span></div>
@@ -215,7 +213,7 @@
                 </div>
                 <div class="mint-card-body">
                     <p class="tier-label" style="color:var(--cyan);">Hatchling Tier</p>
-                    <div class="tier-price" style="background:linear-gradient(135deg, var(--cyan), #fff);">5.3</div>
+                    <div class="tier-price" style="color:var(--cyan);">5.3</div>
                     <p class="tier-sol">SOL</p>
                     <div class="tier-features">
                         <div class="tier-feature"><span style="color:var(--cyan);">✦</span><span>Genesis KIN Avatar</span></div>
@@ -236,7 +234,7 @@
                 </div>
                 <div class="mint-card-body">
                     <p class="tier-label" style="color:var(--magenta);">Elder Tier</p>
-                    <div class="tier-price" style="background:linear-gradient(135deg, var(--magenta), #fff);">8.3</div>
+                    <div class="tier-price" style="color:var(--magenta);">8.3</div>
                     <p class="tier-sol">SOL</p>
                     <div class="tier-features">
                         <div class="tier-feature"><span style="color:var(--magenta);">✦</span><span>Genesis KIN Avatar</span></div>
