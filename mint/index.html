@@ -504,8 +504,23 @@
                 transaction.feePayer = connectedWallet;
                 transaction.lastValidBlockHeight = lastValidBlockHeight;
 
-                // Sign & send
-                const { signature } = await provider.signAndSendTransaction(transaction);
+                // Sign & send — use signTransaction + sendRawTransaction for wider Phantom compatibility
+                let signature;
+                try {
+                    const signed = await provider.signTransaction(transaction);
+                    signature = await connection.sendRawTransaction(signed.serialize(), {
+                        skipPreflight: false,
+                        preflightCommitment: 'confirmed'
+                    });
+                } catch (signErr) {
+                    // Fallback to signAndSendTransaction if signTransaction isn't available
+                    if (signErr.message && signErr.message.includes('signTransaction')) {
+                        const result = await provider.signAndSendTransaction(transaction);
+                        signature = result.signature;
+                    } else {
+                        throw signErr;
+                    }
+                }
 
                 status.textContent = 'Transaction sent! Confirming on Solana...';
                 status.style.color = 'var(--cyan)';
@@ -569,37 +584,15 @@
                 provider.on('accountChanged', (pk) => { connectedWallet = pk || null; updateUI(); });
             }
 
-            // Lazy-load videos: only play when visible
+            // Play videos when they scroll into view
             const allVideos = document.querySelectorAll('video');
-            allVideos.forEach(v => {
-                if (v !== allVideos[0]) {
-                    v.pause();
-                    v.preload = 'none';
-                    const source = v.querySelector('source');
-                    if (source && source.src) {
-                        v.dataset.lazySrc = source.src;
-                        source.removeAttribute('src');
-                        v.load();
-                    }
-                }
-            });
-
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    const video = entry.target;
                     if (entry.isIntersecting) {
-                        const source = video.querySelector('source');
-                        if (video.dataset.lazySrc && source) {
-                            source.src = video.dataset.lazySrc;
-                            delete video.dataset.lazySrc;
-                            video.load();
-                        }
-                        video.play().catch(() => {});
-                    } else {
-                        video.pause();
+                        entry.target.play().catch(() => {});
                     }
                 });
-            }, { rootMargin: '200px' });
+            }, { rootMargin: '300px' });
 
             allVideos.forEach(v => videoObserver.observe(v));
         });
