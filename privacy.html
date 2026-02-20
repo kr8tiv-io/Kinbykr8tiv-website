@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — KIN by KR8TIV AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000; --surface: #0a0a0a; --border: rgba(255,255,255,0.08);
+            --cyan: #00e5ff; --gold: #ffb800; --magenta: #ff2d95;
+            --text: #e0e0e0; --text-muted: rgba(255,255,255,0.5);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; line-height:1.8; }
+        a { color:var(--cyan); text-decoration:none; transition:opacity 0.3s; }
+        a:hover { opacity:0.7; }
+
+        .nav-bar {
+            position:fixed; top:0; left:0; right:0; z-index:100;
+            padding:1.5rem 3rem; display:flex; align-items:center; justify-content:space-between;
+            background:rgba(0,0,0,0.8); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border-bottom:1px solid var(--border);
+        }
+        .nav-bar .logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:1.5rem; color:#fff; text-decoration:none; letter-spacing:-0.03em; }
+        .nav-bar .logo span { color:var(--cyan); }
+        .nav-bar .back { font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.5); }
+        .nav-bar .back:hover { color:#fff; }
+
+        .container { max-width:900px; margin:0 auto; padding:8rem 2rem 6rem; }
+
+        h1 {
+            font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(2rem,5vw,3.5rem);
+            color:#fff; letter-spacing:-0.03em; margin-bottom:0.5rem;
+        }
+        .subtitle {
+            font-family:'JetBrains Mono',monospace; font-size:0.8rem; text-transform:uppercase;
+            letter-spacing:0.15em; color:var(--text-muted); margin-bottom:1rem;
+        }
+        .effective { font-size:0.85rem; color:var(--text-muted); margin-bottom:3rem; }
+
+        .commitment {
+            background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.15);
+            border-radius:12px; padding:2rem; margin-bottom:3rem; line-height:1.8;
+        }
+        .commitment strong { color:var(--cyan); }
+        .commitment p { font-size:0.95rem; margin-bottom:0.5rem; }
+
+        .notice {
+            background:rgba(255,184,0,0.08); border:1px solid rgba(255,184,0,0.2);
+            border-radius:12px; padding:1.5rem 2rem; margin-bottom:3rem; line-height:1.7;
+        }
+        .notice strong { color:var(--gold); }
+        .notice p { font-size:0.9rem; }
+
+        h2 {
+            font-family:'Outfit',sans-serif; font-weight:800; font-size:1.6rem;
+            color:#fff; margin:3rem 0 1rem; letter-spacing:-0.02em;
+            padding-bottom:0.5rem; border-bottom:1px solid var(--border);
+        }
+        h2 span.num {
+            font-family:'JetBrains Mono',monospace; font-size:0.8rem;
+            color:var(--cyan); margin-right:0.5rem; font-weight:500;
+        }
+
+        h3 {
+            font-family:'Outfit',sans-serif; font-weight:700; font-size:1.1rem;
+            color:var(--gold); margin:1.5rem 0 0.5rem;
+        }
+
+        p, li { font-size:0.95rem; color:var(--text); margin-bottom:1rem; }
+        ul { padding-left:1.5rem; margin-bottom:1.5rem; }
+        li { margin-bottom:0.5rem; }
+        li::marker { color:var(--cyan); }
+
+        .data-table { overflow-x:auto; margin:2rem 0; }
+        table {
+            width:100%; border-collapse:collapse; font-size:0.85rem;
+            background:rgba(255,255,255,0.02); border-radius:12px; overflow:hidden;
+        }
+        th { background:rgba(0,229,255,0.08); color:var(--cyan); font-weight:600; text-align:left; padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; }
+        td { padding:0.8rem 1rem; border-top:1px solid var(--border); vertical-align:top; color:var(--text); line-height:1.5; }
+        tr:hover td { background:rgba(255,255,255,0.02); }
+
+        .highlight {
+            background:rgba(255,255,255,0.03); border:1px solid var(--border);
+            border-radius:12px; padding:1.5rem 2rem; margin:1.5rem 0;
+        }
+
+        footer {
+            border-top:1px solid var(--border); padding:3rem 2rem; text-align:center;
+            background:var(--surface); margin-top:4rem;
+        }
+        footer p { font-size:0.8rem; color:var(--text-muted); }
+        footer a { color:var(--text-muted); margin:0 0.5rem; }
+        footer a:hover { color:var(--cyan); }
+
+        @media (max-width:768px) {
+            .nav-bar { padding:1rem 1.5rem; }
+            .container { padding:6rem 1.5rem 4rem; }
+            table { font-size:0.75rem; }
+            th, td { padding:0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="logo"><span>KIN</span> Privacy</a>
+    <a href="index.html" class="back">← Back to KIN</a>
+</div>
+
+<div class="container">
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">KR8TIV AI — KIN Service</p>
+    <p class="effective">Effective Date: February 20, 2026 &nbsp;|&nbsp; Last Updated: February 20, 2026</p>
+
+    <div class="commitment">
+        <strong>🛡️ Our Core Promise</strong>
+        <p>Your KIN is <strong>yours</strong>. We don't train public AI models on your data. We don't sell your information. We don't share it with advertisers. Every KIN instance is siloed — your conversations, files, and personal data are isolated from all other users and from our own systems.</p>
+        <p>We built KIN to be the most personal AI companion possible. That only works if you can trust us with your data. We take that seriously.</p>
+    </div>
+
+    <!-- Section 1 -->
+    <h2><span class="num">01</span> Who We Are</h2>
+    <p>This Privacy Policy applies to Aurora Ventures dba KR8TIV AI ("KR8TIV," "we," "us," or "our") and covers all data collected through the KIN service, including our website, AI companions, concierge features, VPS hosting, Genesis NFT mint, and subscription management (collectively, the "Service").</p>
+    <p>KR8TIV AI is not currently a registered business entity. We are operating as a sole proprietorship and intend to formally register in the near future. This does not affect our commitment to protecting your privacy.</p>
+    <p><strong>Contact:</strong> <a href="mailto:lucidbloks@gmail.com">lucidbloks@gmail.com</a></p>
+
+    <!-- Section 2 -->
+    <h2><span class="num">02</span> Information We Collect</h2>
+
+    <div class="data-table">
+        <table>
+            <thead>
+                <tr><th>Category</th><th>What We Collect</th><th>Why</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Account Information</strong></td>
+                    <td>Name, email, Solana wallet address, contact preferences</td>
+                    <td>To create your account, deliver your KIN, and communicate with you</td>
+                </tr>
+                <tr>
+                    <td><strong>Payment Data</strong></td>
+                    <td>Solana transaction hashes, subscription billing records</td>
+                    <td>To process payments and maintain billing history. We do not store private keys.</td>
+                </tr>
+                <tr>
+                    <td><strong>KIN Interaction Data</strong></td>
+                    <td>Conversations, files, preferences, automations, memory data</td>
+                    <td>To operate your KIN companion. Stored in your siloed instance only.</td>
+                </tr>
+                <tr>
+                    <td><strong>Concierge Data</strong></td>
+                    <td>Data you authorize us to access (email, calendar, files, etc.)</td>
+                    <td>To provide concierge setup, customization, and support — only with your explicit permission</td>
+                </tr>
+                <tr>
+                    <td><strong>Technical Data</strong></td>
+                    <td>IP address, browser type, device info, usage logs</td>
+                    <td>Security, debugging, and service improvement</td>
+                </tr>
+                <tr>
+                    <td><strong>Website Analytics</strong></td>
+                    <td>Page views, scroll depth, referral source</td>
+                    <td>To understand how people find and use our site</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section 3 -->
+    <h2><span class="num">03</span> How We Use Your Information</h2>
+    <ul>
+        <li><strong>To operate your KIN</strong> — processing conversations, running automations, maintaining memory and personality</li>
+        <li><strong>To provide concierge service</strong> — onboarding, setup, optimization, and ongoing support</li>
+        <li><strong>To process payments</strong> — subscription billing, NFT mint verification, refunds</li>
+        <li><strong>To communicate with you</strong> — service updates, support responses, security alerts</li>
+        <li><strong>To improve the Service</strong> — debugging, performance optimization, feature development (using aggregated, anonymized data only)</li>
+        <li><strong>To protect against abuse</strong> — fraud prevention, security monitoring, Terms enforcement</li>
+    </ul>
+
+    <!-- Section 4 -->
+    <h2><span class="num">04</span> What We Will NEVER Do</h2>
+    <div class="highlight">
+        <ul>
+            <li>❌ <strong>Train public AI models</strong> on your personal data, conversations, or files</li>
+            <li>❌ <strong>Sell your information</strong> to third parties, advertisers, or data brokers</li>
+            <li>❌ <strong>Share your data</strong> with other KIN users — every instance is fully siloed</li>
+            <li>❌ <strong>Access your KIN without permission</strong> — we only look under the hood when you ask us to for support</li>
+            <li>❌ <strong>Use your data for advertising</strong> or behavioral targeting</li>
+            <li>❌ <strong>Store wallet private keys</strong> — we never have access to your Solana wallet keys</li>
+        </ul>
+    </div>
+
+    <!-- Section 5 -->
+    <h2><span class="num">05</span> Data Sharing and Third Parties</h2>
+    <p>Your KIN relies on third-party AI providers to function. When your KIN processes a request, it may send data to:</p>
+
+    <div class="data-table">
+        <table>
+            <thead>
+                <tr><th>Provider</th><th>What They Receive</th><th>Their Privacy Commitment</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Anthropic (Claude)</strong></td>
+                    <td>Conversation text for processing</td>
+                    <td>Does not train on API data</td>
+                </tr>
+                <tr>
+                    <td><strong>Google (Gemini)</strong></td>
+                    <td>Conversation text for processing</td>
+                    <td>Paid API data not used for training</td>
+                </tr>
+                <tr>
+                    <td><strong>xAI (Grok)</strong></td>
+                    <td>Conversation text for processing</td>
+                    <td>API data subject to xAI privacy policy</td>
+                </tr>
+                <tr>
+                    <td><strong>OpenAI</strong></td>
+                    <td>Conversation text for processing</td>
+                    <td>API data not used for training (by default)</td>
+                </tr>
+                <tr>
+                    <td><strong>Supermemory</strong></td>
+                    <td>Memory and knowledge data</td>
+                    <td>Encrypted, user-owned containers</td>
+                </tr>
+                <tr>
+                    <td><strong>VPS Hosting Providers</strong></td>
+                    <td>Your KIN runs on hosted infrastructure</td>
+                    <td>Data encrypted at rest and in transit</td>
+                </tr>
+                <tr>
+                    <td><strong>Solana Network</strong></td>
+                    <td>Transaction data (public blockchain)</td>
+                    <td>Public by design — wallet addresses and transactions are visible on-chain</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p>We do not sell data to any of these providers. Data is transmitted solely for the purpose of operating your KIN. We select providers who commit to not training on API data where possible.</p>
+    <p>We may also share information when required by law, to protect our rights, or to prevent fraud or security threats.</p>
+
+    <!-- Section 6 -->
+    <h2><span class="num">06</span> Data Security</h2>
+    <p>We implement reasonable security measures to protect your data, including:</p>
+    <ul>
+        <li>Encrypted data storage and transmission (TLS/SSL)</li>
+        <li>Siloed KIN instances — your data is isolated from other users</li>
+        <li>Access controls — only authorized personnel can access infrastructure</li>
+        <li>Regular security monitoring and incident response</li>
+        <li>Encrypted credential vaults for sensitive keys and tokens</li>
+    </ul>
+    <p><strong>However</strong>, no method of electronic storage or transmission is 100% secure. We cannot guarantee absolute security. We do our best to protect your data, but you acknowledge the inherent risks of using cloud-based AI services.</p>
+
+    <!-- Section 7 -->
+    <h2><span class="num">07</span> Data Retention</h2>
+    <ul>
+        <li><strong>Active accounts:</strong> Your KIN data is retained for as long as your account is active and your subscription is current.</li>
+        <li><strong>After cancellation:</strong> We retain account data for 90 days to allow for reactivation. After that, your KIN instance and associated data are permanently deleted.</li>
+        <li><strong>NFT data:</strong> On-chain NFT data is permanent (Solana blockchain). Off-chain metadata may be updated or removed.</li>
+        <li><strong>Billing records:</strong> Retained for 7 years for tax and legal compliance.</li>
+        <li><strong>You can request deletion</strong> at any time by contacting us. We will delete your data within 30 days, except where retention is required by law.</li>
+    </ul>
+
+    <!-- Section 8 -->
+    <h2><span class="num">08</span> Your Rights</h2>
+    <p>Depending on your jurisdiction, you may have the right to:</p>
+    <ul>
+        <li><strong>Access</strong> — request a copy of the personal data we hold about you</li>
+        <li><strong>Correction</strong> — ask us to correct inaccurate information</li>
+        <li><strong>Deletion</strong> — request that we delete your personal data</li>
+        <li><strong>Portability</strong> — receive your data in a structured, machine-readable format</li>
+        <li><strong>Restriction</strong> — ask us to limit how we use your data</li>
+        <li><strong>Objection</strong> — object to certain processing activities</li>
+    </ul>
+    <p>To exercise any of these rights, contact us at <a href="mailto:lucidbloks@gmail.com">lucidbloks@gmail.com</a>. We will respond within 30 days.</p>
+
+    <!-- Section 9 -->
+    <h2><span class="num">09</span> Children's Privacy</h2>
+    <p>The Service is not directed to children under 18. We do not knowingly collect personal information from minors. If we learn that we have collected data from a child under 18, we will delete it promptly. If you believe a child has provided us with personal data, please contact us immediately.</p>
+    <p><strong>Note:</strong> KIN companions may be gifted to family members including younger users, but account holders must be 18+ and are responsible for managing access and supervising use by minors.</p>
+
+    <!-- Section 10 -->
+    <h2><span class="num">10</span> Cookies and Tracking</h2>
+    <p>Our website may use minimal, functional cookies for:</p>
+    <ul>
+        <li>Session management (keeping you logged in)</li>
+        <li>Basic analytics (page views, anonymous usage patterns)</li>
+    </ul>
+    <p>We do not use advertising cookies, third-party tracking pixels, or behavioral targeting. We do not share browsing data with ad networks.</p>
+
+    <!-- Section 11 -->
+    <h2><span class="num">11</span> International Data</h2>
+    <p>KR8TIV AI operates from Costa Rica with infrastructure hosted globally. Your data may be processed in different jurisdictions. By using the Service, you consent to the transfer and processing of your data in jurisdictions that may have different data protection laws than your own.</p>
+    <p>We take reasonable steps to ensure your data receives adequate protection regardless of where it is processed.</p>
+
+    <!-- Section 12 -->
+    <h2><span class="num">12</span> Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. We will notify you of material changes via email or website posting at least 30 days before they take effect. Continued use of the Service after changes constitutes acceptance.</p>
+
+    <!-- Section 13 -->
+    <h2><span class="num">13</span> Limitations of Liability</h2>
+    <p>While we are committed to protecting your privacy and employ reasonable security measures, <strong>we are not liable for</strong>:</p>
+    <ul>
+        <li>Privacy breaches caused by third-party providers (API services, VPS hosts, Solana network)</li>
+        <li>Unauthorized access resulting from your failure to secure your own credentials</li>
+        <li>Data exposure caused by actions you authorized your KIN to perform</li>
+        <li>Security incidents beyond our reasonable control (zero-day exploits, state-level attacks)</li>
+        <li>Data that is publicly available on the Solana blockchain by design (wallet addresses, transaction history)</li>
+    </ul>
+    <p>Our total liability for privacy-related claims is subject to the limitations set forth in our <a href="terms.html">Terms of Service</a>.</p>
+
+    <!-- Section 14 -->
+    <h2><span class="num">14</span> Contact Us</h2>
+    <p>If you have questions about this Privacy Policy, want to exercise your data rights, or have a privacy concern:</p>
+    <div class="highlight">
+        <p><strong>Email:</strong> <a href="mailto:lucidbloks@gmail.com">lucidbloks@gmail.com</a></p>
+        <p><strong>Telegram:</strong> <a href="https://t.me/kr8tivai" target="_blank" rel="noopener">t.me/kr8tivai</a></p>
+        <p><strong>Website:</strong> <a href="https://kr8tiv.ai" target="_blank" rel="noopener">kr8tiv.ai</a></p>
+    </div>
+
+    <div class="notice" style="margin-top:3rem;">
+        <strong>📋 Summary</strong>
+        <p style="margin-top:0.5rem;">We collect only what we need. We don't sell it. We don't train on it. Your KIN is siloed. You can delete your data anytime. We use industry-standard security. We're honest about the limitations. That's the deal.</p>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <a href="index.html">KIN Home</a>
+        <a href="https://kr8tiv.ai" target="_blank" rel="noopener">KR8TIV AI</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="https://t.me/kr8tivai" target="_blank" rel="noopener">Telegram</a>
+    </p>
+    <p style="margin-top:1.5rem;">© 2026 Aurora Ventures dba KR8TIV AI. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
