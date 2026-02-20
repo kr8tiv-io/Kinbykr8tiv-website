@@ -353,22 +353,18 @@
     <!-- Toast notification -->
     <div id="toast" class="toast"></div>
 
-    <!-- Solana Web3.js -->
-    <script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
+    <!-- Metaplex Candy Machine Mint Bundle -->
+    <script src="kin-mint.js"></script>
 
-    <!-- Wallet Connect & Mint Logic -->
+    <!-- Wallet Connect & Candy Machine Mint Logic -->
     <script>
     (function() {
         'use strict';
 
-        const TREASURY = '7BLHKsHRGjsTKQdZYaC3tRDeUChJ9E2XsMPpg2Tv23cf';
-        const SOLANA_RPC = 'https://madelena-tbtq8y-fast-mainnet.helius-rpc.com';
-        const LAMPORTS_PER_SOL = 1000000000;
-
         const TIERS = {
-            egg:       { name: 'Egg',       sol: 2.5, color: '#FFB800' },
-            hatchling: { name: 'Hatchling', sol: 5.3, color: '#00F0FF' },
-            elder:     { name: 'Elder',     sol: 8.3, color: '#FF00AA' }
+            egg:       { name: 'Egg',       sol: 2.5, color: '#FFB800', group: 'egg' },
+            hatchling: { name: 'Hatchling', sol: 5.3, color: '#00F0FF', group: 'hatch' },
+            elder:     { name: 'Elder',     sol: 8.3, color: '#FF00AA', group: 'elder' }
         };
 
         let connectedWallet = null;
@@ -483,58 +479,11 @@
                 btn.textContent = 'Confirming in wallet...';
                 btn.style.opacity = '0.6';
                 btn.style.pointerEvents = 'none';
-                status.textContent = 'Preparing ' + tierInfo.name + ' mint — ' + solAmount + ' SOL...';
+                status.textContent = 'Preparing ' + tierInfo.name + ' mint via Candy Machine...';
                 status.style.color = tierInfo.color;
 
-                // Build transaction
-                const connection = new solanaWeb3.Connection(SOLANA_RPC, 'confirmed');
-                const treasuryPubkey = new solanaWeb3.PublicKey(TREASURY);
-                const lamports = Math.round(solAmount * LAMPORTS_PER_SOL);
-
-                const transaction = new solanaWeb3.Transaction().add(
-                    solanaWeb3.SystemProgram.transfer({
-                        fromPubkey: connectedWallet,
-                        toPubkey: treasuryPubkey,
-                        lamports: lamports
-                    })
-                );
-
-                const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-                transaction.recentBlockhash = blockhash;
-                transaction.feePayer = connectedWallet;
-                transaction.lastValidBlockHeight = lastValidBlockHeight;
-
-                // Sign & send — use signTransaction + sendRawTransaction for wider Phantom compatibility
-                let signature;
-                try {
-                    const signed = await provider.signTransaction(transaction);
-                    signature = await connection.sendRawTransaction(signed.serialize(), {
-                        skipPreflight: false,
-                        preflightCommitment: 'confirmed'
-                    });
-                } catch (signErr) {
-                    // Fallback to signAndSendTransaction if signTransaction isn't available
-                    if (signErr.message && signErr.message.includes('signTransaction')) {
-                        const result = await provider.signAndSendTransaction(transaction);
-                        signature = result.signature;
-                    } else {
-                        throw signErr;
-                    }
-                }
-
-                status.textContent = 'Transaction sent! Confirming on Solana...';
-                status.style.color = 'var(--cyan)';
-                btn.textContent = 'Confirming...';
-
-                // Wait for confirmation
-                const confirmation = await connection.confirmTransaction(
-                    { signature, blockhash, lastValidBlockHeight },
-                    'confirmed'
-                );
-
-                if (confirmation.value.err) {
-                    throw new Error('Transaction failed on-chain');
-                }
+                // Use Metaplex Candy Machine to mint — this handles payment AND NFT delivery atomically
+                const result = await window.mintFromCandyMachine(tierInfo.group, provider);
 
                 // Success!
                 btn.textContent = '✓ Minted!';
@@ -543,9 +492,10 @@
                 btn.style.color = 'var(--cyan)';
                 btn.style.opacity = '1';
 
-                status.innerHTML = '✓ ' + tierInfo.name + ' mint confirmed! <a href="https://solscan.io/tx/' + signature + '" target="_blank" style="color:var(--cyan); text-decoration:underline;">View on Solscan →</a>';
+                var sigStr = Array.from(result.signature).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+                status.innerHTML = '✓ ' + tierInfo.name + ' KIN minted! Your NFT is in your wallet. <a href="https://solscan.io/tx/' + sigStr + '" target="_blank" style="color:var(--cyan); text-decoration:underline;">View on Solscan →</a>';
                 status.style.color = 'var(--cyan)';
-                showToast(tierInfo.name + ' Genesis KIN minted!', 'success');
+                showToast(tierInfo.name + ' Genesis KIN minted! NFT delivered to your wallet.', 'success');
 
             } catch (err) {
                 // Re-enable button
@@ -562,9 +512,9 @@
                 } else {
                     console.error('Mint error:', err);
                     var errMsg = err.message || String(err);
-                    if (errMsg.length > 120) errMsg = errMsg.substring(0, 120) + '...';
+                    if (errMsg.length > 150) errMsg = errMsg.substring(0, 150) + '...';
                     status.textContent = 'Error: ' + errMsg;
-                    showToast('Transaction failed', 'error');
+                    showToast('Mint failed — see error below', 'error');
                 }
                 status.style.color = 'var(--magenta)';
             }
