@@ -216,10 +216,12 @@
             .grid-genesis { grid-template-columns: 1fr !important; max-width: 400px; margin: 0 auto; }
 
             /* Problem-Solution section */
-            .ps-text { font-size: clamp(2rem, 7vw, 3.5rem) !important; line-height: 1.1 !important; }
-            .ps-slide { min-height: 40vh; padding: 2rem 1.5rem; }
+            .ps-text { font-size: clamp(1.8rem, 6vw, 3rem) !important; line-height: 1.15 !important; word-break: break-word; }
+            .ps-text.tension { font-size: clamp(1.6rem, 5.5vw, 2.5rem) !important; }
+            .ps-text.gold { font-size: clamp(1.6rem, 5.5vw, 2.5rem) !important; }
+            .ps-slide { min-height: 35vh; padding: 2rem 1.5rem; }
             .ps-slide:first-child { padding-top: 4vh; }
-            .ps-label { font-size: 0.75rem; letter-spacing: 0.2em; }
+            .ps-label { font-size: 0.65rem; letter-spacing: 0.15em; }
             .ps-subtext { font-size: 1rem; }
 
             /* How It Works steps — stack node above content */
@@ -263,12 +265,14 @@
         /* ===== MOBILE ONLY (≤480px) ===== */
         @media (max-width: 480px) {
             section { padding: 5vh 1.2rem; }
-            html, body { overflow-x: hidden; }
+            .problem-section { overflow: hidden !important; }
 
-            /* Nav — compact logo, hide social icons */
+            /* Nav — compact logo, hide social icons + kr8tiv logo */
             nav .logo span[style*="font-size:clamp(2rem"] { font-size: 1.8rem !important; }
             nav .logo div[style*="gap:0.4rem"] { display: none !important; }
-            nav .logo div[style*="gap:0.6rem"] > div { display: none !important; }
+            nav .logo div[style*="gap:0.6rem"] > div:last-child { display: none !important; }
+            nav .logo > a { display: none !important; }
+            nav .logo img[alt="KR8TIV"] { display: none !important; }
 
             /* Hero */
             .hero { min-height: 85vh; }
@@ -279,7 +283,8 @@
             .ps-label { font-size: 0.65rem; }
 
             /* Mighty scroll text */
-            .mighty-scroll * { font-size: clamp(3rem, 12vw, 6rem) !important; }
+            .mighty-word { font-size: clamp(2.5rem, 10vw, 5rem) !important; }
+            #mighty-scroll { height: 250vh !important; }
 
             /* Cards */
             .card { padding: 1.5rem; }
