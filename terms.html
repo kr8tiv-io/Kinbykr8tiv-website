@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — KIN by KR8TIV AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000; --surface: #0a0a0a; --border: rgba(255,255,255,0.08);
+            --cyan: #00e5ff; --gold: #ffb800; --magenta: #ff2d95;
+            --text: #e0e0e0; --text-muted: rgba(255,255,255,0.5);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; line-height:1.8; }
+        a { color:var(--cyan); text-decoration:none; transition:opacity 0.3s; }
+        a:hover { opacity:0.7; }
+
+        .nav-bar {
+            position:fixed; top:0; left:0; right:0; z-index:100;
+            padding:1.5rem 3rem; display:flex; align-items:center; justify-content:space-between;
+            background:rgba(0,0,0,0.8); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border-bottom:1px solid var(--border);
+        }
+        .nav-bar .logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:1.5rem; color:#fff; text-decoration:none; letter-spacing:-0.03em; }
+        .nav-bar .logo span { color:var(--gold); }
+        .nav-bar .back { font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.5); }
+        .nav-bar .back:hover { color:#fff; }
+
+        .container {
+            max-width:900px; margin:0 auto; padding:8rem 2rem 6rem;
+        }
+
+        h1 {
+            font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(2rem,5vw,3.5rem);
+            color:#fff; letter-spacing:-0.03em; margin-bottom:0.5rem;
+        }
+        .subtitle {
+            font-family:'JetBrains Mono',monospace; font-size:0.8rem; text-transform:uppercase;
+            letter-spacing:0.15em; color:var(--text-muted); margin-bottom:1rem;
+        }
+        .effective { font-size:0.85rem; color:var(--text-muted); margin-bottom:3rem; }
+
+        .notice {
+            background:rgba(255,184,0,0.08); border:1px solid rgba(255,184,0,0.2);
+            border-radius:12px; padding:1.5rem 2rem; margin-bottom:3rem; line-height:1.7;
+        }
+        .notice strong { color:var(--gold); }
+        .notice p { font-size:0.9rem; }
+
+        .disclaimer-box {
+            background:rgba(255,45,149,0.06); border:1px solid rgba(255,45,149,0.15);
+            border-radius:12px; padding:1.5rem 2rem; margin-bottom:3rem; line-height:1.7;
+        }
+        .disclaimer-box strong { color:var(--magenta); }
+        .disclaimer-box p { font-size:0.9rem; }
+
+        h2 {
+            font-family:'Outfit',sans-serif; font-weight:800; font-size:1.6rem;
+            color:#fff; margin:3rem 0 1rem; letter-spacing:-0.02em;
+            padding-bottom:0.5rem; border-bottom:1px solid var(--border);
+        }
+        h2 span.num {
+            font-family:'JetBrains Mono',monospace; font-size:0.8rem;
+            color:var(--cyan); margin-right:0.5rem; font-weight:500;
+        }
+
+        p, li { font-size:0.95rem; color:var(--text); margin-bottom:1rem; }
+        ul { padding-left:1.5rem; margin-bottom:1.5rem; }
+        li { margin-bottom:0.5rem; }
+        li::marker { color:var(--cyan); }
+
+        .caps {
+            font-size:0.9rem; background:rgba(255,255,255,0.03); border:1px solid var(--border);
+            border-radius:12px; padding:1.5rem 2rem; margin:1.5rem 0; line-height:1.8;
+            text-transform:uppercase; font-weight:600; letter-spacing:0.01em;
+        }
+
+        .table-wrap { overflow-x:auto; margin:2rem 0; }
+        table {
+            width:100%; border-collapse:collapse; font-size:0.8rem;
+            background:rgba(255,255,255,0.02); border-radius:12px; overflow:hidden;
+        }
+        th { background:rgba(0,229,255,0.08); color:var(--cyan); font-weight:600; text-align:left; padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; }
+        td { padding:0.8rem 1rem; border-top:1px solid var(--border); vertical-align:top; color:var(--text); line-height:1.5; }
+        tr:hover td { background:rgba(255,255,255,0.02); }
+
+        footer {
+            border-top:1px solid var(--border); padding:3rem 2rem; text-align:center;
+            background:var(--surface); margin-top:4rem;
+        }
+        footer p { font-size:0.8rem; color:var(--text-muted); }
+        footer a { color:var(--text-muted); margin:0 0.5rem; }
+        footer a:hover { color:var(--cyan); }
+
+        @media (max-width:768px) {
+            .nav-bar { padding:1rem 1.5rem; }
+            .container { padding:6rem 1.5rem 4rem; }
+            table { font-size:0.7rem; }
+            th, td { padding:0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="logo"><span>KIN</span> Terms</a>
+    <a href="index.html" class="back">← Back to KIN</a>
+</div>
+
+<div class="container">
+    <h1>Terms of Service</h1>
+    <p class="subtitle">KR8TIV AI — KIN Service</p>
+    <p class="effective">Effective Date: February 20, 2026 &nbsp;|&nbsp; Last Updated: February 20, 2026</p>
+
+    <div class="notice">
+        <strong>⚠️ Business Registration Notice</strong>
+        <p>KR8TIV AI is not currently a registered business entity. We are operating as a sole proprietorship under the name Aurora Ventures dba KR8TIV AI. We intend to formally register the business in the near future as revenue allows. This does not affect the binding nature of these Terms — by using the Service, you agree to all terms herein regardless of our registration status.</p>
+    </div>
+
+    <div class="disclaimer-box">
+        <strong>⚠️ Not Legal Advice</strong>
+        <p>This Terms of Service is a professional template synthesized from verified industry standards as of February 2026. It is <strong>not legal advice</strong>. It has been modeled after terms from OpenAI, Anthropic, xAI, and other leading AI providers. We recommend consulting a qualified attorney for jurisdiction-specific guidance.</p>
+    </div>
+
+    <!-- Section 1 -->
+    <h2><span class="num">01</span> Agreement to Terms</h2>
+    <p>These Terms of Service ("Terms") constitute a legally binding agreement between you (the "User," "you," or "your") and Aurora Ventures dba KR8TIV AI and its affiliates ("KR8TIV," "we," "us," or "our"), governing your access to and use of the KIN service, including bespoke AI companions ("KIN"), concierge features, computer-control automation via OpenClaw infrastructure, VPS hosting, API integrations (Anthropic, Google Gemini, xAI Grok, OpenAI, etc.), Solana-based Genesis NFTs, and all related tools, websites, and applications (collectively, the "Service").</p>
+    <p>By accessing, minting, subscribing to, or using the Service in any way, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree, you must immediately cease all use of the Service.</p>
+
+    <!-- Section 2 -->
+    <h2><span class="num">02</span> Description of Service</h2>
+    <p>The Service provides managed AI companions (KIN) that can chat, automate tasks, control computers (with your explicit permission), manage calendars, emails, investments, and perform concierge functions. Genesis NFTs grant lifetime discounts and ecosystem rewards but do not alter these Terms.</p>
+    <p>We strive for reliability and privacy but make no guarantees. All KIN instances are siloed — we do not use your personal data to train public models or sell it to third parties.</p>
+
+    <!-- Section 3 -->
+    <h2><span class="num">03</span> User Eligibility and Accounts</h2>
+    <ul>
+        <li>You must be at least <strong>18 years old</strong> (or the age of majority in your jurisdiction) and capable of forming a binding contract.</li>
+        <li>You are responsible for all activity under your account and must keep credentials secure.</li>
+        <li>We may suspend or terminate accounts for violations or suspected risk at our sole discretion.</li>
+    </ul>
+
+    <!-- Section 4 -->
+    <h2><span class="num">04</span> Fees, Payments, and Billing</h2>
+    <ul>
+        <li>Subscriptions are billed monthly in advance.</li>
+        <li>Genesis mints are one-time Solana payments.</li>
+        <li>All fees are <strong>non-refundable</strong> except where required by applicable law or as explicitly stated (e.g., mint refund guarantee).</li>
+        <li>We may change prices with 30 days' notice.</li>
+        <li>Late payments may result in suspension of service.</li>
+    </ul>
+
+    <!-- Section 5 -->
+    <h2><span class="num">05</span> Intellectual Property</h2>
+    <p>We retain all rights to the Service, underlying models, OpenClaw infrastructure, and KIN personalities. You own your inputs and may use outputs for personal purposes, subject to these Terms. You grant us a limited license to process your data solely to provide the Service and concierge support.</p>
+
+    <!-- Section 6 -->
+    <h2 id="privacy"><span class="num">06</span> Privacy and Data Practices</h2>
+    <p>We are committed to privacy. Your KIN instance is <strong>siloed</strong> and not used for training public models. We access data only with your permission for concierge fixes or support.</p>
+    <p>We do not sell or share personal data with third parties. We employ reasonable security measures to protect your information. However, no method of transmission or storage is 100% secure, and <strong>we cannot guarantee absolute security</strong>.</p>
+    <p>We do our absolute best to preserve everybody's privacy, but we are not liable for privacy violations arising from third-party services (API providers, VPS hosts, Solana network), unauthorized access beyond our reasonable control, or actions you authorize your KIN to perform.</p>
+    <p>By using the Service, you acknowledge and accept these inherent risks of cloud-based AI systems.</p>
+
+    <!-- Section 7 -->
+    <h2><span class="num">07</span> Acceptable Use and Prohibited Conduct</h2>
+    <p>You may use the Service only for lawful, personal, or authorized business purposes. Prohibited activities include (but are not limited to):</p>
+    <ul>
+        <li>Using KIN for illegal acts, fraud, or harm.</li>
+        <li>Relying on KIN outputs for unlicensed professional advice (legal, medical, financial, etc.) without independent verification by a qualified professional.</li>
+        <li>Granting KIN access to systems without ongoing human supervision.</li>
+        <li>Reverse engineering, scraping, or competing with the Service.</li>
+        <li>Any high-stakes automated decisions affecting safety, legal rights, or finances without explicit human review and approval.</li>
+    </ul>
+
+    <!-- Section 8 -->
+    <h2><span class="num">08</span> AI Outputs, Actions, and Computer Control — Critical Disclaimers</h2>
+    <p>KIN uses frontier AI models that are probabilistic and may produce inaccurate, incomplete, biased, or hallucinatory outputs. Computer-control features (browser automation, payments, code execution, wallet management, etc.) carry inherent risks including financial loss, data corruption, security breaches, or unintended actions.</p>
+
+    <div class="caps">
+        YOU ACKNOWLEDGE AND AGREE THAT:
+        <ul style="text-transform:none; font-weight:400; margin-top:1rem;">
+            <li>All KIN suggestions, drafts, automations, and actions are for informational or assistive purposes only.</li>
+            <li>You must independently review, verify, and explicitly authorize every material action (e.g., payments, investments, code deployment, file modifications).</li>
+            <li>We are not responsible for any errors, omissions, or consequences arising from KIN outputs or actions, even if performed under concierge service.</li>
+            <li>Use of the Service for financial transactions, investments, or critical decisions is at your sole risk and may result in irreversible loss.</li>
+            <li>Artificial intelligence is evolving; outputs may not reflect real facts, current laws, or your intent.</li>
+        </ul>
+    </div>
+
+    <!-- Section 9 -->
+    <h2><span class="num">09</span> Service "AS IS" and No Warranties</h2>
+    <div class="caps">
+        THE SERVICE, INCLUDING ALL KIN INSTANCES, VPS HOSTING, AUTOMATION FEATURES, AND OUTPUTS, IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE AND OUR PROVIDERS EXPRESSLY DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, RELIABILITY, SECURITY, NON-INFRINGEMENT, AND ANY WARRANTIES ARISING FROM COURSE OF DEALING OR USAGE OF TRADE.
+        <br><br>
+        WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, SECURE, OR FREE FROM VIRUSES OR OTHER HARMFUL COMPONENTS. WE MAKE NO REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF ANY OUTPUT OR ACTION.
+    </div>
+
+    <!-- Section 10 -->
+    <h2><span class="num">10</span> Limitation of Liability</h2>
+    <div class="caps">
+        TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT SHALL KR8TIV, ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, OR PROVIDERS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES (INCLUDING LOSS OF PROFITS, DATA, GOODWILL, OR BUSINESS INTERRUPTION) ARISING OUT OF OR RELATED TO THE SERVICE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+        <br><br>
+        OUR TOTAL AGGREGATE LIABILITY TO YOU FOR ANY CLAIMS ARISING UNDER THESE TERMS OR THE SERVICE SHALL NOT EXCEED THE GREATER OF (i) THE AMOUNT YOU PAID TO US FOR THE SERVICE IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM OR (ii) ONE HUNDRED U.S. DOLLARS (USD $100).
+        <br><br>
+        THESE LIMITATIONS APPLY REGARDLESS OF THE LEGAL THEORY (CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY, OR OTHERWISE) AND EVEN IF REMEDIES FAIL THEIR ESSENTIAL PURPOSE.
+    </div>
+
+    <!-- Section 11 -->
+    <h2><span class="num">11</span> Indemnification</h2>
+    <p>You agree to indemnify, defend, and hold harmless KR8TIV, its affiliates, officers, directors, employees, agents, and providers from and against any and all claims, liabilities, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising out of or related to:</p>
+    <ul>
+        <li>Your use of the Service or any KIN actions.</li>
+        <li>Your violation of these Terms.</li>
+        <li>Any content, data, or authorizations you provide.</li>
+        <li>Any financial, legal, or other losses resulting from KIN outputs or automations.</li>
+        <li>Your breach of applicable law or third-party rights.</li>
+    </ul>
+
+    <!-- Section 12 -->
+    <h2><span class="num">12</span> Force Majeure and Third-Party Services</h2>
+    <p>We are not liable for delays or failures due to events beyond our reasonable control (force majeure), including API outages, Solana network issues, VPS provider failures, power outages, or cyberattacks not caused by our gross negligence.</p>
+    <p>We rely on third-party providers (Anthropic, Google, xAI, OpenAI, Supermemory, VPS hosts, Solana) and disclaim all responsibility for their performance, availability, or security.</p>
+
+    <!-- Section 13 -->
+    <h2><span class="num">13</span> Termination</h2>
+    <ul>
+        <li>We may suspend or terminate your access immediately for violations, risk of harm, or legal requirements.</li>
+        <li>You may cancel subscriptions with notice; no refunds except as required by law.</li>
+        <li>Upon termination, you lose access to KIN instances and any remaining free months or discounts.</li>
+    </ul>
+
+    <!-- Section 14 -->
+    <h2><span class="num">14</span> Dispute Resolution</h2>
+    <p>Any dispute arising under these Terms shall be resolved exclusively through <strong>binding arbitration</strong> under the rules of the American Arbitration Association. You waive any right to class actions, jury trials, or litigation in courts.</p>
+    <p>Governing law: the laws of the State of Florida, without regard to conflict-of-laws principles.</p>
+
+    <!-- Section 15 -->
+    <h2><span class="num">15</span> Changes to Terms</h2>
+    <p>We may update these Terms with 30 days' notice via email or website posting. Continued use constitutes acceptance. Material changes will be highlighted.</p>
+
+    <!-- Section 16 -->
+    <h2><span class="num">16</span> Miscellaneous</h2>
+    <ul>
+        <li>These Terms constitute the entire agreement between you and KR8TIV regarding the Service.</li>
+        <li>If any provision is found unenforceable, the remaining provisions remain in full effect.</li>
+        <li>No waiver of any right under these Terms shall be effective unless in writing.</li>
+        <li>You may not assign these Terms without our consent. We may assign freely.</li>
+        <li>Contact: <a href="mailto:lucidbloks@gmail.com">lucidbloks@gmail.com</a></li>
+    </ul>
+
+    <!-- Section 17 -->
+    <h2><span class="num">17</span> Acknowledgment</h2>
+    <p>By using the Service, you confirm you have read and understand these Terms, including the strong disclaimers on AI risks, computer control, and liability limitations. You assume all risks associated with automation and agree that our role is assistive only.</p>
+
+    <!-- Comparison Table -->
+    <h2 style="margin-top:4rem;">Key Liability Protections — Industry Comparison</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Clause</th>
+                    <th>KIN TOS Language</th>
+                    <th>Industry Standard</th>
+                    <th>Protection Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Warranty Disclaimer</strong></td>
+                    <td>Full "AS IS" with explicit AI hallucination & action risks</td>
+                    <td>Identical "AS IS" + accuracy warnings</td>
+                    <td style="color:var(--cyan);">Maximum</td>
+                </tr>
+                <tr>
+                    <td><strong>Liability Cap</strong></td>
+                    <td>Greater of 12-mo fees or $100</td>
+                    <td>Same ($100 or fees paid)</td>
+                    <td style="color:var(--cyan);">Strong</td>
+                </tr>
+                <tr>
+                    <td><strong>Indirect Damages</strong></td>
+                    <td>Full exclusion (loss of profits, data, etc.)</td>
+                    <td>Full exclusion</td>
+                    <td style="color:var(--cyan);">Comprehensive</td>
+                </tr>
+                <tr>
+                    <td><strong>User Indemnification</strong></td>
+                    <td>Broad — any claim from your use or authorizations</td>
+                    <td>Broad for business users</td>
+                    <td style="color:var(--cyan);">Maximum</td>
+                </tr>
+                <tr>
+                    <td><strong>Computer Control</strong></td>
+                    <td>Explicit user review & authorization required</td>
+                    <td>Strong warnings on outputs</td>
+                    <td style="color:var(--gold);">Tailored for concierge</td>
+                </tr>
+                <tr>
+                    <td><strong>Third-Party APIs</strong></td>
+                    <td>Full disclaimer + force majeure</td>
+                    <td>Similar for APIs</td>
+                    <td style="color:var(--cyan);">Comprehensive</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="notice" style="margin-top:3rem;">
+        <strong>📋 Implementation Notes</strong>
+        <p style="margin-top:0.5rem;">• Explicit acceptance (checkbox + "I agree") will be required during Genesis mint and subscription purchase.</p>
+        <p>• These Terms will be updated annually or after major service changes, with 30 days' notice.</p>
+        <p>• A separate Privacy Policy may be published in the future for additional detail.</p>
+        <p>• Modeled after: <a href="https://openai.com/policies/row-terms-of-use/">OpenAI ToU</a>, <a href="https://www.anthropic.com/legal/consumer-terms">Anthropic Consumer Terms</a>, <a href="https://x.ai/legal/terms-of-service">xAI Grok ToS</a>.</p>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <a href="index.html">KIN Home</a>
+        <a href="https://kr8tiv.ai" target="_blank" rel="noopener">KR8TIV AI</a>
+        <a href="https://x.com/kr8tivai" target="_blank" rel="noopener">Twitter (X)</a>
+        <a href="https://t.me/kr8tivai" target="_blank" rel="noopener">Telegram</a>
+    </p>
+    <p style="margin-top:1.5rem;">© 2026 Aurora Ventures dba KR8TIV AI. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
