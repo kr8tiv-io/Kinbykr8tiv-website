@@ -1358,11 +1358,12 @@
 
         // ===== GSAP REVEAL ANIMATIONS =====
         // Hero elements animate immediately (no scroll trigger — already in viewport)
-        gsap.from('.hero .gs-reveal', {
-            opacity: 0,
-            y: 40,
+        gsap.set('.hero .gs-reveal', { opacity: 0, y: 40 });
+        gsap.to('.hero .gs-reveal', {
+            opacity: 1,
+            y: 0,
             duration: 1,
-            stagger: 0.2,
+            stagger: 0.25,
             ease: 'power2.out',
             delay: 0.3,
         });
