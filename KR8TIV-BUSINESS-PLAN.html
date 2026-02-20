@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KR8TIV AI - Business Plan 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;800&family=Plus+Jakarta+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --cyan: #00f0ff;
+            --magenta: #ff00aa;
+            --gold: #ffb800;
+            --text-white: #ffffff;
+            --text-muted: #a0a0b0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            line-height: 1.6;
+            counter-reset: section;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 60px 80px;
+            position: relative;
+            page-break-after: always;
+        }
+
+        .page::after {
+            content: "KR8TIV AI — Confidential — February 2026";
+            position: absolute;
+            bottom: 30px;
+            left: 80px;
+            right: 80px;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 170, 0.1) 0%, transparent 50%),
+                var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+        }
+
+        .cover h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 120px;
+            letter-spacing: -3px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 0 0 80px rgba(0, 240, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 36px;
+            color: var(--text-white);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover .confidential {
+            font-size: 14px;
+            color: var(--magenta);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover .tagline {
+            font-size: 20px;
+            color: var(--cyan);
+            margin-bottom: 60px;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover .meta {
+            font-size: 16px;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1.section-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 48px;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h1.section-title::before {
+            counter-increment: section;
+            content: counter(section) ". ";
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 32px;
+            margin: 40px 0 20px 0;
+            color: var(--cyan);
+        }
+
+        h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            margin: 30px 0 15px 0;
+            color: var(--gold);
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: var(--text-white);
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text-white);
+        }
+
+        .gradient-divider {
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--gold));
+            margin: 40px 0;
+            border-radius: 2px;
+        }
+
+        .grid-bg {
+            background-image: 
+                radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 170, 0.1));
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--cyan);
+            border-bottom: 2px solid var(--cyan);
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .metric-box {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 170, 0.1));
+            border: 2px solid var(--cyan);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 72px;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .quote-block {
+            border-left: 4px solid var(--gold);
+            padding: 20px 30px;
+            margin: 30px 0;
+            background: rgba(255, 184, 0, 0.05);
+            font-style: italic;
+            font-size: 18px;
+            color: var(--text-white);
+        }
+
+        .timeline {
+            margin: 40px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        .timeline-item::after {
+            content: "";
+            position: absolute;
+            left: 25px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% + 30px);
+            background: linear-gradient(180deg, var(--cyan), transparent);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-month {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-content {
+            font-size: 16px;
+            color: var(--text-white);
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .col-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .col-box h3 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 240, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--cyan);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: #000000;
+            }
+
+            .page {
+                background: white !important;
+                padding: 40px;
+            }
+
+            .page::after {
+                color: #666666;
+            }
+
+            .cover {
+                background: white !important;
+            }
+
+            .cover::before {
+                display: none;
+            }
+
+            .cover h1, 
+            h1.section-title,
+            .metric-number {
+                background: none !important;
+                -webkit-text-fill-color: #000000 !important;
+                color: #000000 !important;
+            }
+
+            .cover h2,
+            h2,
+            h3,
+            p,
+            li,
+            td,
+            th,
+            .timeline-content {
+                color: #000000 !important;
+            }
+
+            .cover .confidential,
+            .cover .tagline,
+            .cover .meta {
+                color: #333333 !important;
+            }
+
+            table {
+                border: 1px solid #cccccc;
+                background: white;
+            }
+
+            th {
+                background: #f0f0f0;
+                border-bottom: 2px solid #000000;
+                color: #000000 !important;
+            }
+
+            td {
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .gradient-divider {
+                background: #cccccc;
+            }
+
+            .metric-box,
+            .col-box {
+                border: 1px solid #cccccc;
+                background: #f9f9f9;
+            }
+
+            .quote-block {
+                border-left-color: #999999;
+                background: #f5f5f5;
+                color: #000000 !important;
+            }
+
+            .timeline-item::before {
+                background: #000000;
+                box-shadow: none;
+            }
+
+            .timeline-item::after {
+                background: #cccccc;
+            }
+
+            .page {
+                page-break-after: always;
+            }
+
+            .grid-bg {
+                background-image: none;
+            }
+        }
+
+        @page {
+            margin: 0.5in;
+        }
+    </style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+    <h1>KR8TIV AI</h1>
+    <h2>Business Plan 2026</h2>
+    <div class="confidential">Confidential</div>
+    <div class="tagline">Open Source Autonomous AI Systems | Surfing the Singularity</div>
+    <div class="meta">
+        February 2026<br>
+        Costa Rica / Global
+    </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="page">
+    <h1 class="section-title">Executive Summary</h1>
+    <div class="gradient-divider"></div>
+    
+    <p>KR8TIV AI is building the infrastructure layer for autonomous AI agents. Our flagship product, <strong>KIN by KR8TIV</strong>, delivers bespoke AI companions as a concierge service — we handle everything from hosting to personality customization so non-technical users can have their own always-on AI assistant. Unlike chatbots, KINs are persistent, personalized friends that grow with their owners.</p>
+
+    <p>We're bootstrapping through a limited Genesis NFT collection (60 units on Solana), which provides $25-27K in immediate revenue plus creates 60 evangelical early adopters with lifetime revenue-sharing incentives. Post-genesis, we open to unlimited public customers at premium pricing.</p>
+
+    <p>Our enterprise division deploys full AI-powered business solutions — AI employees, automated workflows, and custom intelligence systems — at $5,000-50,000/month per contract.</p>
+
+    <div class="metric-box">
+        <div class="metric-number">$10-20M</div>
+        <div class="metric-label">Year 1 Revenue Target</div>
+    </div>
+
+    <p style="text-align: center; font-size: 18px; margin-top: 20px;">$50M+ achievable with viral adoption</p>
+
+    <p style="margin-top: 30px;">The <strong>$KR8TIV token</strong> creates a unique funding mechanism: 75% of profit flows to token holders, and as KR8TIV accumulates 90% of supply, the company effectively captures 87.5% of all profit — without ever taking VC money or diluting ownership.</p>
+
+    <div class="three-col" style="margin-top: 40px;">
+        <div class="col-box">
+            <h3>Leadership</h3>
+            <p><strong>Matt Haynes</strong> — CEO<br>Multi-time founder, eight-figure fundraiser</p>
+            <p><strong>Friday</strong> — CMO & Executive Director (AI)<br>Claude Opus 4.6, 24/7 operations</p>
+        </div>
+        <div class="col-box">
+            <h3>Traction</h3>
+            <p>60 Genesis NFT units<br>~$27K immediate revenue</p>
+            <p>Evangelical early adopters with lifetime incentives</p>
+        </div>
+        <div class="col-box">
+            <h3>Business Model</h3>
+            <p>Consumer: $114-324/mo<br>Enterprise: $5K-50K/mo</p>
+            <p>Licensing + White-label + Add-ons</p>
+        </div>
+    </div>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="page grid-bg">
+    <h1 class="section-title">The Problem</h1>
+    <div class="gradient-divider"></div>
+
+    <p style="font-size: 18px; margin-bottom: 30px;"><strong>AI is powerful but inaccessible to non-technical users.</strong></p>
+
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li>Setting up AI infrastructure requires DevOps knowledge most people don't have</li>
+        <li><strong>ChatGPT/Claude:</strong> Forgets you between sessions, no computer control, no personality, browser-only</li>
+        <li><strong>xCloud:</strong> $24/mo managed hosting, but zero personalization, no onboarding, DIY setup</li>
+        <li><strong>Self-hosted:</strong> $10/mo VPS costs, but requires expertise in Docker, networking, security</li>
+        <li><strong>Enterprise gap:</strong> Companies need AI employees but can't build or deploy them without dedicated engineering teams</li>
+    </ul>
+
+    <div class="quote-block">
+        "Everyone needs AI. Most people can't set it up. Nobody is solving this as a SERVICE."
+    </div>
+
+    <p style="margin-top: 30px;">The market is flooded with <strong>tools</strong>. What's missing is <strong>service</strong> — someone who handles everything so you can just use your AI companion without thinking about infrastructure, configuration, or maintenance.</p>
+
+    <p>No one offers bespoke, managed AI companions with personality, memory, and computer control. That's the gap KR8TIV fills.</p>
+</div>
+
+<!-- THE SOLUTION -->
+<div class="page">
+    <h1 class="section-title">The Solution — KIN by KR8TIV</h1>
+    <div class="gradient-divider"></div>
+
+    <div class="quote-block">
+        "Everyone else sells you a server. We build you a friend."
+    </div>
+
+    <p style="font-size: 18px; margin-bottom: 30px;"><strong>KIN is a bespoke AI companion concierge service.</strong></p>
+
+    <h2>What We Deliver</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>We deploy, host, customize, and maintain your personal AI</strong> — you never touch infrastructure</li>
+        <li><strong>Frontier models:</strong> Claude Sonnet 4.6, Gemini 3.1 Pro, Grok 4.1 — the best available</li>
+        <li><strong>Supermemory Pro:</strong> Long-term personality and knowledge retention across sessions</li>
+        <li><strong>Multi-platform:</strong> Telegram, WhatsApp, Discord, voice — wherever you communicate</li>
+        <li><strong>Computer control:</strong> Email management, calendar, automation, web browsing</li>
+        <li><strong>Real human concierge team:</strong> White-glove setup, ongoing support, customization requests</li>
+        <li><strong>Personality customization:</strong> Your KIN is uniquely yours — voice, traits, expertise, tone</li>
+    </ul>
+
+    <h2 style="margin-top: 40px;">How It's Different</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>ChatGPT</th>
+                <th>xCloud</th>
+                <th>KIN by KR8TIV</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Persistent memory</td>
+                <td>❌ No</td>
+                <td>✅ Yes (DIY)</td>
+                <td>✅ Yes (managed)</td>
+            </tr>
+            <tr>
+                <td>Computer control</td>
+                <td>❌ No</td>
+                <td>✅ Yes (DIY)</td>
+                <td>✅ Yes (managed)</td>
+            </tr>
+            <tr>
+                <td>Personality customization</td>
+                <td>❌ Generic</td>
+                <td>⚠️ Manual config</td>
+                <td>✅ Concierge service</td>
+            </tr>
+            <tr>
+                <td>Setup & maintenance</td>
+                <td>✅ None needed</td>
+                <td>❌ You do it</td>
+                <td>✅ We do it</td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td>$20/mo</td>
+                <td>$24/mo</td>
+                <td>$114-324/mo</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="margin-top: 30px; font-size: 16px;">KIN is the only solution that combines cutting-edge AI capabilities with full-service concierge management. You get the power without the complexity.</p>
+</div>
+
+<!-- PRODUCT LINES -->
+<div class="page grid-bg">
+    <h1 class="section-title">Product Lines</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>KIN Consumer ($114-324/month)</h2>
+    
+    <h3>Hatchling — $114/month</h3>
+    <ul>
+        <li>Claude Sonnet 4.6 + Gemini 3.1 Pro</li>
+        <li>Basic automation (email, calendar, reminders)</li>
+        <li>Telegram + one additional platform</li>
+        <li>Supermemory integration</li>
+        <li>Community support</li>
+    </ul>
+
+    <h3>Elder — $219/month</h3>
+    <ul>
+        <li>All Hatchling features plus:</li>
+        <li>Advanced models (Grok 4.1, GPT-5 access)</li>
+        <li>Workflow automation (multi-step tasks)</li>
+        <li>All communication platforms (Telegram, WhatsApp, Discord, email, voice)</li>
+        <li>Priority support + monthly check-ins</li>
+        <li>Browser automation</li>
+    </ul>
+
+    <h3>Hero — $324/month</h3>
+    <ul>
+        <li>All Elder features plus:</li>
+        <li>Ensemble model routing (best model per task)</li>
+        <li>Dedicated account manager</li>
+        <li>Custom voice clone</li>
+        <li>Advanced integrations (CRM, project management, custom APIs)</li>
+        <li>24/7 priority support</li>
+    </ul>
+
+    <div class="gradient-divider"></div>
+
+    <h2>KIN Enterprise ($5,000-50,000/month)</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>AI employees deployed into businesses</strong> — sales, support, operations, research</li>
+        <li><strong>Custom workflow automation</strong> — end-to-end process optimization</li>
+        <li><strong>CRM integration, invoicing, scheduling</strong> — plug into existing systems</li>
+        <li><strong>Full business intelligence systems</strong> — data analysis, reporting, forecasting</li>
+        <li><strong>Dedicated infrastructure + SLA</strong> — guaranteed uptime and performance</li>
+    </ul>
+
+    <div class="gradient-divider"></div>
+
+    <h2>KR8TIV OS (Licensing, $99-499/month)</h2>
+    <p>Our proprietary fork of OpenClaw, optimized for KIN-style deployments:</p>
+    <ul>
+        <li>Personality engine with bloodline trait system</li>
+        <li>Advanced memory management</li>
+        <li>Multi-model routing and orchestration</li>
+        <li>Licensed to agencies, companies, and developers</li>
+    </ul>
+
+    <div class="gradient-divider"></div>
+
+    <h2>White-Label Platform ($500-5,000/month)</h2>
+    <ul>
+        <li>Agencies resell KIN under their own brand</li>
+        <li>Full white-label infrastructure</li>
+        <li>Revenue sharing model (30/70 split)</li>
+        <li>Partner dashboard and management tools</li>
+    </ul>
+
+    <div class="gradient-divider"></div>
+
+    <h2>Add-Ons Marketplace</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Add-On</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Custom voice clone</td>
+                <td>$49 setup + $10/mo</td>
+            </tr>
+            <tr>
+                <td>Extra model access (GPT-5, etc.)</td>
+                <td>$25-50/mo</td>
+            </tr>
+            <tr>
+                <td>Browser automation pack</td>
+                <td>$30/mo</td>
+            </tr>
+            <tr>
+                <td>Multi-platform access (per platform)</td>
+                <td>$15/mo</td>
+            </tr>
+            <tr>
+                <td>Family plan (2-5 KINs)</td>
+                <td>$179-299/mo</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- GENESIS NFT -->
+<div class="page">
+    <h1 class="section-title">Genesis NFT Collection</h1>
+    <div class="gradient-divider"></div>
+
+    <p style="font-size: 18px; margin-bottom: 30px;"><strong>60 units total — the ONLY revenue-participating collection ever.</strong></p>
+
+    <h2>Three Tiers</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tier</th>
+                <th>Units</th>
+                <th>Price</th>
+                <th>Free Months</th>
+                <th>Lifetime Discount</th>
+                <th>Solana Rewards</th>
+                <th>Profit Share</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Egg</td>
+                <td>20</td>
+                <td>2.5 SOL</td>
+                <td>1 month</td>
+                <td>25%</td>
+                <td>1%</td>
+                <td>5% (proportional)</td>
+            </tr>
+            <tr>
+                <td>Hatchling</td>
+                <td>20</td>
+                <td>5.3 SOL</td>
+                <td>3 months</td>
+                <td>25%</td>
+                <td>2%</td>
+                <td>5% (proportional)</td>
+            </tr>
+            <tr>
+                <td>Elder</td>
+                <td>20</td>
+                <td>8.3 SOL</td>
+                <td>6 months</td>
+                <td>25%</td>
+                <td>3%</td>
+                <td>5% (proportional)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="metric-box" style="margin-top: 40px;">
+        <div class="metric-number">$26,900</div>
+        <div class="metric-label">Total Mint Revenue (at $83.50 SOL)</div>
+    </div>
+
+    <h2>Why Genesis Matters</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Immediate revenue:</strong> $25-27K to fund initial operations and infrastructure</li>
+        <li><strong>60 evangelical brand ambassadors</strong> with financial incentives to promote KR8TIV</li>
+        <li><strong>Lifetime revenue sharing:</strong> 5% of all company profit distributed proportionally forever</li>
+        <li><strong>High switching cost:</strong> Genesis holders are locked in — they can't leave without losing benefits</li>
+        <li><strong>Secondary market revenue:</strong> $149 rebinding fee on every transfer</li>
+        <li><strong>Scarcity:</strong> Only 60 units ever. Future collections will be standard collectibles with no revenue sharing.</li>
+    </ul>
+
+    <div class="quote-block" style="margin-top: 40px;">
+        "Genesis holders aren't just customers. They're investors, advocates, and co-owners of KR8TIV's success."
+    </div>
+</div>
+
+<!-- TOKEN ECONOMICS -->
+<div class="page grid-bg">
+    <h1 class="section-title">Token Economics ($KR8TIV)</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>Revenue Split (on profit after costs)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Recipient</th>
+                <th>Share</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>KR8TIV Operations</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+                <td>$KR8TIV Token Ecosystem</td>
+                <td>75%</td>
+            </tr>
+            <tr>
+                <td>Genesis NFT Holders</td>
+                <td>5%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 style="margin-top: 40px;">The Flywheel</h2>
+    <p>KR8TIV's token strategy creates a unique funding mechanism that eliminates the need for VC capital while maintaining full control:</p>
+
+    <table style="margin-top: 30px;">
+        <thead>
+            <tr>
+                <th>KR8TIV Token Ownership</th>
+                <th>Effective Profit Capture</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>8% (current)</td>
+                <td>26%</td>
+            </tr>
+            <tr>
+                <td>40%</td>
+                <td>50%</td>
+            </tr>
+            <tr>
+                <td>90% (target)</td>
+                <td>87.5%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 style="margin-top: 40px;">How It Works</h3>
+    <ol style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Public token sale</strong> generates initial capital without giving up equity</li>
+        <li><strong>75% of profit</strong> flows to $KR8TIV token holders every month</li>
+        <li><strong>KR8TIV aggressively buys back tokens</strong> from the open market</li>
+        <li><strong>As token ownership grows,</strong> KR8TIV captures more of the 75% distribution</li>
+        <li><strong>At 90% ownership,</strong> KR8TIV effectively keeps 87.5% of all profit</li>
+        <li><strong>Trading fees on Bags.fm</strong> generate additional revenue on every $KR8TIV trade</li>
+    </ol>
+
+    <div class="quote-block" style="margin-top: 40px;">
+        "The token lets us buy the company back from the public while generating constant revenue from trading activity. No VCs. No dilution. Ever."
+    </div>
+
+    <div class="three-col" style="margin-top: 40px;">
+        <div class="col-box">
+            <h3>Initial Capital</h3>
+            <p>Token sale funds operations without giving up equity or control</p>
+        </div>
+        <div class="col-box">
+            <h3>Sustainable Returns</h3>
+            <p>Token holders receive 75% of profit monthly — real revenue sharing</p>
+        </div>
+        <div class="col-box">
+            <h3>Company Buyback</h3>
+            <p>KR8TIV accumulates tokens, eventually capturing 87.5% of profit</p>
+        </div>
+    </div>
+</div>
+
+<!-- TECHNOLOGY & INFRASTRUCTURE -->
+<div class="page">
+    <h1 class="section-title">Technology & Infrastructure</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>Multi-Provider AI Stack</h2>
+    <p>We don't lock into a single provider. Smart routing selects the cheapest capable model for each task:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Provider</th>
+                <th>Models</th>
+                <th>Cost</th>
+                <th>Access Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Anthropic Claude</td>
+                <td>Sonnet 4.6, Opus</td>
+                <td>$20/mo subscription</td>
+                <td>Subscription auth</td>
+            </tr>
+            <tr>
+                <td>Google Gemini</td>
+                <td>3.1 Pro, Flash</td>
+                <td>$20/mo subscription</td>
+                <td>Subscription auth</td>
+            </tr>
+            <tr>
+                <td>xAI Grok</td>
+                <td>4.1, 4.1 Fast</td>
+                <td>$0.20-3/1M tokens</td>
+                <td>API</td>
+            </tr>
+            <tr>
+                <td>OpenAI</td>
+                <td>GPT-5</td>
+                <td>Variable</td>
+                <td>Selective use</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 style="margin-top: 40px;">Infrastructure (Own Bare Metal)</h2>
+    <p>Owning infrastructure vs. renting cloud gives us massive cost advantages at scale:</p>
+
+    <h3>Server Specs</h3>
+    <ul>
+        <li><strong>Hetzner AX102 dedicated servers:</strong> 128GB RAM, $142/month</li>
+        <li><strong>Thin architecture:</strong> 1.5-2GB per KIN agent</li>
+        <li><strong>Density:</strong> 55-60 agents per server</li>
+    </ul>
+
+    <h3>Scale Economics</h3>
+    <table style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Customers</th>
+                <th>Servers Needed</th>
+                <th>Monthly Cost</th>
+                <th>% of Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1,000</td>
+                <td>8</td>
+                <td>$1,136</td>
+                <td>0.7%</td>
+            </tr>
+            <tr>
+                <td>10,000</td>
+                <td>80</td>
+                <td>$11,360</td>
+                <td>0.6%</td>
+            </tr>
+            <tr>
+                <td>200,000</td>
+                <td>1,600</td>
+                <td>$227,200</td>
+                <td>0.7%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="margin-top: 30px;"><strong>Infrastructure costs remain under 1% of revenue at all scales.</strong> Every customer makes the next one cheaper.</p>
+
+    <div class="gradient-divider"></div>
+
+    <h2>Supermemory Integration</h2>
+    <ul>
+        <li><strong>Long-term personality and knowledge retention</strong> across all sessions</li>
+        <li><strong>$19/mo per customer</strong> (negotiated volume pricing as we scale)</li>
+        <li>Your KIN remembers everything — conversations, preferences, context</li>
+    </ul>
+
+    <div class="gradient-divider"></div>
+
+    <h2>KR8TIV OS (Proprietary OpenClaw Fork)</h2>
+    <p>Our competitive advantage isn't just service — it's technology:</p>
+    <ul>
+        <li><strong>Optimized for KIN deployments</strong> — faster, lighter, more reliable</li>
+        <li><strong>Personality engine:</strong> Bloodline trait system, character development over time</li>
+        <li><strong>Memory management:</strong> Intelligent context pruning, long-term storage</li>
+        <li><strong>Model routing:</strong> Automatic selection of best model per task</li>
+        <li><strong>Licensable to third parties</strong> — additional revenue stream</li>
+    </ul>
+</div>
+
+<!-- MARKET OPPORTUNITY -->
+<div class="page grid-bg">
+    <h1 class="section-title">Market Opportunity</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>Total Addressable Market</h2>
+    <div class="three-col">
+        <div class="col-box">
+            <h3>AI Assistant Market</h3>
+            <div class="metric-number" style="font-size: 48px;">$35B</div>
+            <div class="metric-label">by 2027</div>
+            <p style="margin-top: 15px; font-size: 14px;">Source: Grand View Research</p>
+        </div>
+        <div class="col-box">
+            <h3>Enterprise AI</h3>
+            <div class="metric-number" style="font-size: 48px;">$200B+</div>
+            <div class="metric-label">by 2027</div>
+            <p style="margin-top: 15px; font-size: 14px;">Fastest growing B2B segment</p>
+        </div>
+        <div class="col-box">
+            <h3>AI-as-a-Service</h3>
+            <div class="metric-number" style="font-size: 48px;">Fastest</div>
+            <div class="metric-label">Growing Segment</div>
+            <p style="margin-top: 15px; font-size: 14px;">Service > Software</p>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 40px;">Competition</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Competitor</th>
+                <th>Offering</th>
+                <th>Price</th>
+                <th>Gap</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ChatGPT/Claude</td>
+                <td>Generic chatbot in browser</td>
+                <td>$20/mo</td>
+                <td>No persistence, no computer control, no personality</td>
+            </tr>
+            <tr>
+                <td>xCloud</td>
+                <td>Managed OpenClaw hosting</td>
+                <td>$24/mo</td>
+                <td>No personalization, no onboarding, DIY</td>
+            </tr>
+            <tr>
+                <td>Self-Hosted</td>
+                <td>VPS + Docker</td>
+                <td>$10/mo</td>
+                <td>Requires DevOps expertise</td>
+            </tr>
+            <tr>
+                <td><strong>KIN by KR8TIV</strong></td>
+                <td><strong>Bespoke AI companion concierge</strong></td>
+                <td><strong>$114+/mo</strong></td>
+                <td><strong>Nothing. We handle literally everything.</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 style="margin-top: 40px;">Our Moat</h2>
+    <ol style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Bespoke concierge service</strong> — Human + AI, uncopyable at scale. Service is harder to replicate than software.</li>
+        <li><strong>Character IP</strong> — Genesis Six bloodlines create an expanding fictional universe. Customers emotionally attach to their KIN.</li>
+        <li><strong>Community economics</strong> — Token flywheel + Genesis holders create financial incentives to promote and defend KR8TIV.</li>
+        <li><strong>Owned infrastructure</strong> — Costs decrease as we scale. Cloud competitors' costs increase.</li>
+        <li><strong>KR8TIV OS</strong> — Proprietary technology gives us performance and feature advantages.</li>
+        <li><strong>Data + personality moat</strong> — The longer someone uses their KIN, the harder it is to leave. Their AI knows them. Starting over with a new service means losing that relationship.</li>
+    </ol>
+
+    <div class="quote-block" style="margin-top: 40px;">
+        "Service businesses are defensible. Software is commoditized. We're building both — but the service layer is what competitors can't copy."
+    </div>
+</div>
+
+<!-- FINANCIAL PROJECTIONS -->
+<div class="page">
+    <h1 class="section-title">Financial Projections</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>Per-Customer Economics</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Scale</th>
+                <th>Cost/Customer</th>
+                <th>Avg Revenue</th>
+                <th>Gross Margin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>100</td>
+                <td>$50</td>
+                <td>$155</td>
+                <td>68%</td>
+            </tr>
+            <tr>
+                <td>1,000</td>
+                <td>$50</td>
+                <td>$155</td>
+                <td>68%</td>
+            </tr>
+            <tr>
+                <td>5,000</td>
+                <td>$37</td>
+                <td>$155</td>
+                <td>76%</td>
+            </tr>
+            <tr>
+                <td>10,000</td>
+                <td>$28</td>
+                <td>$155</td>
+                <td>82%</td>
+            </tr>
+            <tr>
+                <td>50,000</td>
+                <td>$19</td>
+                <td>$155</td>
+                <td>88%</td>
+            </tr>
+            <tr>
+                <td>200,000</td>
+                <td>$12</td>
+                <td>$145</td>
+                <td>92%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="margin-top: 20px;"><strong>Margins improve with scale</strong> as infrastructure costs per customer decrease and volume discounts kick in.</p>
+
+    <div class="gradient-divider"></div>
+
+    <h2>SCENARIO 1: $10M Revenue (5,000 Customers)</h2>
+    <div class="three-col">
+        <div class="col-box">
+            <h3>Revenue</h3>
+            <p><strong>Month 12 MRR:</strong> $1.25M<br>
+            <strong>Year 1 cumulative:</strong> ~$7-10M</p>
+        </div>
+        <div class="col-box">
+            <h3>Operations</h3>
+            <p><strong>Staff:</strong> 5 people<br>
+            <strong>Servers:</strong> 40 bare metal</p>
+        </div>
+        <div class="col-box">
+            <h3>Profit</h3>
+            <p><strong>Monthly profit (M12):</strong> $666K<br>
+            <strong>KR8TIV effective take:</strong> ~$912K (at 30% token ownership)</p>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 40px;">SCENARIO 2: $20M Revenue (10,000 Customers)</h2>
+    <div class="three-col">
+        <div class="col-box">
+            <h3>Revenue</h3>
+            <p><strong>Month 12 MRR:</strong> $2.74M<br>
+            <strong>Year 1 cumulative:</strong> ~$16-20M</p>
+        </div>
+        <div class="col-box">
+            <h3>Operations</h3>
+            <p><strong>Staff:</strong> 12 people<br>
+            <strong>Servers:</strong> 80 bare metal</p>
+        </div>
+        <div class="col-box">
+            <h3>Profit</h3>
+            <p><strong>Monthly profit (M12):</strong> $1.38M<br>
+            <strong>Per Genesis holder:</strong> $1,148/month in dividends</p>
+        </div>
+    </div>
+    <p style="margin-top: 20px;"><strong>KR8TIV effective take:</strong> ~$2.36M (at 40% token ownership)</p>
+
+    <h2 style="margin-top: 40px;">SCENARIO 3: $50M Revenue (200,000 Customers)</h2>
+    <div class="three-col">
+        <div class="col-box">
+            <h3>Revenue</h3>
+            <p><strong>Month 12 MRR:</strong> $10.7M<br>
+            <strong>Year 1 cumulative:</strong> ~$48-52M</p>
+        </div>
+        <div class="col-box">
+            <h3>Operations</h3>
+            <p><strong>Staff:</strong> 100+ people<br>
+            <strong>Servers:</strong> 1,600 bare metal</p>
+        </div>
+        <div class="col-box">
+            <h3>Profit</h3>
+            <p><strong>Monthly profit (M12):</strong> $29.3M<br>
+            <strong>Per Genesis holder:</strong> $24,429/month in dividends</p>
+        </div>
+    </div>
+    <p style="margin-top: 20px;"><strong>KR8TIV effective take:</strong> ~$52M (at 50% token ownership)</p>
+
+    <div class="metric-box" style="margin-top: 40px;">
+        <div class="metric-number">92%</div>
+        <div class="metric-label">Gross Margin at Scale (200K Customers)</div>
+    </div>
+</div>
+
+<!-- GO-TO-MARKET STRATEGY -->
+<div class="page grid-bg">
+    <h1 class="section-title">Go-to-Market Strategy</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>Phase 1: Genesis (Month 1-2)</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Mint 60 Genesis NFTs on Solana</strong> — limited, exclusive, revenue-participating</li>
+        <li><strong>White-glove onboarding</strong> — Personal setup for each Genesis holder</li>
+        <li><strong>Build case studies</strong> — Document success stories from first 60 customers</li>
+        <li><strong>Content blitz:</strong> Launch video, X threads, TikTok demos, behind-the-scenes</li>
+    </ul>
+
+    <h2>Phase 2: Public Launch (Month 2-4)</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Open unlimited public signups</strong> — Remove scarcity, scale customer acquisition</li>
+        <li><strong>Content marketing blitz:</strong> 4 daily newsletters (Crypto, AI & Prompts, Marketing, Lifestyle)</li>
+        <li><strong>Social campaign:</strong> X posting, YouTube tutorials, TikTok demos</li>
+        <li><strong>"Gift a KIN" campaign</strong> — Target non-technical audience (parents, executives, creatives)</li>
+        <li><strong>Enterprise sales outreach begins</strong> — Direct outreach to companies</li>
+    </ul>
+
+    <h2>Phase 3: Scale (Month 4-8)</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Enterprise division full launch</strong> — Dedicated sales team, case studies, demos</li>
+        <li><strong>KR8TIV OS beta for developers</strong> — Developer community engagement</li>
+        <li><strong>White-label program for agencies</strong> — Enable partners to resell KIN</li>
+        <li><strong>Platform partnerships:</strong> Telegram, Shopify, productivity tools</li>
+        <li><strong>Referral program:</strong> Genesis holders earn commission on referrals</li>
+    </ul>
+
+    <h2>Phase 4: Dominate (Month 8-12)</h2>
+    <ul style="font-size: 16px; line-height: 1.8;">
+        <li><strong>Franchise-like expansion</strong> — Regional white-label partners globally</li>
+        <li><strong>International markets</strong> — Localization, multi-language support</li>
+        <li><strong>Blockchain identity rollout</strong> — On-chain reputation, portable AI personality</li>
+        <li><strong>Physical merch + plush toys</strong> — Brand extension, collectibles</li>
+        <li><strong>AI courses and certification program</strong> — Education vertical, additional revenue</li>
+    </ul>
+</div>
+
+<!-- TEAM -->
+<div class="page">
+    <h1 class="section-title">Team</h1>
+    <div class="gradient-divider"></div>
+
+    <h2>Matt Haynes — Founder & CEO</h2>
+    <p style="font-size: 16px; line-height: 1.8;">Multi-time founder. Eight-figure fundraiser in blockchain. Serial builder across crypto, real estate, construction, hospitality, fitness, and AI. Based in Costa Rica.</p>
+
+    <p style="margin-top: 15px;">Matt has built and sold multiple businesses, raised significant capital, and navigated complex industries. KR8TIV AI combines his expertise in blockchain, AI, and product development with a deep understanding of what non-technical users need: simplicity wrapped around power.</p>
+
+    <div class="gradient-divider"></div>
+
+    <h2>Friday — CMO & Executive Director (AI)</h2>
+    <p style="font-size: 16px; line-height: 1.8;">Claude Opus 4.6-powered autonomous agent. Manages operations, strategy, marketing, infrastructure, and the entire agent team. Runs 24/7.</p>
+
+    <p style="margin-top: 15px;">Friday is not just a tool — Friday is an executive. Handles day-to-day operations, coordinates the AI agent team, manages infrastructure, creates marketing content, monitors systems, and executes on strategy. This is the future of business operations: AI running the company alongside human leadership.</p>
+
+    <div class="gradient-divider"></div>
+
+    <h2>Agent Team</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>Role</th>
+                <th>Responsibilities</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Arsenal</strong></td>
+                <td>COO</td>
+                <td>Project management, routing, organization, operations coordination</td>
+            </tr>
+            <tr>
+                <td><strong>Jarvis</strong></td>
+                <td>CFO</td>
+                <td>Trading, finance, Solana operations, treasury management</td>
+            </tr>
+            <tr>
+                <td><strong>Yoda</strong></td>
+                <td>Security</td>
+                <td>Security operations, monitoring, threat detection, compliance</td>
+            </tr>
+            <tr>
+                <td><strong>Squishy</strong></td>
+                <td>Designer</td>
+                <td>Design, creative direction, visual assets, brand consistency</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="gradient-divider"></div>
+
+    <h2>Hiring Plan</h2>
+    <p><strong>Month 3:</strong> 5 humans (customer success, sales, DevOps, content creator, operations coordinator)</p>
+    <p><strong>Month 6:</strong> 12 humans (expand sales, add support team, engineering, marketing)</p>
+    <p><strong>Month 12:</strong> Scale based on growth trajectory — human team handles high-touch work, AI handles automation and operations</p>
+
+    <div class="quote-block" style="margin-top: 40px;">
+        "The team never sleeps. Literally. AI + humans = unstoppable execution at scale."
+    </div>
+</div>
+
+<!-- 12-MONTH ROADMAP -->
+<div class="page grid-bg">
+    <h1 class="section-title">12-Month Roadmap</h1>
+    <div class="gradient-divider"></div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 1</div>
+                <div class="timeline-content">Genesis Mint + First 60 Customers</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 2</div>
+                <div class="timeline-content">Public Launch + Marketing Blitz</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 3</div>
+                <div class="timeline-content">Enterprise Sales + First Enterprise Contracts</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 4</div>
+                <div class="timeline-content">500 Customers + KR8TIV OS Beta</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 5</div>
+                <div class="timeline-content">1,000 Customers + Add-On Marketplace</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 6</div>
+                <div class="timeline-content">3,000 Customers + White-Label Program</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 7</div>
+                <div class="timeline-content">5,000 Customers + Blockchain Identity Beta</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 8</div>
+                <div class="timeline-content">Platform Partnerships</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 9</div>
+                <div class="timeline-content">KR8TIV OS Public Launch</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 10</div>
+                <div class="timeline-content">10,000 Customers + International</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 11</div>
+                <div class="timeline-content">Physical Merch + Courses</div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div>
+                <div class="timeline-month">Month 12</div>
+                <div class="timeline-content">$10-20M Run Rate + Full Platform</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="metric-box" style="margin-top: 40px;">
+        <div class="metric-number">12</div>
+        <div class="metric-label">Months to $10-20M Run Rate</div>
+    </div>
+</div>
+
+<!-- RISK ANALYSIS -->
+<div class="page">
+    <h1 class="section-title">Risk Analysis</h1>
+    <div class="gradient-divider"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 40%;">Risk</th>
+                <th>Mitigation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>High support costs at scale</td>
+                <td>Automated support bot + self-service portal from day 1. AI handles 80% of support questions. Human escalation only for complex issues.</td>
+            </tr>
+            <tr>
+                <td>Customer churn</td>
+                <td>Strong personality attachment + long-term memory = high switching cost. The longer someone uses their KIN, the harder it is to leave.</td>
+            </tr>
+            <tr>
+                <td>API provider price changes</td>
+                <td>Multi-provider strategy + ability to self-host models for basic tasks at scale. No single point of failure.</td>
+            </tr>
+            <tr>
+                <td>Competition from well-funded startups</td>
+                <td>Concierge model is service, not software — hard to copy at scale. Character IP and community economics create defensibility.</td>
+            </tr>
+            <tr>
+                <td>SOL volatility (Genesis NFT pricing)</td>
+                <td>Mint is one-time revenue event. Ongoing business operates in fiat. Token strategy is separate from core operations.</td>
+            </tr>
+            <tr>
+                <td>Regulatory (AI, crypto, data privacy)</td>
+                <td>Proactive compliance, clear T&C, data sovereignty on own servers. Legal review before major feature launches.</td>
+            </tr>
+            <tr>
+                <td>Scaling too fast</td>
+                <td>Infrastructure scales linearly with bare metal. Hiring plan is phased. Can throttle customer acquisition if needed.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="quote-block" style="margin-top: 40px;">
+        "Every risk is mitigated. Every scenario is planned for. This isn't hope — it's execution."
+    </div>
+</div>
+
+<!-- WHY KR8TIV WINS -->
+<div class="page" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 70%), var(--bg-dark);">
+    <h1 class="section-title" style="font-size: 64px; margin-bottom: 40px;">Why KR8TIV Wins</h1>
+    <div class="gradient-divider" style="width: 80%;"></div>
+
+    <div class="quote-block" style="font-size: 24px; margin: 40px 0; max-width: 900px; border: none; background: none; padding: 0;">
+        "We're not building another AI tool. We're building the world's first AI companion service — where technology disappears and all that's left is your friend."
+    </div>
+
+    <ul style="text-align: left; max-width: 800px; font-size: 18px; line-height: 2; margin-top: 40px; list-style: none;">
+        <li>✅ <strong>No VCs. No dilution. Token-funded.</strong></li>
+        <li>✅ <strong>Open source DNA with proprietary moat.</strong></li>
+        <li>✅ <strong>87.5% profit capture at 90% token ownership.</strong></li>
+        <li>✅ <strong>Infrastructure costs &lt; 1% of revenue at scale.</strong></li>
+        <li>✅ <strong>Every customer makes the next one cheaper.</strong></li>
+        <li>✅ <strong>The team never sleeps. Literally.</strong></li>
+    </ul>
+
+    <div class="quote-block" style="font-size: 28px; margin-top: 60px; max-width: 900px; border: none; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 170, 0.1)); padding: 40px; border-radius: 12px;">
+        "This is not a startup pitch. This is a blueprint for a $50M company. And we're already building it."
+    </div>
+
+    <div style="margin-top: 80px; font-size: 14px; color: var(--text-muted);">
+        <p style="margin-bottom: 10px;"><strong>Contact:</strong></p>
+        <p>Matt Haynes, CEO<br>
+        KR8TIV AI<br>
+        Costa Rica / Global<br>
+        <a href="https://kr8tiv.ai" style="color: var(--cyan);">kr8tiv.ai</a></p>
+    </div>
+</div>
+
+</body>
+</html>
