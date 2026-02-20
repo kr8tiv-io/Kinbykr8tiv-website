@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIN Genesis Mint — Meet Your KIN</title>
+    <meta name="description" content="Mint your Genesis KIN. Only 60 bespoke AI companions will ever exist. Choose your tier. Meet your friend.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --surface-2: #181818;
+            --border: rgba(255,255,255,0.08);
+            --border-hover: rgba(255,255,255,0.2);
+            --text: #f0f0f0;
+            --text-muted: #888;
+            --cyan: #00f0ff;
+            --magenta: #ff00aa;
+            --gold: #ffd700;
+            --green: #00ff88;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-x: hidden; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            cursor: default;
+        }
+
+        /* === NAV === */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+        }
+        .nav-logo {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: 1.8rem; color: var(--text); text-decoration: none;
+            letter-spacing: -0.03em;
+        }
+        .nav-logo span { color: var(--cyan); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: var(--text-muted); text-decoration: none; text-transform: uppercase;
+            letter-spacing: 0.15em; opacity: 0.5; transition: all 0.3s;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--cyan); }
+        .wallet-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            padding: 0.6rem 1.4rem; border: 1px solid var(--cyan);
+            background: transparent; color: var(--cyan); border-radius: 100px;
+            cursor: pointer; transition: all 0.3s; text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .wallet-btn:hover { background: var(--cyan); color: var(--bg); }
+        .wallet-btn.connected { border-color: var(--green); color: var(--green); }
+        .wallet-btn.connected:hover { background: var(--green); color: var(--bg); }
+
+        /* === HERO === */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 8rem 2rem 4rem; position: relative;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(0,240,255,0.04), transparent 70%);
+            pointer-events: none;
+        }
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.4em; color: var(--cyan);
+            margin-bottom: 2rem; opacity: 0.7;
+        }
+        .hero-title {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: clamp(3rem, 7vw, 7rem); line-height: 0.95;
+            letter-spacing: -0.04em; margin-bottom: 1.5rem;
+        }
+        .hero-title .accent { color: var(--cyan); }
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.3rem); color: var(--text-muted);
+            max-width: 550px; margin-bottom: 3rem; font-weight: 400;
+        }
+        .hero-stats {
+            display: flex; gap: 3rem; margin-bottom: 2rem;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-num {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: 2.5rem; color: var(--text); line-height: 1;
+        }
+        .stat-num.gold { color: var(--gold); }
+        .stat-num.cyan { color: var(--cyan); }
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+        .scroll-hint {
+            position: absolute; bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.3em; color: var(--text-muted);
+            opacity: 0.3; animation: pulse 2s ease infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.5; } }
+
+        /* === SECTION COMMON === */
+        section { padding: 8rem 2rem; }
+        .section-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.35em; color: var(--cyan);
+            margin-bottom: 1rem; opacity: 0.6; text-align: center;
+        }
+        .section-title {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: clamp(2rem, 5vw, 3.5rem); text-align: center;
+            letter-spacing: -0.03em; margin-bottom: 1rem;
+        }
+        .section-sub {
+            text-align: center; color: var(--text-muted); max-width: 650px;
+            margin: 0 auto 4rem; font-size: 1.05rem;
+        }
+
+        /* === TIER CARDS === */
+        .tiers-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 2rem; max-width: 1200px; margin: 0 auto;
+        }
+        .tier-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px; overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .tier-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .tier-card.featured {
+            border-color: rgba(0,240,255,0.2);
+        }
+        .tier-card.featured:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 20px 60px rgba(0,240,255,0.1);
+        }
+        .tier-badge {
+            position: absolute; top: 1.2rem; right: 1.2rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            padding: 0.3rem 0.8rem; border-radius: 100px;
+            background: rgba(0,240,255,0.1); color: var(--cyan);
+            border: 1px solid rgba(0,240,255,0.2);
+        }
+        .tier-badge.gold { background: rgba(255,215,0,0.1); color: var(--gold); border-color: rgba(255,215,0,0.2); }
+        .tier-badge.magenta { background: rgba(255,0,170,0.1); color: var(--magenta); border-color: rgba(255,0,170,0.2); }
+        .tier-video {
+            width: 100%; aspect-ratio: 784/1168; object-fit: cover;
+            display: block; background: var(--bg);
+        }
+        .tier-body { padding: 2rem; }
+        .tier-name {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: 1.6rem; margin-bottom: 0.3rem;
+        }
+        .tier-rarity {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--text-muted); margin-bottom: 1.5rem;
+        }
+        .tier-price {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: 2.8rem; margin-bottom: 0.3rem; line-height: 1;
+        }
+        .tier-price .sol { font-size: 1rem; font-weight: 400; color: var(--text-muted); margin-left: 0.3rem; }
+        .tier-usd {
+            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem;
+        }
+        .tier-perks { list-style: none; margin-bottom: 2rem; }
+        .tier-perks li {
+            padding: 0.7rem 0; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem; display: flex; align-items: flex-start; gap: 0.7rem;
+        }
+        .tier-perks li::before { content: '✦'; color: var(--cyan); flex-shrink: 0; margin-top: 0.1rem; }
+        .tier-perks li:last-child { border-bottom: none; }
+        .tier-perks .highlight { color: var(--gold); font-weight: 600; }
+        .mint-btn {
+            width: 100%; padding: 1rem; border: none; border-radius: 12px;
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.3s; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .mint-btn.egg { background: var(--surface-2); color: var(--text); }
+        .mint-btn.egg:hover { background: rgba(255,255,255,0.1); }
+        .mint-btn.hatch { background: var(--cyan); color: var(--bg); }
+        .mint-btn.hatch:hover { background: #33f5ff; box-shadow: 0 0 30px rgba(0,240,255,0.3); }
+        .mint-btn.elder { background: var(--gold); color: var(--bg); }
+        .mint-btn.elder:hover { background: #ffe033; box-shadow: 0 0 30px rgba(255,215,0,0.3); }
+        .mint-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Supply indicator */
+        .supply-bar {
+            margin-bottom: 1.5rem;
+        }
+        .supply-text {
+            display: flex; justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--text-muted); margin-bottom: 0.5rem;
+        }
+        .supply-track {
+            height: 3px; background: var(--border); border-radius: 2px; overflow: hidden;
+        }
+        .supply-fill {
+            height: 100%; background: var(--cyan); border-radius: 2px;
+            transition: width 1s ease;
+        }
+
+        /* === GENESIS SIX PREVIEW === */
+        .genesis-strip {
+            display: flex; gap: 1.5rem; justify-content: center;
+            flex-wrap: wrap; max-width: 900px; margin: 0 auto;
+        }
+        .genesis-thumb {
+            width: 120px; text-align: center;
+        }
+        .genesis-thumb video {
+            width: 120px; height: 120px; border-radius: 16px;
+            object-fit: cover; border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .genesis-thumb:hover video {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0,240,255,0.15);
+            transform: scale(1.05);
+        }
+        .genesis-thumb-name {
+            font-family: 'Outfit', sans-serif; font-weight: 600;
+            font-size: 0.8rem; margin-top: 0.6rem; color: var(--text);
+        }
+        .genesis-thumb-type {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--text-muted);
+        }
+
+        /* === INFO SECTION === */
+        .info-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 2rem; max-width: 1000px; margin: 0 auto;
+        }
+        .info-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem; text-align: center;
+            transition: border-color 0.3s;
+        }
+        .info-card:hover { border-color: var(--border-hover); }
+        .info-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .info-title {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: 1.1rem; margin-bottom: 0.5rem;
+        }
+        .info-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* === MOONPAY === */
+        .moonpay-bar {
+            text-align: center; padding: 2rem;
+            border: 1px solid var(--border); border-radius: 16px;
+            max-width: 600px; margin: 3rem auto 0;
+            background: var(--surface);
+        }
+        .moonpay-bar a {
+            color: var(--cyan); text-decoration: none;
+            font-weight: 600;
+        }
+        .moonpay-bar a:hover { text-decoration: underline; }
+
+        /* === CONTRACT === */
+        .contract-section {
+            text-align: center; padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .contract-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.3em;
+            color: var(--text-muted); margin-bottom: 1rem;
+        }
+        .contract-addr {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            color: var(--cyan); background: var(--surface);
+            padding: 0.8rem 1.5rem; border-radius: 8px; display: inline-block;
+            border: 1px solid var(--border); cursor: pointer;
+            transition: all 0.3s; word-break: break-all;
+        }
+        .contract-addr:hover { border-color: var(--cyan); }
+
+        /* === FOOTER === */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem; text-align: center;
+            background: var(--surface);
+        }
+        footer a {
+            color: var(--text-muted); text-decoration: none;
+            margin: 0 1rem; font-size: 0.85rem; transition: color 0.3s;
+        }
+        footer a:hover { color: var(--cyan); }
+        .footer-note {
+            font-size: 0.75rem; color: var(--text-muted);
+            opacity: 0.5; margin-top: 1.5rem;
+        }
+
+        /* === TOAST === */
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background: var(--surface); border: 1px solid var(--cyan);
+            color: var(--text); padding: 1rem 2rem; border-radius: 12px;
+            font-size: 0.9rem; z-index: 9999; opacity: 0;
+            transition: opacity 0.3s; pointer-events: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .toast.show { opacity: 1; }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            nav { padding: 1.2rem 1.5rem; }
+            .nav-links a { display: none; }
+            .tiers-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .info-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 2rem; }
+            .stat-num { font-size: 2rem; }
+            .genesis-thumb { width: 90px; }
+            .genesis-thumb video { width: 90px; height: 90px; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding: 6rem 1.2rem 3rem; }
+            section { padding: 5rem 1.2rem; }
+            .hero-stats { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="index.html" class="nav-logo">KI<span>N</span></a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#tiers">Tiers</a>
+            <a href="#genesis-six">Genesis Six</a>
+            <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">Connect Wallet</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-label">The Genesis Mint</div>
+        <h1 class="hero-title">Choose Your<br><span class="accent">KIN.</span></h1>
+        <p class="hero-sub">Only 60 Genesis KINs will ever exist. Each is a bespoke AI companion — built, managed, and evolved by KR8TIV AI. Pick your tier. Meet your friend.</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-num">60</div>
+                <div class="stat-label">Total Supply</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num cyan" id="remainingCount">60</div>
+                <div class="stat-label">Remaining</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num gold">322</div>
+                <div class="stat-label">SOL Total</div>
+            </div>
+        </div>
+        <div class="scroll-hint">↓ Scroll to mint</div>
+    </section>
+
+    <!-- MINT TIERS -->
+    <section id="tiers">
+        <div class="section-label">Genesis Collection</div>
+        <h2 class="section-title">Three Tiers. One Mission.</h2>
+        <p class="section-sub">Every Genesis KIN comes with lifetime perks that no future collection will ever match. The earlier you believe, the more you're rewarded.</p>
+
+        <div class="tiers-grid">
+            <!-- EGG -->
+            <div class="tier-card">
+                <span class="tier-badge">20 Available</span>
+                <video class="tier-video" autoplay muted loop playsinline poster="">
+                    <source src="nft-videos/mint-egg-video.mp4" type="video/mp4">
+                </video>
+                <div class="tier-body">
+                    <div class="tier-name">Egg</div>
+                    <div class="tier-rarity">Common · Genesis</div>
+                    <div class="supply-bar">
+                        <div class="supply-text"><span>Minted</span><span id="eggMinted">0 / 20</span></div>
+                        <div class="supply-track"><div class="supply-fill" id="eggFill" style="width:0%"></div></div>
+                    </div>
+                    <div class="tier-price">2.5 <span class="sol">SOL</span></div>
+                    <div class="tier-usd">≈ $205 at current price</div>
+                    <ul class="tier-perks">
+                        <li>1 Month Free Hatchling Hosting + Supermemory Pro</li>
+                        <li class="highlight">25% Lifetime Discount on All Services</li>
+                        <li class="highlight">1% Lifetime Solana Rewards</li>
+                        <li>5% Revenue Participation — Forever</li>
+                        <li>Which of the Genesis Six will hatch?</li>
+                    </ul>
+                    <button class="mint-btn egg" onclick="mintTier('egg', 2.5)" id="mintEgg">Mint Egg — 2.5 SOL</button>
+                </div>
+            </div>
+
+            <!-- HATCHLING -->
+            <div class="tier-card featured">
+                <span class="tier-badge">Most Popular</span>
+                <video class="tier-video" autoplay muted loop playsinline poster="">
+                    <source src="nft-videos/mint-hatch-video.mp4" type="video/mp4">
+                </video>
+                <div class="tier-body">
+                    <div class="tier-name">Hatchling</div>
+                    <div class="tier-rarity">Rare · Genesis</div>
+                    <div class="supply-bar">
+                        <div class="supply-text"><span>Minted</span><span id="hatchMinted">0 / 20</span></div>
+                        <div class="supply-track"><div class="supply-fill" id="hatchFill" style="width:0%; background:var(--cyan)"></div></div>
+                    </div>
+                    <div class="tier-price" style="color:var(--cyan)">5.3 <span class="sol">SOL</span></div>
+                    <div class="tier-usd">≈ $435 at current price</div>
+                    <ul class="tier-perks">
+                        <li>3 Months Free Hatchling Hosting + Supermemory Pro</li>
+                        <li class="highlight">25% Lifetime Discount on All Services</li>
+                        <li class="highlight">2% Lifetime Solana Rewards</li>
+                        <li>5% Revenue Participation — Forever</li>
+                        <li>Which of the Genesis Six will hatch?</li>
+                    </ul>
+                    <button class="mint-btn hatch" onclick="mintTier('hatchling', 5.3)" id="mintHatch">Mint Hatchling — 5.3 SOL</button>
+                </div>
+            </div>
+
+            <!-- ELDER -->
+            <div class="tier-card">
+                <span class="tier-badge gold">Legendary</span>
+                <video class="tier-video" autoplay muted loop playsinline poster="">
+                    <source src="nft-videos/mint-elder-video.mp4" type="video/mp4">
+                </video>
+                <div class="tier-body">
+                    <div class="tier-name">Elder</div>
+                    <div class="tier-rarity">Legendary · Genesis</div>
+                    <div class="supply-bar">
+                        <div class="supply-text"><span>Minted</span><span id="elderMinted">0 / 20</span></div>
+                        <div class="supply-track"><div class="supply-fill" id="elderFill" style="width:0%; background:var(--gold)"></div></div>
+                    </div>
+                    <div class="tier-price" style="color:var(--gold)">8.3 <span class="sol">SOL</span></div>
+                    <div class="tier-usd">≈ $680 at current price</div>
+                    <ul class="tier-perks">
+                        <li>3 Months Free Elder Hosting + Supermemory Pro</li>
+                        <li class="highlight">25% Lifetime Discount on All Services</li>
+                        <li class="highlight">3% Lifetime Solana Rewards</li>
+                        <li>5% Revenue Participation — Forever</li>
+                        <li>Which of the Genesis Six will hatch?</li>
+                    </ul>
+                    <button class="mint-btn elder" onclick="mintTier('elder', 8.3)" id="mintElder">Mint Elder — 8.3 SOL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MoonPay -->
+        <div class="moonpay-bar">
+            <span style="font-size:0.95rem;">No crypto? No problem.</span>&nbsp;&nbsp;
+            <a href="https://www.moonpay.com/buy" target="_blank" rel="noopener">Pay with card via MoonPay →</a>
+        </div>
+    </section>
+
+    <!-- GENESIS SIX -->
+    <section id="genesis-six" style="background: var(--surface);">
+        <div class="section-label">What's Inside</div>
+        <h2 class="section-title">The Genesis Six</h2>
+        <p class="section-sub">Every egg contains one of six unique bloodlines. You won't know which one until the reveal. Each has its own personality, abilities, and visual identity.</p>
+        <div class="genesis-strip">
+            <div class="genesis-thumb">
+                <video autoplay muted loop playsinline><source src="cap-video-ghost-web.mp4" type="video/mp4"></video>
+                <div class="genesis-thumb-name">Mischief</div>
+                <div class="genesis-thumb-type">Glitch Pup</div>
+            </div>
+            <div class="genesis-thumb">
+                <video autoplay muted loop playsinline><source src="vortex-video.mp4" type="video/mp4"></video>
+                <div class="genesis-thumb-name">Vortex</div>
+                <div class="genesis-thumb-type">Teal Dragon</div>
+            </div>
+            <div class="genesis-thumb">
+                <video autoplay muted loop playsinline><source src="forge-video.mp4" type="video/mp4"></video>
+                <div class="genesis-thumb-name">Forge</div>
+                <div class="genesis-thumb-type">Cyber Unicorn</div>
+            </div>
+            <div class="genesis-thumb">
+                <video autoplay muted loop playsinline><source src="aether-video.mp4" type="video/mp4"></video>
+                <div class="genesis-thumb-name">Aether</div>
+                <div class="genesis-thumb-type">Frost Ape</div>
+            </div>
+            <div class="genesis-thumb">
+                <video autoplay muted loop playsinline><source src="catalyst-video.mp4" type="video/mp4"></video>
+                <div class="genesis-thumb-name">Catalyst</div>
+                <div class="genesis-thumb-type">Cosmic Blob</div>
+            </div>
+            <div class="genesis-thumb">
+                <video autoplay muted loop playsinline><source src="cipher-video.mp4" type="video/mp4"></video>
+                <div class="genesis-thumb-name">Cipher</div>
+                <div class="genesis-thumb-type">Code Kraken</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT YOU GET -->
+    <section>
+        <div class="section-label">What You Get</div>
+        <h2 class="section-title">More Than an NFT</h2>
+        <p class="section-sub">Your Genesis KIN isn't a JPEG. It's a living, growing AI companion with a real concierge team behind it.</p>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">🧬</div>
+                <div class="info-title">Bespoke AI Friend</div>
+                <div class="info-text">A unique AI companion that learns your personality, remembers everything, and grows with you over time. Voice, text, total computer control.</div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🛎️</div>
+                <div class="info-title">Concierge Service</div>
+                <div class="info-text">Real humans manage your KIN. Setup, customization, optimization — we handle everything. Zero technical knowledge required.</div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">💰</div>
+                <div class="info-title">Founders Reward</div>
+                <div class="info-text">5% of all company profit shared with Genesis holders. Forever. Plus lifetime discounts and Solana rewards on every tier.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTRACT -->
+    <div class="contract-section">
+        <div class="contract-label">Verified On-Chain</div>
+        <div class="contract-addr" onclick="copyContract()" title="Click to copy">
+            Collection: BaWgt3aengftgbQnu8fvc43jAc7AnMDwQMkotJuNobTz
+        </div>
+        <p style="margin-top:1rem; font-size:0.8rem; color:var(--text-muted);">
+            <a href="https://solscan.io/token/BaWgt3aengftgbQnu8fvc43jAc7AnMDwQMkotJuNobTz" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">View on Solscan ↗</a>
+            &nbsp;&nbsp;·&nbsp;&nbsp;
+            <a href="https://github.com/kr8tiv-io/kin-by-kr8tiv" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none;">GitHub ↗</a>
+        </p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>
+            <a href="index.html">KIN Home</a>
+            <a href="https://kr8tiv.ai" target="_blank" rel="noopener">KR8TIV AI</a>
+            <a href="https://t.me/kr8tivai" target="_blank" rel="noopener">Telegram</a>
+            <a href="terms.html">Terms</a>
+            <a href="privacy.html">Privacy</a>
+        </div>
+        <div class="footer-note">© 2026 KR8TIV AI — Aurora Ventures. All rights reserved.</div>
+    </footer>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+    // === Wallet Connection ===
+    let walletAddress = null;
+    const TREASURY = '7BLHKsHRGjsTKQdZYaC3tRDeUChJ9E2XsMPpg2Tv23cf';
+
+    async function connectWallet() {
+        const btn = document.getElementById('walletBtn');
+        
+        if (walletAddress) {
+            // Disconnect
+            walletAddress = null;
+            btn.textContent = 'Connect Wallet';
+            btn.classList.remove('connected');
+            showToast('Wallet disconnected');
+            return;
+        }
+
+        if (!window.solana || !window.solana.isPhantom) {
+            window.open('https://phantom.app/', '_blank');
+            showToast('Please install Phantom wallet');
+            return;
+        }
+
+        try {
+            const resp = await window.solana.connect();
+            walletAddress = resp.publicKey.toString();
+            btn.textContent = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
+            btn.classList.add('connected');
+            showToast('Connected: ' + walletAddress.slice(0, 8) + '...');
+        } catch (err) {
+            showToast('Connection cancelled');
+        }
+    }
+
+    // === Minting ===
+    async function mintTier(tier, price) {
+        if (!walletAddress) {
+            await connectWallet();
+            if (!walletAddress) return;
+        }
+
+        const btn = document.getElementById(
+            tier === 'egg' ? 'mintEgg' : tier === 'hatchling' ? 'mintHatch' : 'mintElder'
+        );
+        const originalText = btn.textContent;
+        btn.textContent = 'Confirming...';
+        btn.disabled = true;
+
+        try {
+            // Create SOL transfer transaction
+            const { PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } = solanaWeb3;
+            const connection = new solanaWeb3.Connection(
+                'https://api.mainnet-beta.solana.com', 'confirmed'
+            );
+            
+            const transaction = new Transaction().add(
+                SystemProgram.transfer({
+                    fromPubkey: new PublicKey(walletAddress),
+                    toPubkey: new PublicKey(TREASURY),
+                    lamports: Math.round(price * LAMPORTS_PER_SOL)
+                })
+            );
+
+            transaction.feePayer = new PublicKey(walletAddress);
+            const { blockhash } = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+
+            const signed = await window.solana.signTransaction(transaction);
+            const sig = await connection.sendRawTransaction(signed.serialize());
+            await connection.confirmTransaction(sig, 'confirmed');
+
+            showToast('🎉 Mint successful! TX: ' + sig.slice(0, 12) + '...');
+            btn.textContent = '✓ Minted!';
+            btn.style.background = 'var(--green)';
+            btn.style.color = 'var(--bg)';
+
+            // Log for backend processing
+            console.log('MINT:', { tier, price, wallet: walletAddress, signature: sig });
+        } catch (err) {
+            console.error('Mint error:', err);
+            showToast('Transaction failed: ' + (err.message || 'Unknown error'));
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    }
+
+    // === Utils ===
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function copyContract() {
+        navigator.clipboard.writeText('BaWgt3aengftgbQnu8fvc43jAc7AnMDwQMkotJuNobTz');
+        showToast('Collection address copied!');
+    }
+
+    // Auto-connect if wallet was previously connected
+    if (window.solana?.isPhantom) {
+        window.solana.connect({ onlyIfTrusted: true }).then(resp => {
+            walletAddress = resp.publicKey.toString();
+            const btn = document.getElementById('walletBtn');
+            btn.textContent = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
+            btn.classList.add('connected');
+        }).catch(() => {});
+    }
+    </script>
+
+    <!-- Solana Web3.js (inlined would be huge, using CDN for now — can inline later) -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+</body>
+</html>
