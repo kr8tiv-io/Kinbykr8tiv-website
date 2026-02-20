@@ -215,18 +215,17 @@
             <div id="knob" style="position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: 0.4s;"></div>
         </div>
     </div>
-    <nav style="display:flex; align-items:center; justify-content:space-between; padding:1.5rem 3rem; position:fixed; top:0; left:0; right:0; z-index:999; background:rgba(10,10,15,0.6); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.04); transition:transform 0.3s ease;">
-        <div class="logo cta-hover" style="display:flex; align-items:center; gap:1rem; line-height:1;">
-            <span style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.5rem; letter-spacing:-0.04em; text-transform:uppercase; color:#fff;">KIN</span>
-            <span style="font-size:0.65rem; font-weight:400; opacity:0.4; letter-spacing:1px;">by KR8TIV</span>
+    <nav>
+        <div class="logo cta-hover" style="display:flex; flex-direction:column; line-height:1; gap:4px;">
+            <span style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(2rem, 4vw, 3.5rem); letter-spacing:-0.04em; text-transform:uppercase; color:#fff;">KIN</span>
+            <a href="https://kr8tiv.ai" target="_blank" rel="noopener" style="display:block; text-decoration:none; text-align:center;"><img src="kr8tiv-logo.png" alt="KR8TIV" style="height:28px; width:auto; opacity:0.6; transition:opacity 0.3s; filter:brightness(2);"></a>
         </div>
-        <div style="display:flex; align-items:center; gap:2.5rem;">
-            <a href="#capabilities" style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Features</a>
-            <a href="#bloodlines" style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Genesis Six</a>
-            <a href="#how-it-works" style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">How It Works</a>
-            <a href="#mint" style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Mint</a>
-            <a href="#faq" style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">About</a>
-            <a href="#mint" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); padding:0.5rem 1.2rem; border:1px solid rgba(255,184,0,0.3); border-radius:30px; text-decoration:none; transition:all 0.3s;" onmouseover="this.style.background='rgba(255,184,0,0.08)';this.style.borderColor='var(--gold)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,184,0,0.3)'">Mint Now</a>
+        <div style="position:fixed; top:2rem; right:5rem; display:flex; gap:2rem; z-index:100;">
+            <a href="#capabilities" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Features</a>
+            <a href="#bloodlines" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Genesis Six</a>
+            <a href="#how-it-works" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">How It Works</a>
+            <a href="#mint" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Mint</a>
+            <a href="#faq" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">About</a>
         </div>
     </nav>
 
