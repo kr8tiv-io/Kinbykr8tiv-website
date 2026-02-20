@@ -69,7 +69,7 @@
         .living-img { width: 100%; height: auto; border-radius: 24px; animation: float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite; }
         section { padding: 12vh 4rem; position: relative; }
         .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 0; }
-        .hero-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); z-index: 0; object-fit: cover; }
+        .hero-video { position: absolute; top: 50%; left: 50%; min-width: 105%; min-height: 105%; width: auto; height: auto; transform: translate(-50%, -50%) scale(1.05); z-index: 0; object-fit: cover; will-change: transform; }
         .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.95) 100%); z-index: 1; }
         .hero-content { z-index: 2; text-align: center; max-width: 900px; padding: 0 2rem; }
         .hero-title { font-size: clamp(3.5rem, 8vw, 9rem); line-height: 0.9; margin-bottom: 2rem; color: #fff; text-transform: uppercase; }
@@ -146,6 +146,10 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title gs-reveal">We build<br>you a friend.</h1>
+            <div class="gs-reveal" style="display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-bottom:1.5rem; opacity:0.6;">
+                <img src="https://cdn.simpleicons.org/solana/white" alt="Solana" style="height:18px; width:auto;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.7);">Built on Solana</span>
+            </div>
             <p class="hero-subtitle gs-reveal">Everyone else sells you a server or a blank chat box. KIN is a bespoke, fully managed AI companion concierge service. Voice, Telegram, WhatsApp, and total computer control. Zero technical knowledge required.</p>
             <div class="gs-reveal" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
                 <a href="#mint" class="cta-magnetic cta-primary cta-hover">The Genesis Mint →</a>
@@ -464,6 +468,27 @@
                 });
             }
         });
+        // Hero parallax on mouse move
+        const heroEl = document.querySelector('.hero');
+        const heroVideo = document.querySelector('.hero-video');
+        const heroContent = document.querySelector('.hero-content');
+        if (heroEl && heroVideo) {
+            heroEl.addEventListener('mousemove', (e) => {
+                const rect = heroEl.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                heroVideo.style.transform = `translate(calc(-50% + ${x * -20}px), calc(-50% + ${y * -15}px)) scale(1.05)`;
+                if (heroContent) {
+                    heroContent.style.transform = `translate(${x * 8}px, ${y * 6}px)`;
+                }
+            });
+            heroEl.addEventListener('mouseleave', () => {
+                heroVideo.style.transform = 'translate(-50%, -50%) scale(1.05)';
+                heroVideo.style.transition = 'transform 0.6s ease-out';
+                if (heroContent) { heroContent.style.transform = 'none'; heroContent.style.transition = 'transform 0.6s ease-out'; }
+                setTimeout(() => { heroVideo.style.transition = ''; if (heroContent) heroContent.style.transition = ''; }, 600);
+            });
+        }
         document.querySelectorAll('.faq-item').forEach(item => {
             item.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
