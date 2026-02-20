@@ -243,10 +243,8 @@
             .faq-question { font-size: 1.1rem; }
 
             /* Mint cards — single column */
-            #mint-grid { grid-template-columns: 1fr !important; max-width: 400px; margin: 0 auto; }
 
             /* Provider logos — keep 3 per row on tablet, just shrink */
-            #mint ~ section .grid-genesis,
             section[id="compare"] + section div[style*="grid-template-columns:repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
             div[style*="grid-template-columns:repeat(3, 1fr)"][style*="max-width:800px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; max-width: 100% !important; }
             div[style*="grid-template-columns:repeat(3, 1fr)"][style*="max-width:800px"] a { padding: 1.5rem 1rem !important; border-radius: 14px !important; }
@@ -300,7 +298,6 @@
 
             /* Genesis grid — true single column */
             .grid-genesis { max-width: 100%; }
-            #mint-grid { max-width: 100%; }
 
             /* Provider logos — keep 3 per row, compact */
             div[style*="grid-template-columns:repeat(3, 1fr)"][style*="max-width:800px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 0.8rem !important; max-width: 100% !important; padding: 0 0.5rem !important; }
@@ -1124,215 +1121,12 @@
         }
     </script>
 
-    <!-- Solana Web3.js -->
-    <script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
-
-    <!-- Wallet Connect & Mint Logic -->
+    <!-- Video autoplay helper -->
     <script>
     (function() {
         'use strict';
-
-        // Treasury wallet — all mint payments go here
-        const TREASURY = '7BLHKsHRGjsTKQdZYaC3tRDeUChJ9E2XsMPpg2Tv23cf';
-        const SOLANA_RPC = 'https://api.mainnet-beta.solana.com';
-        const LAMPORTS_PER_SOL = 1000000000;
-
-        // Tier config
-        const TIERS = {
-            egg: { name: 'Egg', sol: 2.5, color: '#FFB800' },
-            hatchling: { name: 'Hatchling', sol: 5.3, color: '#00F0FF' },
-            elder: { name: 'Elder', sol: 8.3, color: '#FF00AA' }
-        };
-
-        let connectedWallet = null;
-        let provider = null;
-
-        // Detect mobile
-        function isMobile() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        // Deep link to open this page inside Phantom's in-app browser
-        function openInPhantom() {
-            const currentUrl = encodeURIComponent(window.location.href);
-            window.location.href = 'https://phantom.app/ul/browse/' + currentUrl + '?ref=' + currentUrl;
-        }
-
-        // Detect Phantom provider
-        function getProvider() {
-            if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
-            if (window.solana?.isPhantom) return window.solana;
-            return null;
-        }
-
-        // Update UI state
-        function updateUI() {
-            const btn = document.getElementById('wallet-connect-btn');
-            const btnText = document.getElementById('wallet-btn-text');
-            const status = document.getElementById('wallet-status');
-            const mintBtns = document.querySelectorAll('.mint-btn');
-
-            if (connectedWallet) {
-                const addr = connectedWallet.toString();
-                btnText.textContent = addr.slice(0, 4) + '···' + addr.slice(-4);
-                btn.style.borderColor = 'rgba(0, 240, 255, 0.5)';
-                btn.style.background = 'linear-gradient(135deg, rgba(0,240,255,0.1), rgba(0,240,255,0.05))';
-                status.textContent = '✓ Wallet connected — choose your tier';
-                status.style.color = 'var(--cyan)';
-
-                mintBtns.forEach(b => {
-                    b.style.opacity = '1';
-                    b.style.pointerEvents = 'auto';
-                });
-            } else {
-                btnText.textContent = 'Connect Phantom';
-                btn.style.borderColor = 'rgba(171,71,188,0.4)';
-                btn.style.background = 'linear-gradient(135deg, rgba(171,71,188,0.15), rgba(103,58,183,0.15))';
-                status.textContent = '';
-            }
-        }
-
-        // Connect wallet
-        window.connectWallet = async function() {
-            provider = getProvider();
-
-            // Mobile: deep link to Phantom app
-            if (!provider && isMobile()) {
-                const status = document.getElementById('wallet-status');
-                status.textContent = 'Opening in Phantom wallet...';
-                status.style.color = 'var(--gold)';
-                openInPhantom();
-                return;
-            }
-
-            if (!provider) {
-                const status = document.getElementById('wallet-status');
-                status.textContent = 'Phantom not found — opening install page...';
-                status.style.color = 'var(--gold)';
-                setTimeout(() => window.open('https://phantom.app/', '_blank'), 800);
-                return;
-            }
-
-            try {
-                const resp = await provider.connect();
-                connectedWallet = resp.publicKey;
-                updateUI();
-                console.log('[KIN Mint] Connected:', connectedWallet.toString());
-            } catch (err) {
-                console.error('[KIN Mint] Connect failed:', err);
-                const status = document.getElementById('wallet-status');
-                if (err.code === 4001) {
-                    status.textContent = 'Connection declined. Click to try again.';
-                } else {
-                    status.textContent = 'Connection failed. Please try again.';
-                }
-                status.style.color = 'var(--magenta)';
-            }
-        };
-
-        // Mint (send SOL to treasury)
-        window.mintKIN = async function(tier, solAmount) {
-            // If not connected, connect first
-            if (!connectedWallet) {
-                await window.connectWallet();
-                if (!connectedWallet) return; // User declined
-            }
-
-            provider = getProvider();
-            if (!provider) return;
-
-            const tierInfo = TIERS[tier];
-            const btn = document.querySelector(`.mint-btn[data-tier="${tier}"]`);
-            const originalText = btn.textContent;
-            const status = document.getElementById('wallet-status');
-
-            try {
-                btn.textContent = 'Confirming...';
-                btn.style.opacity = '0.6';
-                btn.style.pointerEvents = 'none';
-                status.textContent = `Preparing ${tierInfo.name} mint transaction...`;
-                status.style.color = tierInfo.color;
-
-                const connection = new solanaWeb3.Connection(SOLANA_RPC, 'confirmed');
-                const treasuryPubkey = new solanaWeb3.PublicKey(TREASURY);
-                const lamports = Math.round(solAmount * LAMPORTS_PER_SOL);
-
-                // Create transfer transaction
-                const transaction = new solanaWeb3.Transaction().add(
-                    solanaWeb3.SystemProgram.transfer({
-                        fromPubkey: connectedWallet,
-                        toPubkey: treasuryPubkey,
-                        lamports: lamports
-                    })
-                );
-
-                // Get recent blockhash
-                const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-                transaction.recentBlockhash = blockhash;
-                transaction.feePayer = connectedWallet;
-                transaction.lastValidBlockHeight = lastValidBlockHeight;
-
-                // Sign and send via Phantom
-                const { signature } = await provider.signAndSendTransaction(transaction);
-
-                status.textContent = `Transaction sent! Confirming...`;
-                status.style.color = 'var(--cyan)';
-                btn.textContent = 'Confirming...';
-
-                // Wait for confirmation
-                const confirmation = await connection.confirmTransaction({
-                    signature,
-                    blockhash,
-                    lastValidBlockHeight
-                }, 'confirmed');
-
-                if (confirmation.value.err) {
-                    throw new Error('Transaction failed on-chain');
-                }
-
-                // Success!
-                btn.textContent = '✓ Minted!';
-                btn.style.background = 'rgba(0,240,255,0.15)';
-                btn.style.borderColor = 'var(--cyan)';
-                btn.style.color = 'var(--cyan)';
-                status.innerHTML = `✓ ${tierInfo.name} mint confirmed! <a href="https://solscan.io/tx/${signature}" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:underline;">View on Solscan →</a>`;
-                status.style.color = 'var(--cyan)';
-
-                console.log('[KIN Mint] Success! Signature:', signature);
-
-            } catch (err) {
-                console.error('[KIN Mint] Mint failed:', err);
-                btn.textContent = originalText;
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
-
-                if (err.code === 4001 || err.message?.includes('rejected')) {
-                    status.textContent = 'Transaction cancelled. No SOL was sent.';
-                } else if (err.message?.includes('insufficient')) {
-                    status.textContent = `Insufficient balance. ${tierInfo.name} requires ${solAmount} SOL + gas.`;
-                } else {
-                    status.textContent = 'Transaction failed. Please try again.';
-                }
-                status.style.color = 'var(--magenta)';
-            }
-        };
-
-        // Try eager connect on load (if previously approved)
-        window.addEventListener('DOMContentLoaded', async () => {
-            provider = getProvider();
-            if (provider) {
-                try {
-                    const resp = await provider.connect({ onlyIfTrusted: true });
-                    connectedWallet = resp.publicKey;
-                    updateUI();
-                } catch (e) {}
-            }
-            if (provider) {
-                provider.on('disconnect', () => { connectedWallet = null; updateUI(); });
-                provider.on('accountChanged', (pk) => { connectedWallet = pk || null; updateUI(); });
-            }
-
-            // Play videos when they scroll into view (browsers throttle autoplay for offscreen videos)
+        // Play videos when they scroll into view (browsers throttle autoplay for offscreen videos)
+        window.addEventListener('DOMContentLoaded', () => {
             const playObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
