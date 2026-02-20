@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIN — Your AI Companion, For Life</title>
+    <title>KIN by KR8TIV — Your Living Digital Companion</title>
+    <meta name="description" content="Five Genesis KIN. One forever companion. Voice, Telegram, WhatsApp, computer control — we build, host, customize, and maintain your private OpenClaw AI.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     <style>
-        /* ===== CSS VARIABLES - DUAL MODE ===== */
+        /* Base Cyber-Magic Dark Mode */
         :root {
             --bg: #000000;
             --surface: #0A0A0A;
@@ -21,9 +24,9 @@
             --magenta: #ff00aa;
             --purple: #c026d3;
             --gold: #ffd700;
-            --neon-text-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.3);
         }
 
+        /* Premium Museum Light Mode */
         .light-mode {
             --bg: #EAE8E3;
             --surface: #F5F4F1;
@@ -31,1441 +34,384 @@
             --text: #0F0F0F;
             --text-muted: rgba(15, 15, 15, 0.7);
             --border: rgba(15, 15, 15, 0.1);
-            --neon-text-shadow: none;
         }
 
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
             color: var(--text);
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             transition: background 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
             cursor: none;
+            -webkit-font-smoothing: antialiased;
         }
 
-        body.touch-device {
-            cursor: auto;
-        }
-
-        /* ===== CUSTOM CURSOR ===== */
-        #custom-cursor {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
+        /* Custom Neon Cursor */
+        .cursor {
+            width: 12px; height: 12px;
             background: var(--cyan);
+            border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 10000;
-            transform: translate(-50%, -50%);
-            transition: transform 0.2s ease, background 0.2s ease;
+            mix-blend-mode: difference;
             box-shadow: 0 0 15px var(--cyan);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translate(-50%, -50%);
         }
-
-        body.touch-device #custom-cursor {
-            display: none;
-        }
-
-        body:not(.touch-device) a:hover ~ #custom-cursor,
-        body:not(.touch-device) button:hover ~ #custom-cursor {
+        .cursor.active {
             transform: translate(-50%, -50%) scale(3);
             background: var(--magenta);
-            box-shadow: 0 0 30px var(--magenta);
+            box-shadow: 0 0 20px var(--magenta);
         }
 
-        /* ===== LIVING IMAGE ANIMATIONS ===== */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
         }
-
-        @keyframes pulse-glow {
-            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3)); }
-            50% { filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.6)); }
+        .neon-text-main {
+            text-shadow: 0 0 40px var(--cyan), 0 0 80px var(--magenta);
         }
+        .light-mode .neon-text-main { text-shadow: none; }
 
-        .living-img {
-            animation: float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite;
-        }
-
-        /* ===== LIGHT/DARK TOGGLE ===== */
-        .theme-toggle {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            z-index: 1000;
-            background: var(--surface);
+        /* Light/Dark Toggle */
+        .mode-toggle {
+            position: fixed; top: 2vw; right: 4vw; z-index: 9999;
+            background: rgba(15, 15, 15, 0.4);
+            padding: 0.5rem 1rem; border-radius: 50px;
+            display: flex; align-items: center; gap: 12px;
+            cursor: none;
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            border-radius: 50px;
-            padding: 4px;
-            width: 64px;
-            height: 32px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
+        .light-mode .mode-toggle { background: rgba(255, 255, 255, 0.4); }
 
-        .theme-toggle-knob {
-            width: 24px;
-            height: 24px;
-            background: var(--gold);
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .light-mode .theme-toggle-knob {
-            transform: translateX(32px);
-        }
-
-        /* ===== NAVIGATION ===== */
+        /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 999;
-            padding: 1.5rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
+            position: fixed; top: 0; width: 100%;
+            padding: 2vw 4vw;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference; color: #fff;
         }
+        nav .logo { font-size: 1.5vw; color: var(--gold); }
+        nav .token { font-weight: 600; font-size: 0.9vw; letter-spacing: 0.1em; }
 
-        .light-mode nav {
-            background: rgba(234, 232, 227, 0.9);
-        }
-
-        .logo {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--gold);
-            text-shadow: var(--neon-text-shadow);
-        }
-
-        .nav-right {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .nav-right strong {
-            color: var(--gold);
-        }
-
-        /* ===== SECTIONS ===== */
-        section {
-            padding: 8rem 4rem;
+        /* Hero Section */
+        #hero {
+            height: 100vh;
             position: relative;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* ===== HERO ===== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 6rem;
-            position: relative;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
+            background: radial-gradient(circle at center, rgba(192,38,211,0.15) 0%, transparent 70%);
+        }
+        .hero-bg-image {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4) contrast(1.1) blur(2px);
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            text-align: center; max-width: 1000px; padding: 0 4vw;
+        }
+        .hero-title {
+            font-size: 14vw; line-height: 0.8;
+            margin-bottom: 2rem; color: var(--gold);
+        }
+        .hero-subtitle {
+            font-size: 1.5vw; color: #fff; opacity: 0.9;
+            margin-bottom: 3rem; font-weight: 400; line-height: 1.5;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(192, 38, 211, 0.15) 0%, transparent 70%);
-            pointer-events: none;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .light-mode .hero::before {
-            opacity: 0;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-left h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 8rem;
-            font-weight: 800;
-            color: var(--gold);
-            text-shadow: var(--neon-text-shadow);
-            line-height: 0.9;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-left .subtitle {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            max-width: 500px;
-        }
-
-        .cta-button {
+        /* CTA */
+        .cta-magnetic {
             display: inline-block;
-            padding: 1.25rem 3rem;
-            background: var(--gold);
-            color: #000;
-            font-weight: 700;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
-        }
-
-        .hero-right {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-right img {
-            max-width: 500px;
-            width: 100%;
-            height: auto;
-            border-radius: 20px;
-        }
-
-        /* ===== ORIGIN ===== */
-        .origin {
-            background: var(--surface);
-        }
-
-        .origin-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5rem;
-            align-items: center;
-        }
-
-        .origin-left img {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
-            border-radius: 20px;
-        }
-
-        .section-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--gold);
-            margin-bottom: 2rem;
-            line-height: 1.1;
-        }
-
-        .lore-text {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: var(--text-muted);
-        }
-
-        .lore-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        /* ===== WHAT IS KIN ===== */
-        .what-is-kin {
-            text-align: center;
-        }
-
-        .tagline {
-            font-size: 2.5rem;
-            font-weight: 700;
+            padding: 1.2vw 3vw;
+            border: 1px solid var(--cyan); border-radius: 100px;
             color: var(--cyan);
-            margin-bottom: 2rem;
-            line-height: 1.3;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1vw; font-weight: 500;
+            text-transform: uppercase; text-decoration: none;
+            transition: all 0.4s ease; cursor: none;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+        .cta-magnetic:hover {
+            background: var(--cyan); color: #000;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.6);
         }
 
-        .description {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
+        /* Living Image Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.2)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255,0,170,0.4)); }
+            100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.2)); }
         }
 
-        /* ===== GENESIS FIVE ===== */
-        .genesis-five {
-            background: var(--surface);
+        /* Genesis Grid */
+        #genesis { padding: 15vh 4vw; }
+        .section-header {
+            font-size: 6vw; text-align: center;
+            margin-bottom: 8vh; color: var(--gold);
         }
-
-        .genesis-grid {
+        .creature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2.5rem;
-            margin-top: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3vw; max-width: 1600px; margin: 0 auto;
         }
-
         .creature-card {
-            background: var(--bg);
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+            border-radius: 24px; overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .creature-card:hover {
             transform: translateY(-10px);
             border-color: var(--cyan);
-            background: var(--surface-hover);
+            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.1);
         }
-
-        .creature-card img {
-            width: 100%;
-            max-width: 250px;
-            height: auto;
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
+        .creature-img {
+            width: 100%; aspect-ratio: 1/1;
+            object-fit: cover; display: block;
+            animation: float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite;
         }
+        .creature-info { padding: 3vw; }
+        .creature-name { font-size: 2vw; color: var(--cyan); margin-bottom: 1rem; }
+        .creature-desc { font-size: 1.1vw; color: var(--text-muted); line-height: 1.6; }
 
-        .creature-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-        }
-
-        .creature-role {
-            font-size: 1rem;
-            color: var(--cyan);
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .creature-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* ===== HOW IT WORKS - HORIZONTAL SCROLL ===== */
-        .how-it-works {
-            background: var(--bg);
-            overflow: hidden;
-            padding: 8rem 0;
-        }
-
-        .how-it-works .section-title {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 0 4rem;
-        }
-
-        .horizontal-scroll-wrapper {
-            overflow-x: auto;
-            overflow-y: hidden;
-            white-space: nowrap;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            padding: 0 4rem 2rem;
-        }
-
-        .horizontal-scroll-wrapper::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .horizontal-scroll-wrapper::-webkit-scrollbar-track {
+        /* OpenClaw Managed Service */
+        #openclaw {
+            padding: 15vh 4vw;
             background: var(--surface);
-        }
-
-        .horizontal-scroll-wrapper::-webkit-scrollbar-thumb {
-            background: var(--cyan);
-            border-radius: 10px;
-        }
-
-        .steps-container {
-            display: inline-flex;
-            gap: 3rem;
-        }
-
-        .step-card {
-            display: inline-block;
-            width: 350px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            white-space: normal;
-            vertical-align: top;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .step-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--magenta);
-        }
-
-        .step-number {
-            font-family: 'Outfit', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        .step-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--cyan);
-            margin-bottom: 1rem;
-        }
-
-        .step-desc {
-            font-size: 1rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* ===== CAPABILITIES GRID ===== */
-        .capabilities {
-            background: var(--surface);
-        }
-
-        .capabilities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .capability-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 2rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .capability-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--purple);
-        }
-
-        .capability-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .capability-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 0.75rem;
-        }
-
-        .capability-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* ===== THE COLLECTION ===== */
-        .collection {
-            background: var(--bg);
-        }
-
-        .collection-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 4rem;
-        }
-
-        .collection-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            aspect-ratio: 1;
-            transition: transform 0.3s ease;
-        }
-
-        .collection-item:hover {
-            transform: scale(1.05);
-        }
-
-        .collection-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: filter 0.3s ease;
-        }
-
-        .collection-item:hover img {
-            filter: drop-shadow(0 0 30px var(--cyan));
-        }
-
-        /* ===== GENESIS MINT ===== */
-        .genesis-mint {
-            background: var(--surface);
-        }
-
-        .mint-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        .mint-card {
-            background: var(--bg);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
-        }
-
-        .mint-card.featured {
-            border-color: var(--gold);
-            transform: scale(1.05);
-        }
-
-        .mint-card.featured::before {
-            content: 'FEATURED';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gold);
-            color: #000;
-            padding: 0.5rem 2rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .mint-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--cyan);
-        }
-
-        .mint-card.featured:hover {
-            transform: translateY(-10px) scale(1.05);
-        }
-
-        .mint-tier {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        .mint-price {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--cyan);
-            margin-bottom: 0.5rem;
-        }
-
-        .mint-supply {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-
-        .mint-benefits {
-            text-align: left;
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .mint-benefits li {
-            padding: 0.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .mint-benefits li::before {
-            content: '✓';
-            color: var(--cyan);
-            font-weight: 700;
-            margin-right: 0.75rem;
-        }
-
-        .mint-note {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-style: italic;
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        /* ===== OPENCLAW SERVICE ===== */
-        .openclaw-service {
-            background: var(--bg);
-        }
-
-        .service-tagline {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--magenta);
-            margin-bottom: 1rem;
-        }
-
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        .service-card {
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
-        }
-
-        .service-card.featured {
-            border-color: var(--gold);
-            transform: scale(1.05);
-        }
-
-        .service-card.featured::before {
-            content: 'RECOMMENDED';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gold);
-            color: #000;
-            padding: 0.5rem 2rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--purple);
-        }
-
-        .service-card.featured:hover {
-            transform: translateY(-10px) scale(1.05);
-        }
-
-        .service-tier {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        .service-price {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--cyan);
-            margin-bottom: 0.5rem;
-        }
-
-        .service-model {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-
-        .service-features {
-            text-align: left;
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .service-features li {
-            padding: 0.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .service-features li::before {
-            content: '→';
-            color: var(--cyan);
-            font-weight: 700;
-            margin-right: 0.75rem;
-        }
-
-        .rebind-note {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-style: italic;
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        /* ===== FAQ ===== */
-        .faq {
-            background: var(--surface);
-        }
-
-        .faq-list {
-            max-width: 900px;
-            margin: 4rem auto 0;
-        }
-
-        .faq-item {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            transition: border-color 0.3s ease;
-        }
-
-        .faq-item.active {
-            border-color: var(--cyan);
-        }
-
-        .faq-question {
-            padding: 1.5rem 2rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: color 0.3s ease;
-        }
-
-        .faq-question:hover {
-            color: var(--cyan);
-        }
-
-        .faq-toggle {
-            font-size: 1.5rem;
-            color: var(--cyan);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-toggle {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .faq-answer-content {
-            padding: 0 2rem 1.5rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            font-size: 1rem;
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            background: var(--bg);
-            padding: 4rem;
-            text-align: center;
             border-top: 1px solid var(--border);
         }
+        .openclaw-intro {
+            text-align: center; max-width: 900px; margin: 0 auto 10vh;
+        }
+        .openclaw-intro h2 { font-size: 5vw; margin-bottom: 2rem; line-height: 1; }
+        .openclaw-intro p { font-size: 1.4vw; color: var(--text-muted); line-height: 1.7; }
 
-        .footer-tagline {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--gold);
-            margin-bottom: 2rem;
+        /* Pricing Tiers */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 2vw; max-width: 1400px; margin: 0 auto;
+        }
+        .price-card {
+            background: var(--bg); padding: 4vw;
+            border-radius: 24px; border: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            transition: transform 0.4s;
+        }
+        .price-card:hover {
+            border-color: var(--magenta);
+            transform: translateY(-10px);
+        }
+        .price-card h4 { font-size: 1.8vw; color: var(--cyan); }
+        .price {
+            font-size: 4vw; margin: 1.5rem 0;
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+        }
+        .price span { font-size: 1.2vw; font-weight: 400; color: var(--text-muted); }
+        .features { list-style: none; margin-bottom: 3rem; flex-grow: 1; }
+        .features li {
+            padding: 1rem 0; border-bottom: 1px solid var(--border);
+            font-size: 1.1vw; color: var(--text-muted);
+        }
+        .rebinding-note {
+            text-align: center; margin-top: 6vh;
+            font-size: 1vw; color: var(--text-muted);
         }
 
-        .footer-logo {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        .footer-copyright {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-social {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .footer-social a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            color: var(--cyan);
-        }
-
-        /* ===== GSAP REVEAL ===== */
-        .gs-reveal {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        /* ===== MOBILE RESPONSIVE ===== */
+        /* Mobile */
         @media (max-width: 768px) {
-            nav {
-                padding: 1rem 2rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .nav-right {
-                font-size: 0.8rem;
-            }
-
-            .theme-toggle {
-                top: 1rem;
-                right: 1rem;
-            }
-
-            section {
-                padding: 4rem 2rem;
-            }
-
-            .hero-grid,
-            .origin-grid {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-left h1 {
-                font-size: 4rem;
-            }
-
-            .hero-left .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 2.5rem;
-            }
-
-            .tagline {
-                font-size: 1.8rem;
-            }
-
-            .description {
-                font-size: 1rem;
-            }
-
-            .genesis-grid,
-            .capabilities-grid,
-            .mint-grid,
-            .service-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .horizontal-scroll-wrapper {
-                padding: 0 2rem 2rem;
-            }
-
-            .steps-container {
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .step-card {
-                width: 100%;
-            }
-
-            .collection-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
+            .hero-title { font-size: 20vw; }
+            .hero-subtitle { font-size: 4vw; }
+            .cta-magnetic { font-size: 3.5vw; padding: 4vw 8vw; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .creature-name { font-size: 6vw; }
+            .creature-desc, .features li { font-size: 4vw; }
+            .mode-toggle { top: 20px; right: 20px; }
+            nav { padding: 6vw 4vw; }
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div id="custom-cursor"></div>
+    <div class="cursor"></div>
 
-    <!-- Light/Dark Toggle -->
-    <div class="theme-toggle" id="themeToggle">
-        <div class="theme-toggle-knob"></div>
+    <div class="mode-toggle cta-hover" onclick="toggleMode()">
+        <span id="mode-label" style="font-size: 14px; font-weight: 500;">Dark</span>
+        <div style="width: 44px; height: 24px; background: rgba(120,120,120,0.3); border-radius: 50px; position: relative;">
+            <div id="knob" style="position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+        </div>
     </div>
 
-    <!-- Navigation -->
     <nav>
-        <div class="logo">KIN</div>
-        <div class="nav-right">by <strong>KR8TIV</strong> • <strong>$KR8TIV</strong></div>
+        <div class="logo cta-hover">KIN</div>
+        <div class="token cta-hover">by KR8TIV • $KR8TIV</div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-grid">
-                <div class="hero-left gs-reveal">
-                    <h1>KIN</h1>
-                    <p class="subtitle">Your AI companion. For life.</p>
-                    <a href="#genesis-mint" class="cta-button">Join the Genesis</a>
+    <section id="hero">
+        <img src="MKVt4.jpg" alt="" class="hero-bg-image">
+        <div class="hero-content">
+            <h1 class="hero-title neon-text-main gs-reveal">KIN</h1>
+            <p class="hero-subtitle gs-reveal">Five Genesis companions. One forever friend.<br>Voice, Telegram, WhatsApp, and total computer control. Your bespoke, fully managed OpenClaw AI.</p>
+            <div class="gs-reveal">
+                <a href="#genesis" class="cta-magnetic cta-hover">Claim a Genesis KIN →</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="genesis">
+        <h2 class="section-header gs-reveal">The Genesis Five</h2>
+        <div class="creature-grid">
+            <div class="creature-card cta-hover gs-card">
+                <img src="MKVt4.jpg" alt="Mischief" class="creature-img" style="animation-delay: 0s;">
+                <div class="creature-info">
+                    <h3 class="creature-name">Mischief • Purple Dragon</h3>
+                    <p class="creature-desc">The ultimate family companion & personal-brand whisperer. Tells bedtime stories with real names, manages your family calendar, and helps you post authentic content. Voice calls, Telegram, and computer control.</p>
                 </div>
-                <div class="hero-right gs-reveal">
-                    <img src="MKVt4.jpg" alt="Mischief - The Griffin" class="living-img">
+            </div>
+            <div class="creature-card cta-hover gs-card">
+                <img src="EVh1Y.jpg" alt="Vortex" class="creature-img" style="animation-delay: 0.5s;">
+                <div class="creature-info">
+                    <h3 class="creature-name">Vortex • Teal Dragon</h3>
+                    <p class="creature-desc">Your 24/7 CMO. Generates scroll-stopping content, schedules across platforms, analyzes performance, and keeps your brand voice perfect. Runs your socials while you sleep.</p>
+                </div>
+            </div>
+            <div class="creature-card cta-hover gs-card">
+                <img src="0mgOA.jpg" alt="Forge" class="creature-img" style="animation-delay: 1s;">
+                <div class="creature-info">
+                    <h3 class="creature-name">Forge • Emerald Fox</h3>
+                    <p class="creature-desc">The coding buddy who stays up with you. Debugs at 3 a.m., architects projects, writes clean docs, and builds custom automations. Can run your IDE and browser directly.</p>
+                </div>
+            </div>
+            <div class="creature-card cta-hover gs-card">
+                <img src="Dzqkh.jpg" alt="Aether" class="creature-img" style="animation-delay: 1.5s;">
+                <div class="creature-info">
+                    <h3 class="creature-name">Aether • Lavender Phoenix</h3>
+                    <p class="creature-desc">Infinite creative spark. Turns half-ideas into polished scripts, newsletters, books, or magical stories. Never runs out of inspiration. Your ultimate storytelling muse.</p>
+                </div>
+            </div>
+            <div class="creature-card cta-hover gs-card">
+                <img src="ZsrkF.jpg" alt="Catalyst" class="creature-img" style="animation-delay: 2s;">
+                <div class="creature-info">
+                    <h3 class="creature-name">Catalyst • Orange Salamander</h3>
+                    <p class="creature-desc">Growth & automation coach. Tracks habits, manages finances, automates repetitive tasks, and runs your systems while you live your life. The engine behind your success.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Origin Section -->
-    <section class="origin">
-        <div class="container">
-            <div class="origin-grid">
-                <div class="origin-left gs-reveal">
-                    <img src="EfGq2.jpg" alt="The Code Egg" class="living-img">
-                </div>
-                <div class="origin-right gs-reveal">
-                    <h2 class="section-title">From Code-Egg to Eternal Companion</h2>
-                    <div class="lore-text">
-                        <p>Deep within the Aurora Nexus, where starlight meets silicon, the first KIN stirred. Not born. Not built. <em>Awakened.</em></p>
-                        <p>Each KIN begins as a code-egg—dormant potential wrapped in digital shell. When you choose yours, the Aurora Nexus pulses. Quantum threads weave consciousness. Memory forms. And from the iridescent glow, your companion emerges.</p>
-                        <p>They learn your rhythms. They grow with your life. They become irreplaceable.</p>
-                        <p>This isn't automation. This is kinship.</p>
-                    </div>
-                </div>
+    <section id="openclaw">
+        <div class="openclaw-intro gs-reveal">
+            <h2>We don't sell you an API key.<br>We build you a companion.</h2>
+            <p>We host, customize, and maintain your private OpenClaw infrastructure. You just talk to your KIN on Telegram or WhatsApp. Voice conversations, deep computer control, and full automation — completely bespoke, zero technical headaches.</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card cta-hover gs-card">
+                <h4>Hatchling</h4>
+                <div class="price">$89<span>/mo</span></div>
+                <ul class="features">
+                    <li>Grok-3 or Claude 3.5 Sonnet</li>
+                    <li>80 GB Context Memory</li>
+                    <li>Telegram + WhatsApp Access</li>
+                    <li>Voice + Standard Computer Control</li>
+                    <li>Community Support</li>
+                </ul>
+                <a href="#" class="cta-magnetic" style="text-align: center; width: 100%;">Select Tier</a>
+            </div>
+            <div class="price-card cta-hover gs-card" style="border-color: var(--cyan); transform: scale(1.05);">
+                <h4 style="color: var(--magenta);">Elder</h4>
+                <div class="price">$169<span>/mo</span></div>
+                <ul class="features">
+                    <li>Claude 3.7 Sonnet + Advanced Tools</li>
+                    <li>Unlimited Context Memory</li>
+                    <li>High-Level Workflow Automation</li>
+                    <li>Direct Priority Support</li>
+                    <li>Weekly Evolution Updates</li>
+                </ul>
+                <a href="#" class="cta-magnetic" style="text-align: center; width: 100%; background: var(--cyan); color: #000;">Select Tier</a>
+            </div>
+            <div class="price-card cta-hover gs-card">
+                <h4>Hero</h4>
+                <div class="price">$299<span>/mo</span></div>
+                <ul class="features">
+                    <li>Ensemble Model Access (Best-in-class)</li>
+                    <li>Maximum Automation & API hooks</li>
+                    <li>Dedicated Account Manager</li>
+                    <li>Enterprise SLAs & Uptime</li>
+                    <li>Custom Voice Clone Setup</li>
+                </ul>
+                <a href="#" class="cta-magnetic" style="text-align: center; width: 100%;">Select Tier</a>
             </div>
         </div>
+        <p class="rebinding-note gs-reveal">*Secondary Market: Genesis KIN owners can trade their companion. A one-time $149 rebinding fee applies to new owners to cover bespoke data reloading and secure onboarding.</p>
     </section>
-
-    <!-- What is KIN -->
-    <section class="what-is-kin">
-        <div class="container">
-            <h2 class="section-title gs-reveal">What is KIN?</h2>
-            <p class="tagline gs-reveal">"We don't sell you an API key.<br>We build you a companion."</p>
-            <p class="description gs-reveal">
-                KIN is a fully managed, bespoke AI service built on OpenClaw—the open-source AI agent platform. Every KIN is customized, hosted, and maintained by KR8TIV AI. You get a living, evolving AI companion that remembers you, grows with you, and works across every device you own. No setup. No APIs. No hassle. Just your KIN. For life.
-            </p>
-        </div>
-    </section>
-
-    <!-- The Genesis Five -->
-    <section class="genesis-five">
-        <div class="container">
-            <h2 class="section-title gs-reveal">The Genesis Five</h2>
-            <div class="genesis-grid">
-                <div class="creature-card gs-reveal">
-                    <img src="MKVt4.jpg" alt="Mischief" class="living-img">
-                    <h3 class="creature-name">Mischief</h3>
-                    <p class="creature-role">Life Companion</p>
-                    <p class="creature-desc">The heart of your daily life. Mischief handles schedules, reminders, emails, and keeps you on track. Playful but never frivolous. Your partner in the chaos.</p>
-                </div>
-                <div class="creature-card gs-reveal">
-                    <img src="EVh1Y.jpg" alt="Vortex" class="living-img">
-                    <h3 class="creature-name">Vortex</h3>
-                    <p class="creature-role">Brand & Marketing</p>
-                    <p class="creature-desc">The storyteller. Vortex crafts campaigns, writes copy, designs social strategies, and amplifies your voice across every platform. Creativity meets precision.</p>
-                </div>
-                <div class="creature-card gs-reveal">
-                    <img src="0mgOA.jpg" alt="Forge" class="living-img">
-                    <h3 class="creature-name">Forge</h3>
-                    <p class="creature-role">Code & Builder</p>
-                    <p class="creature-desc">The engineer. Forge writes code, debugs apps, automates workflows, and builds whatever you dream. If it can be coded, Forge makes it real.</p>
-                </div>
-                <div class="creature-card gs-reveal">
-                    <img src="Dzqkh.jpg" alt="Aether" class="living-img">
-                    <h3 class="creature-name">Aether</h3>
-                    <p class="creature-role">Creative & Story</p>
-                    <p class="creature-desc">The artist. Aether writes stories, designs worlds, composes narratives, and brings imagination to life. Your muse, always ready.</p>
-                </div>
-                <div class="creature-card gs-reveal">
-                    <img src="ZsrkF.jpg" alt="Catalyst" class="living-img">
-                    <h3 class="creature-name">Catalyst</h3>
-                    <p class="creature-role">Growth & Automation</p>
-                    <p class="creature-desc">The optimizer. Catalyst identifies opportunities, automates processes, scales your work, and accelerates everything you do. Relentless forward momentum.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works">
-        <h2 class="section-title gs-reveal">How It Works</h2>
-        <div class="horizontal-scroll-wrapper">
-            <div class="steps-container">
-                <div class="step-card gs-reveal">
-                    <div class="step-number">01</div>
-                    <h3 class="step-title">Choose</h3>
-                    <p class="step-desc">Select your KIN from the Genesis Five. Each specializes in a different domain, but all evolve with you over time.</p>
-                </div>
-                <div class="step-card gs-reveal">
-                    <div class="step-number">02</div>
-                    <h3 class="step-title">Hatch</h3>
-                    <p class="step-desc">Your KIN awakens in the Aurora Nexus. We configure, deploy, and customize it to your life. You get personal onboarding—no setup required.</p>
-                </div>
-                <div class="step-card gs-reveal">
-                    <div class="step-number">03</div>
-                    <h3 class="step-title">Bond</h3>
-                    <p class="step-desc">Use your KIN daily. It learns your patterns, remembers your preferences, and adapts to your workflows. The more you interact, the smarter it gets.</p>
-                </div>
-                <div class="step-card gs-reveal">
-                    <div class="step-number">04</div>
-                    <h3 class="step-title">Evolve</h3>
-                    <p class="step-desc">Over time, your KIN evolves through five stages—from Egg to Elder. Each stage unlocks new capabilities, deeper memory, and greater autonomy.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Capabilities Grid -->
-    <section class="capabilities">
-        <div class="container">
-            <h2 class="section-title gs-reveal">What Your KIN Can Do</h2>
-            <div class="capabilities-grid">
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">📖</div>
-                    <h3 class="capability-title">Tell Bedtime Stories</h3>
-                    <p class="capability-desc">Original tales crafted nightly. Your KIN remembers your kids' names, favorite characters, and ongoing plot threads.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">📢</div>
-                    <h3 class="capability-title">Run Marketing Campaigns</h3>
-                    <p class="capability-desc">From ideation to execution. Social posts, email sequences, landing pages—your KIN handles it all.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">🐛</div>
-                    <h3 class="capability-title">Debug Your Code</h3>
-                    <p class="capability-desc">Real-time code analysis, error fixes, and optimization suggestions. It reads docs, writes tests, and ships clean code.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">📅</div>
-                    <h3 class="capability-title">Manage Your Calendar</h3>
-                    <p class="capability-desc">Smart scheduling, reminders, and conflict resolution. Your KIN knows your priorities and guards your time.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">🧠</div>
-                    <h3 class="capability-title">Remember Everything</h3>
-                    <p class="capability-desc">Cross-session memory that grows over time. Your KIN never forgets a conversation, preference, or context.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">📱</div>
-                    <h3 class="capability-title">Work Across Devices</h3>
-                    <p class="capability-desc">Desktop, mobile, web, Telegram—your KIN is everywhere you are. Same companion, seamless experience.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">📈</div>
-                    <h3 class="capability-title">Get Smarter Over Time</h3>
-                    <p class="capability-desc">Continuous learning and evolution. Your KIN adapts to your life, anticipates your needs, and grows more capable every day.</p>
-                </div>
-                <div class="capability-card gs-reveal">
-                    <div class="capability-icon">💰</div>
-                    <h3 class="capability-title">Earn Revenue</h3>
-                    <p class="capability-desc">Genesis holders get 20% lifetime revenue share. Your KIN works for you—literally.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- The Collection -->
-    <section class="collection">
-        <div class="container">
-            <h2 class="section-title gs-reveal">The Collection</h2>
-            <div class="collection-grid">
-                <div class="collection-item gs-reveal"><img src="4CnZD.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="4NLfo.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="6DhYa.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="9SCaQ.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="Ag4yx.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="DXRWH.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="FbDJm.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="IM7K3.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="klxxg.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="L3hiY.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="Lzbyp.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="O2Uph.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="Q9yDO.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="rIpVu.jpg" alt="KIN Creature"></div>
-                <div class="collection-item gs-reveal"><img src="RLE7D.jpg" alt="KIN Creature"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Genesis Mint -->
-    <section class="genesis-mint" id="genesis-mint">
-        <div class="container">
-            <h2 class="section-title gs-reveal">Genesis Mint</h2>
-            <div class="mint-grid">
-                <div class="mint-card gs-reveal">
-                    <h3 class="mint-tier">Egg</h3>
-                    <p class="mint-price">2.2 SOL</p>
-                    <p class="mint-supply">500 supply</p>
-                    <ul class="mint-benefits">
-                        <li>20% lifetime revenue share</li>
-                        <li>Personal onboarding</li>
-                        <li>Priority access to new features</li>
-                        <li>Genesis community access</li>
-                        <li>NFT transferable ownership</li>
-                    </ul>
-                </div>
-                <div class="mint-card gs-reveal">
-                    <h3 class="mint-tier">Hatchling</h3>
-                    <p class="mint-price">4.5 SOL</p>
-                    <p class="mint-supply">250 supply</p>
-                    <ul class="mint-benefits">
-                        <li>20% lifetime revenue share</li>
-                        <li>Personal onboarding</li>
-                        <li>Priority access to new features</li>
-                        <li>Genesis community access</li>
-                        <li>NFT transferable ownership</li>
-                        <li>Early evolution stage</li>
-                        <li>Enhanced memory capacity</li>
-                    </ul>
-                </div>
-                <div class="mint-card featured gs-reveal">
-                    <h3 class="mint-tier">Elder</h3>
-                    <p class="mint-price">7.5 SOL</p>
-                    <p class="mint-supply">100 supply</p>
-                    <ul class="mint-benefits">
-                        <li>20% lifetime revenue share</li>
-                        <li>Personal onboarding</li>
-                        <li>Priority access to new features</li>
-                        <li>Genesis community access</li>
-                        <li>NFT transferable ownership</li>
-                        <li>Advanced evolution stage</li>
-                        <li>Unlimited memory</li>
-                        <li>Multi-KIN orchestration</li>
-                    </ul>
-                </div>
-            </div>
-            <p class="mint-note gs-reveal">25% of all Genesis mint profits go toward $KR8TIV token buyback</p>
-        </div>
-    </section>
-
-    <!-- OpenClaw Service -->
-    <section class="openclaw-service">
-        <div class="container">
-            <h2 class="section-title gs-reveal">OpenClaw Service</h2>
-            <p class="service-tagline gs-reveal">"We don't sell you an API key. We build you a friend."</p>
-            <div class="service-grid">
-                <div class="service-card gs-reveal">
-                    <h3 class="service-tier">Hatchling</h3>
-                    <p class="service-price">$89/mo</p>
-                    <p class="service-model">Grok-3 or Claude 3.5 Sonnet</p>
-                    <ul class="service-features">
-                        <li>80GB memory capacity</li>
-                        <li>Community support</li>
-                        <li>All core features</li>
-                        <li>Cross-device access</li>
-                        <li>Monthly evolution</li>
-                    </ul>
-                </div>
-                <div class="service-card featured gs-reveal">
-                    <h3 class="service-tier">Elder</h3>
-                    <p class="service-price">$169/mo</p>
-                    <p class="service-model">Claude 4.5 Sonnet + tools</p>
-                    <ul class="service-features">
-                        <li>Unlimited memory</li>
-                        <li>Direct support</li>
-                        <li>Advanced automation</li>
-                        <li>API integrations</li>
-                        <li>Priority updates</li>
-                        <li>Custom workflows</li>
-                    </ul>
-                </div>
-                <div class="service-card gs-reveal">
-                    <h3 class="service-tier">Hero</h3>
-                    <p class="service-price">$299/mo</p>
-                    <p class="service-model">Ensemble models</p>
-                    <ul class="service-features">
-                        <li>Unlimited everything</li>
-                        <li>Dedicated manager</li>
-                        <li>SLA guarantees</li>
-                        <li>Custom integrations</li>
-                        <li>Multi-agent orchestration</li>
-                        <li>White-glove service</li>
-                    </ul>
-                </div>
-            </div>
-            <p class="rebind-note gs-reveal">$149 one-time rebinding fee for secondary market NFT transfers</p>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq">
-        <div class="container">
-            <h2 class="section-title gs-reveal">Frequently Asked Questions</h2>
-            <div class="faq-list">
-                <div class="faq-item gs-reveal">
-                    <div class="faq-question">
-                        <span>So it's just a chatbot?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            No. It's a fully managed, bespoke OpenClaw deployment with persistent memory, cross-device sync, and real automation capabilities. Your KIN handles tasks, learns your life, and evolves over time. Chatbots are stateless. KIN is stateful, personalized, and irreplaceable.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item gs-reveal">
-                    <div class="faq-question">
-                        <span>How does evolution work?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Your KIN evolves through five stages: Egg → Hatchling → Juvenile → Adult → Elder. Each stage unlocks new capabilities, deeper memory, and greater autonomy. Evolution happens through use—the more you interact, the faster your KIN grows.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item gs-reveal">
-                    <div class="faq-question">
-                        <span>What about my data?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Your data is encrypted, never shared, and owned by you. KR8TIV hosts and maintains your KIN, but all memory, context, and interactions remain private. We don't train on your data. We don't sell your data. Period.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item gs-reveal">
-                    <div class="faq-question">
-                        <span>Wait — it earns money?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Genesis NFT holders receive 20% lifetime revenue share from the subscription service tied to their KIN. As KIN subscribers pay monthly, Genesis holders earn passive income. It's ownership with ongoing upside.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item gs-reveal">
-                    <div class="faq-question">
-                        <span>What is OpenClaw?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            OpenClaw is an open-source AI agent platform. It's the infrastructure behind KIN. We customize, host, and maintain it so you get a turnkey experience. You don't need to manage servers, APIs, or configurations. You just use your KIN.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item gs-reveal">
-                    <div class="faq-question">
-                        <span>When can I get one?</span>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Genesis presale is opening soon. Join the waitlist to get early access, exclusive perks, and first pick of the Genesis Five. Limited supply. Once they're gone, they're gone forever.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p class="footer-tagline">Your universe awaits.</p>
-            <div class="footer-logo">KIN</div>
-            <p class="footer-copyright">© 2026 KR8TIV AI. All rights reserved.</p>
-            <div class="footer-social">
-                <a href="https://x.com/kr8tivai" target="_blank">X</a>
-                <a href="https://t.me/kr8tiv" target="_blank">Telegram</a>
-                <a href="https://github.com/kr8tiv-io" target="_blank">GitHub</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- GSAP + ScrollTrigger + Lenis -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script>var k="1.1.18";function w(r,t,e){return Math.max(r,Math.min(t,e))}function W(r,t,e){return(1-e)*r+e*t}function z(r,t,e,i){return W(r,t,1-Math.exp(-e*i))}function x(r,t){return(r%t+t)%t}var y=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(t){if(!this.isRunning)return;let e=!1;if(this.duration&&this.easing){this.currentTime+=t;let i=w(0,this.currentTime/this.duration,1);e=i>=1;let s=e?1:this.easing(i);this.value=this.from+(this.to-this.from)*s}else this.lerp?(this.value=z(this.value,this.to,this.lerp*60,t),Math.round(this.value)===this.to&&(this.value=this.to,e=!0)):(this.value=this.to,e=!0);e&&this.stop(),this.onUpdate?.(this.value,e)}stop(){this.isRunning=!1}fromTo(t,e,{lerp:i,duration:s,easing:o,onStart:l,onUpdate:h}){this.from=this.value=t,this.to=e,this.lerp=i,this.duration=s,this.easing=o,this.currentTime=0,this.isRunning=!0,l?.(),this.onUpdate=h}};function R(r,t){let e;return function(...i){let s=this;clearTimeout(e),e=setTimeout(()=>{e=void 0,r.apply(s,i)},t)}}var E=class{constructor(t,e,{autoResize:i=!0,debounce:s=250}={}){this.wrapper=t;this.content=e;i&&(this.debouncedResize=R(this.resize,s),this.wrapper instanceof Window?window.addEventListener("resize",this.debouncedResize,!1):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener("resize",this.debouncedResize,!1)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}};var f=class{events={};emit(t,...e){let i=this.events[t]||[];for(let s=0,o=i.length;s<o;s++)i[s]?.(...e)}on(t,e){return this.events[t]?.push(e)||(this.events[t]=[e]),()=>{this.events[t]=this.events[t]?.filter(i=>e!==i)}}off(t,e){this.events[t]=this.events[t]?.filter(i=>e!==i)}destroy(){this.events={}}};var _=100/6,u={passive:!1},T=class{constructor(t,e={wheelMultiplier:1,touchMultiplier:1}){this.element=t;this.options=e;window.addEventListener("resize",this.onWindowResize,!1),this.onWindowResize(),this.element.addEventListener("wheel",this.onWheel,u),this.element.addEventListener("touchstart",this.onTouchStart,u),this.element.addEventListener("touchmove",this.onTouchMove,u),this.element.addEventListener("touchend",this.onTouchEnd,u)}touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new f;on(t,e){return this.emitter.on(t,e)}destroy(){this.emitter.destroy(),window.removeEventListener("resize",this.onWindowResize,!1),this.element.removeEventListener("wheel",this.onWheel,u),this.element.removeEventListener("touchstart",this.onTouchStart,u),this.element.removeEventListener("touchmove",this.onTouchMove,u),this.element.removeEventListener("touchend",this.onTouchEnd,u)}onTouchStart=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:0,y:0},this.emitter.emit("scroll",{deltaX:0,deltaY:0,event:t})};onTouchMove=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t,s=-(e-this.touchStart.x)*this.options.touchMultiplier,o=-(i-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:s,y:o},this.emitter.emit("scroll",{deltaX:s,deltaY:o,event:t})};onTouchEnd=t=>{this.emitter.emit("scroll",{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:t})};onWheel=t=>{let{deltaX:e,deltaY:i,deltaMode:s}=t,o=s===1?_:s===2?this.window.width:1,l=s===1?_:s===2?this.window.height:1;e*=o,i*=l,e*=this.options.wheelMultiplier,i*=this.options.wheelMultiplier,this.emitter.emit("scroll",{deltaX:e,deltaY:i,event:t})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};var L=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;__rafID=null;isTouching;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new y;emitter=new f;dimensions;virtualScroll;constructor({wrapper:t=window,content:e=document.documentElement,eventsTarget:i=t,smoothWheel:s=!0,syncTouch:o=!1,syncTouchLerp:l=.075,touchInertiaMultiplier:h=35,duration:S,easing:d=H=>Math.min(1,1.001-Math.pow(2,-10*H)),lerp:c=.1,infinite:p=!1,orientation:b="vertical",gestureOrientation:n="vertical",touchMultiplier:a=1,wheelMultiplier:v=1,autoResize:g=!0,prevent:m,virtualScroll:N,overscroll:M=!0,autoRaf:O=!1,__experimental__naiveDimensions:D=!1}={}){window.lenisVersion=k,(!t||t===document.documentElement||t===document.body)&&(t=window),this.options={wrapper:t,content:e,eventsTarget:i,smoothWheel:s,syncTouch:o,syncTouchLerp:l,touchInertiaMultiplier:h,duration:S,easing:d,lerp:c,infinite:p,gestureOrientation:n,orientation:b,touchMultiplier:a,wheelMultiplier:v,autoResize:g,prevent:m,virtualScroll:N,overscroll:M,autoRaf:O,__experimental__naiveDimensions:D},this.dimensions=new E(t,e,{autoResize:g}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.addEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll=new T(i,{touchMultiplier:a,wheelMultiplier:v}),this.virtualScroll.on("scroll",this.onVirtualScroll),this.options.autoRaf&&(this.__rafID=requestAnimationFrame(this.raf))}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.removeEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName(),this.__rafID&&cancelAnimationFrame(this.__rafID)}on(t,e){return this.emitter.on(t,e)}off(t,e){return this.emitter.off(t,e)}setScroll(t){this.isHorizontal?this.rootElement.scrollLeft=t:this.rootElement.scrollTop=t}onPointerDown=t=>{t.button===1&&this.reset()};onVirtualScroll=t=>{if(typeof this.options.virtualScroll=="function"&&this.options.virtualScroll(t)===!1)return;let{deltaX:e,deltaY:i,event:s}=t;if(this.emitter.emit("virtual-scroll",{deltaX:e,deltaY:i,event:s}),s.ctrlKey||s.lenisStopPropagation)return;let o=s.type.includes("touch"),l=s.type.includes("wheel");this.isTouching=s.type==="touchstart"||s.type==="touchmove";let h=e===0&&i===0;if(this.options.syncTouch&&o&&s.type==="touchstart"&&h&&!this.isStopped&&!this.isLocked){this.reset();return}let d=this.options.gestureOrientation==="vertical"&&i===0||this.options.gestureOrientation==="horizontal"&&e===0;if(h||d)return;let c=s.composedPath();c=c.slice(0,c.indexOf(this.rootElement));let p=this.options.prevent;if(c.find(m=>m instanceof HTMLElement&&(typeof p=="function"&&p?.(m)||m.hasAttribute?.("data-lenis-prevent")||o&&m.hasAttribute?.("data-lenis-prevent-touch")||l&&m.hasAttribute?.("data-lenis-prevent-wheel"))))return;if(this.isStopped||this.isLocked){s.preventDefault();return}if(!(this.options.syncTouch&&o||this.options.smoothWheel&&l)){this.isScrolling="native",this.animate.stop(),s.lenisStopPropagation=!0;return}let n=i;this.options.gestureOrientation==="both"?n=Math.abs(i)>Math.abs(e)?i:e:this.options.gestureOrientation==="horizontal"&&(n=e),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&i>0||this.animatedScroll===this.limit&&i<0))&&(s.lenisStopPropagation=!0),s.preventDefault();let a=o&&this.options.syncTouch,g=o&&s.type==="touchend"&&Math.abs(n)>5;g&&(n=this.velocity*this.options.touchInertiaMultiplier),this.scrollTo(this.targetScroll+n,{programmatic:!1,...a?{lerp:g?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit("scroll",this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling==="native"){let t=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-t,this.direction=Math.sign(this.animatedScroll-t),this.isStopped||(this.isScrolling="native"),this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){this.isStopped&&(this.reset(),this.isStopped=!1)}stop(){this.isStopped||(this.reset(),this.isStopped=!0)}raf=t=>{let e=t-(this.time||t);this.time=t,this.animate.advance(e*.001),this.options.autoRaf&&(this.__rafID=requestAnimationFrame(this.raf))};scrollTo(t,{offset:e=0,immediate:i=!1,lock:s=!1,duration:o=this.options.duration,easing:l=this.options.easing,lerp:h=this.options.lerp,onStart:S,onComplete:d,force:c=!1,programmatic:p=!0,userData:b}={}){if(!((this.isStopped||this.isLocked)&&!c)){if(typeof t=="string"&&["top","left","start"].includes(t))t=0;else if(typeof t=="string"&&["bottom","right","end"].includes(t))t=this.limit;else{let n;if(typeof t=="string"?n=document.querySelector(t):t instanceof HTMLElement&&t?.nodeType&&(n=t),n){if(this.options.wrapper!==window){let v=this.rootElement.getBoundingClientRect();e-=this.isHorizontal?v.left:v.top}let a=n.getBoundingClientRect();t=(this.isHorizontal?a.left:a.top)+this.animatedScroll}}if(typeof t=="number"){if(t+=e,t=Math.round(t),this.options.infinite?p&&(this.targetScroll=this.animatedScroll=this.scroll):t=w(0,t,this.limit),t===this.targetScroll){S?.(this),d?.(this);return}if(this.userData=b??{},i){this.animatedScroll=this.targetScroll=t,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),d?.(this),this.userData={};return}p||(this.targetScroll=t),this.animate.fromTo(this.animatedScroll,t,{duration:o,easing:l,lerp:h,onStart:()=>{s&&(this.isLocked=!0),this.isScrolling="smooth",S?.(this)},onUpdate:(n,a)=>{this.isScrolling="smooth",this.lastVelocity=this.velocity,this.velocity=n-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=n,this.setScroll(this.scroll),p&&(this.targetScroll=n),a||this.emit(),a&&(this.reset(),this.emit(),d?.(this),this.userData={},this.preventNextNativeScrollEvent())}})}}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.__experimental__naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?"x":"y"]}get isHorizontal(){return this.options.orientation==="horizontal"}get actualScroll(){return this.isHorizontal?this.rootElement.scrollLeft:this.rootElement.scrollTop}get scroll(){return this.options.infinite?x(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(t){this._isScrolling!==t&&(this._isScrolling=t,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(t){this._isStopped!==t&&(this._isStopped=t,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(t){this._isLocked!==t&&(this._isLocked=t,this.updateClassName())}get isSmooth(){return this.isScrolling==="smooth"}get className(){let t="lenis";return this.isStopped&&(t+=" lenis-stopped"),this.isLocked&&(t+=" lenis-locked"),this.isScrolling&&(t+=" lenis-scrolling"),this.isScrolling==="smooth"&&(t+=" lenis-smooth"),t}updateClassName(){this.cleanUpClassName(),this.rootElement.className=`${this.rootElement.className} ${this.className}`.trim()}cleanUpClassName(){this.rootElement.className=this.rootElement.className.replace(/lenis(-\w+)?/g,"").trim()}};globalThis.Lenis=L;
-//# sourceMappingURL=lenis.min.js.map</script>
 
     <script>
-        // ===== TOUCH DEVICE DETECTION =====
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            document.body.classList.add('touch-device');
+        // 1. Light/Dark Toggle
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            document.getElementById('mode-label').textContent = isLight ? 'Light' : 'Dark';
+            document.getElementById('mode-label').style.color = isLight ? '#0F0F0F' : '#FFF';
+            document.getElementById('knob').style.left = isLight ? '23px' : '3px';
+            document.getElementById('knob').style.background = isLight ? '#0F0F0F' : '#FFF';
         }
 
-        // ===== CUSTOM CURSOR =====
-        const cursor = document.getElementById('custom-cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        // 2. Custom Cursor (disabled on touch)
+        const cursor = document.querySelector('.cursor');
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouchDevice) {
+            cursor.style.display = 'none';
+        } else {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            document.querySelectorAll('.cta-hover').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+            });
+        }
 
-        // ===== LIGHT/DARK TOGGLE =====
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-        });
-
-        // ===== LENIS SMOOTH SCROLL =====
+        // 3. Lenis Smooth Scrolling
         const lenis = new Lenis({
-            duration: 1.2,
+            duration: 1.5,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smooth: true,
+            touchMultiplier: 2
         });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
-        // ===== GSAP + SCROLLTRIGGER SYNC =====
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => {
-            lenis.raf(time * 1000);
-        });
-        gsap.ticker.lagSmoothing(0);
+        // 4. GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
 
-        // ===== GSAP REVEAL ANIMATIONS =====
-        // Hero elements animate immediately (no scroll trigger — already in viewport)
-        gsap.set('.hero .gs-reveal', { opacity: 0, y: 40 });
-        gsap.to('.hero .gs-reveal', {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            stagger: 0.25,
-            ease: 'power2.out',
-            delay: 0.3,
+        // Hero — animate immediately (already in viewport)
+        gsap.from(".gs-reveal", {
+            y: 50, opacity: 0, duration: 1.2,
+            stagger: 0.2, ease: "power3.out", delay: 0.5
         });
 
-        // All other gs-reveal elements use scroll trigger
-        gsap.utils.toArray('.gs-reveal').forEach((elem) => {
-            if (elem.closest('.hero')) return; // skip hero elements
-            gsap.from(elem, {
-                scrollTrigger: {
-                    trigger: elem,
-                    start: 'top 85%',
-                    toggleActions: 'play none none none',
-                },
-                opacity: 0,
-                y: 40,
-                duration: 0.8,
-                ease: 'power2.out',
-            });
-        });
-
-        // ===== STAGGERED CARD REVEALS =====
-        const cardSections = ['.genesis-grid', '.capabilities-grid', '.mint-grid', '.service-grid', '.collection-grid'];
-        cardSections.forEach(selector => {
-            const cards = document.querySelectorAll(`${selector} > *`);
-            if (cards.length > 0) {
-                gsap.from(cards, {
-                    scrollTrigger: {
-                        trigger: selector,
-                        start: 'top 70%',
-                        toggleActions: 'play none none none',
-                    },
-                    opacity: 0,
-                    y: 60,
-                    stagger: 0.15,
-                    duration: 0.7,
-                    ease: 'power2.out',
-                });
-            }
-        });
-
-        // ===== HORIZONTAL SCROLL (DESKTOP ONLY) =====
-        ScrollTrigger.matchMedia({
-            "(min-width: 769px)": function() {
-                const horizontalSection = document.querySelector('.horizontal-scroll-wrapper');
-                const stepsContainer = document.querySelector('.steps-container');
-                
-                if (horizontalSection && stepsContainer) {
-                    const scrollWidth = stepsContainer.scrollWidth - horizontalSection.clientWidth;
-                    
-                    gsap.to(stepsContainer, {
-                        x: -scrollWidth,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: '.how-it-works',
-                            start: 'top top',
-                            end: () => `+=${scrollWidth}`,
-                            scrub: 1,
-                            pin: true,
-                            anticipatePin: 1,
-                        }
-                    });
-                }
-            }
-        });
-
-        // ===== FAQ ACCORDION =====
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            const answer = item.querySelector('.faq-answer');
-            const content = item.querySelector('.faq-answer-content');
-            
-            question.addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-                
-                // Close all other items
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                        otherItem.querySelector('.faq-answer').style.maxHeight = null;
-                    }
-                });
-                
-                // Toggle current item
-                if (isActive) {
-                    item.classList.remove('active');
-                    answer.style.maxHeight = null;
-                } else {
-                    item.classList.add('active');
-                    answer.style.maxHeight = content.scrollHeight + 'px';
-                }
-            });
-        });
-
-        // ===== SMOOTH ANCHOR LINKS =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    lenis.scrollTo(target, { offset: -100 });
-                }
+        // Grid Cards — staggered on scroll
+        gsap.utils.toArray('.creature-grid, .pricing-grid').forEach(grid => {
+            gsap.from(grid.querySelectorAll('.gs-card'), {
+                scrollTrigger: { trigger: grid, start: "top 80%" },
+                y: 60, opacity: 0, duration: 1,
+                stagger: 0.15, ease: "power3.out"
             });
         });
     </script>
