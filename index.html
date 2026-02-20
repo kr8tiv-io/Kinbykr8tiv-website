@@ -47,6 +47,7 @@
             --border: rgba(15, 15, 15, 0.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-x: hidden; }
         body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.5s ease, color 0.5s ease; overflow-x: hidden; cursor: none; -webkit-font-smoothing: antialiased; }
         .cursor { width: 28px; height: 28px; border: 2px solid var(--cyan); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; mix-blend-mode: difference; transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.15s ease-out; transform: translate(-50%, -50%); }
         .cursor::after { content: ''; position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; background: var(--cyan); border-radius: 50%; transform: translate(-50%, -50%); transition: background 0.3s, width 0.3s, height 0.3s; }
@@ -194,16 +195,115 @@
         .light-mode .marquee-item img { filter: grayscale(1) brightness(0.3); }
         .marquee-item span { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.55rem; color: var(--text); letter-spacing: -0.02em; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        /* ===== TABLET (≤1024px) ===== */
+        @media (max-width: 1024px) {
+            .ps-text { font-size: clamp(2.5rem, 6vw, 5rem) !important; }
+            .grid-genesis { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        }
+
+        /* ===== TABLET + MOBILE (≤768px) ===== */
         @media (max-width: 768px) {
-            section { padding: 8vh 2rem; }
-            .hero { text-align: center; }
+            section { padding: 6vh 1.5rem; }
+            .hero { text-align: center; min-height: 90vh; }
             .hero-content { width: 100%; }
-            .mode-toggle { top: 1.5rem; right: 1.5rem; padding: 0.4rem 0.8rem; }
-            nav { padding: 2rem; }
-            .grid-2, .grid-5 { grid-template-columns: 1fr; }
-            .grid-3 { grid-template-columns: 1fr; }
-            .grid-genesis { grid-template-columns: repeat(2, 1fr); }
-            th, td { padding: 1rem; font-size: 0.9rem; }
+            nav { padding: 1.5rem; }
+
+            /* Hide desktop nav links on mobile — too cramped */
+            .nav-links { display: none !important; }
+
+            /* Stack all grids single-column */
+            .grid-2, .grid-5, .grid-3 { grid-template-columns: 1fr; }
+            .grid-genesis { grid-template-columns: 1fr !important; max-width: 400px; margin: 0 auto; }
+
+            /* Problem-Solution section */
+            .ps-text { font-size: clamp(2rem, 7vw, 3.5rem) !important; line-height: 1.1 !important; }
+            .ps-slide { min-height: 40vh; padding: 2rem 1.5rem; }
+            .ps-slide:first-child { padding-top: 4vh; }
+            .ps-label { font-size: 0.75rem; letter-spacing: 0.2em; }
+            .ps-subtext { font-size: 1rem; }
+
+            /* How It Works steps — stack node above content */
+            .hiw-step { flex-direction: column !important; align-items: center !important; text-align: center; gap: 1rem; }
+            .hiw-node { width: 56px; height: 56px; }
+            .hiw-node span { font-size: 1.3rem; }
+            .hiw-content { transform: none !important; }
+            .hiw-line-track, .hiw-line-fill { display: none; }
+
+            /* Table */
+            th, td { padding: 0.8rem; font-size: 0.8rem; }
+            th { font-size: 0.7rem; }
+
+            /* FAQ */
+            .faq-question { font-size: 1.1rem; }
+
+            /* Mint cards — single column */
+            #mint-grid { grid-template-columns: 1fr !important; max-width: 400px; margin: 0 auto; }
+
+            /* Provider logos — 2 per row on tablet */
+            #mint ~ section .grid-genesis,
+            section[id="compare"] + section div[style*="grid-template-columns:repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+
+            /* Pricing cards — single column */
+            .grid-3 { max-width: 400px; margin: 0 auto; }
+
+            /* Comparison table scroll */
+            .comparison-wrap { margin: 0 -1.5rem; padding: 0 1.5rem; }
+
+            /* Section headers */
+            .section-header { font-size: clamp(1.8rem, 6vw, 2.5rem) !important; }
+
+            /* Capabilities cards */
+            .cap-card { margin-bottom: 1rem; }
+
+            /* Footer */
+            footer { padding: 3rem 1.5rem; }
+            footer a { margin: 0 0.5rem; font-size: 0.85rem; }
+        }
+
+        /* ===== MOBILE ONLY (≤480px) ===== */
+        @media (max-width: 480px) {
+            section { padding: 5vh 1.2rem; }
+            html, body { overflow-x: hidden; }
+
+            /* Nav — compact logo, hide social icons */
+            nav .logo span[style*="font-size:clamp(2rem"] { font-size: 1.8rem !important; }
+            nav .logo div[style*="gap:0.4rem"] { display: none !important; }
+            nav .logo div[style*="gap:0.6rem"] > div { display: none !important; }
+
+            /* Hero */
+            .hero { min-height: 85vh; }
+
+            /* Problem-Solution — tighter */
+            .ps-text { font-size: clamp(1.6rem, 8vw, 2.8rem) !important; }
+            .ps-slide { min-height: 35vh; padding: 1.5rem 1rem; }
+            .ps-label { font-size: 0.65rem; }
+
+            /* Mighty scroll text */
+            .mighty-scroll * { font-size: clamp(3rem, 12vw, 6rem) !important; }
+
+            /* Cards */
+            .card { padding: 1.5rem; }
+            .creature-name { font-size: 1.4rem; }
+            .price { font-size: 2.2rem; }
+
+            /* Genesis grid — true single column */
+            .grid-genesis { max-width: 100%; }
+            #mint-grid { max-width: 100%; }
+
+            /* Provider logos — 2 per row */
+            div[style*="grid-template-columns:repeat(3, 1fr)"][style*="max-width:800px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; }
+
+            /* Give the Future section */
+            .give-future-text { font-size: clamp(0.95rem, 3.5vw, 1.1rem) !important; }
+
+            /* FAQ */
+            .faq-question { font-size: 1rem; }
+
+            /* Buttons */
+            .btn-primary, .btn-outline { width: 100%; text-align: center; }
+
+            /* Footer links stack */
+            footer div { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
         }
     </style>
 </head>
@@ -222,7 +322,7 @@
             </div>
             <a href="https://kr8tiv.ai" target="_blank" rel="noopener" style="display:block; text-decoration:none; text-align:left;"><img src="kr8tiv-logo.png" alt="KR8TIV" style="height:28px; width:auto; opacity:0.6; transition:opacity 0.3s; filter:brightness(2);"></a>
         </div>
-        <div style="position:fixed; top:2rem; right:5rem; display:flex; gap:2rem; z-index:100;">
+        <div class="nav-links" style="position:fixed; top:2rem; right:5rem; display:flex; gap:2rem; z-index:100;">
             <a href="#capabilities" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Features</a>
             <a href="#bloodlines" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Genesis Six</a>
             <a href="#how-it-works" style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">How It Works</a>
