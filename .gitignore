@@ -1,0 +1,30 @@
+# Internal docs — not for public repo
+FINANCIAL-MODEL.md
+FINANCIAL-MODEL-SCALE.md
+KR8TIV-BUSINESS-PLAN.html
+GEMINI-PROMPT.md
+VIDEO-SCRIPTS.md
+LAUNCH.md
+
+# Old/draft versions
+index-backup.html
+index-v2.html
+index-v3.html
+index-v4.html
+index-v5.html
+genesis.html
+mint.html
+about.html
+how.html
+
+# Internal soul docs
+kin-souls/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
