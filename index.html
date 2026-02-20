@@ -1332,7 +1332,15 @@
                 provider.on('accountChanged', (pk) => { connectedWallet = pk || null; updateUI(); });
             }
 
-            // All videos autoplay with preload="none" — let browser handle loading naturally
+            // Play videos when they scroll into view (browsers throttle autoplay for offscreen videos)
+            const playObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.play().catch(() => {});
+                    }
+                });
+            }, { rootMargin: '300px' });
+            document.querySelectorAll('video').forEach(v => playObserver.observe(v));
         });
     })();
     </script>
