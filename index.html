@@ -92,39 +92,35 @@
         .cap-card { border-color: rgba(255, 255, 255, 0.25); }
         .hiw-journey { position: relative; max-width: 900px; margin: 0 auto; }
         .hiw-line-track { position: absolute; left: 44px; top: 0; bottom: 0; width: 3px; background: rgba(255,255,255,0.06); border-radius: 3px; }
-        .hiw-line-fill { position: absolute; left: 44px; top: 0; width: 3px; height: 0%; background: linear-gradient(to bottom, var(--cyan), var(--magenta), var(--gold), var(--cyan)); border-radius: 3px; transition: height 0.6s ease; box-shadow: 0 0 12px rgba(0,240,255,0.3); }
+        .hiw-line-fill { position: absolute; left: 44px; top: 0; width: 3px; height: 0%; background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.3)); border-radius: 3px; transition: height 0.6s ease; box-shadow: 0 0 8px rgba(255,255,255,0.1); }
         .hiw-step { display: flex; align-items: flex-start; gap: 3.5rem; margin-bottom: 6rem; position: relative; }
         .hiw-step:nth-child(odd) .hiw-content { transform: translateX(40px); opacity: 0; transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
         .hiw-step:nth-child(even) .hiw-content { transform: translateX(-40px) translateY(10px); opacity: 0; transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
         .hiw-step.active .hiw-content { transform: translateX(0) translateY(0); opacity: 1; }
         .hiw-step:last-child { margin-bottom: 0; }
         .hiw-node { width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; background: rgba(0,240,255,0.03); border: 2px solid rgba(255,255,255,0.08); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
-        .hiw-step.active .hiw-node { border-color: var(--cyan); background: rgba(0,240,255,0.08); box-shadow: 0 0 40px rgba(0,240,255,0.25), 0 0 80px rgba(0,240,255,0.08); transform: scale(1.1); }
-        .hiw-step[data-step="2"].active .hiw-node { border-color: var(--magenta); background: rgba(255,0,170,0.08); box-shadow: 0 0 40px rgba(255,0,170,0.25), 0 0 80px rgba(255,0,170,0.08); }
-        .hiw-step[data-step="3"].active .hiw-node { border-color: var(--gold); background: rgba(255,215,0,0.08); box-shadow: 0 0 40px rgba(255,215,0,0.25), 0 0 80px rgba(255,215,0,0.08); }
-        .hiw-step[data-step="4"].active .hiw-node { border-color: var(--cyan); background: rgba(0,240,255,0.06); box-shadow: 0 0 40px rgba(0,240,255,0.2), 0 0 80px rgba(255,0,170,0.08); }
+        .hiw-step.active .hiw-node { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); box-shadow: 0 0 25px rgba(255,255,255,0.08); transform: scale(1.05); }
+        .hiw-step[data-step="2"].active .hiw-node { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); box-shadow: 0 0 25px rgba(255,255,255,0.08); }
+        .hiw-step[data-step="3"].active .hiw-node { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); box-shadow: 0 0 25px rgba(255,255,255,0.08); }
+        .hiw-step[data-step="4"].active .hiw-node { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.04); box-shadow: 0 0 25px rgba(255,255,255,0.08); }
         .hiw-node span { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 2rem; color: rgba(255,255,255,0.15); transition: all 0.6s ease; }
-        .hiw-step.active .hiw-node span { color: #fff; text-shadow: 0 0 20px currentColor; }
+        .hiw-step.active .hiw-node span { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
         /* Outer ring */
         .hiw-node::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.04); transition: all 0.6s ease; }
-        .hiw-step.active .hiw-node::after { border-color: rgba(0,240,255,0.2); animation: ringExpand 2s ease-in-out infinite; }
-        .hiw-step[data-step="2"].active .hiw-node::after { border-color: rgba(255,0,170,0.2); }
-        .hiw-step[data-step="3"].active .hiw-node::after { border-color: rgba(255,215,0,0.2); }
+        .hiw-step.active .hiw-node::after { border-color: rgba(255,255,255,0.1); animation: ringExpand 2.5s ease-in-out infinite; }
+        .hiw-step[data-step="2"].active .hiw-node::after { border-color: rgba(255,255,255,0.1); }
+        .hiw-step[data-step="3"].active .hiw-node::after { border-color: rgba(255,255,255,0.1); }
         /* Second outer ring */
         .hiw-node::before { content: ''; position: absolute; inset: -16px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.02); transition: all 0.8s ease; }
-        .hiw-step.active .hiw-node::before { border-color: rgba(0,240,255,0.08); animation: ringExpand 2.5s ease-in-out infinite 0.3s; }
+        .hiw-step.active .hiw-node::before { border-color: rgba(255,255,255,0.05); animation: ringExpand 3s ease-in-out infinite 0.3s; }
         @keyframes ringExpand { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.3; } }
         /* Orbiting dot */
-        .hiw-orbit { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); top: 50%; left: 50%; opacity: 0; transition: opacity 0.6s ease; }
-        .hiw-step.active .hiw-orbit { opacity: 1; animation: orbit 3s linear infinite; }
-        .hiw-step[data-step="2"].active .hiw-orbit { background: var(--magenta); }
-        .hiw-step[data-step="3"].active .hiw-orbit { background: var(--gold); }
+        .hiw-orbit { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.6); top: 50%; left: 50%; opacity: 0; transition: opacity 0.6s ease; }
+        .hiw-step.active .hiw-orbit { opacity: 1; animation: orbit 4s linear infinite; }
         @keyframes orbit { 0% { transform: rotate(0deg) translateX(52px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(52px) rotate(-360deg); } }
         /* Burst ring on activation */
-        .hiw-burst { position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--cyan); opacity: 0; pointer-events: none; }
-        .hiw-step.active .hiw-burst { animation: burstRing 0.8s ease-out forwards; }
-        .hiw-step[data-step="2"] .hiw-burst { border-color: var(--magenta); }
-        .hiw-step[data-step="3"] .hiw-burst { border-color: var(--gold); }
+        .hiw-burst { position: absolute; inset: -4px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); opacity: 0; pointer-events: none; }
+        .hiw-step.active .hiw-burst { animation: burstRing 1s ease-out forwards; }
         @keyframes burstRing { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.5); opacity: 0; } }
         .hiw-content { padding-top: 0.5rem; }
         .hiw-content h3 { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.7rem; margin-bottom: 0.75rem; color: var(--text); transition: color 0.6s ease; letter-spacing: -0.02em; }
@@ -689,7 +685,7 @@
             const ctx = canvas.getContext('2d');
             const section = document.getElementById('how-it-works');
             let w, h, particles = [], mouse = { x: -999, y: -999 };
-            const colors = ['0,240,255', '255,0,170', '255,215,0'];
+            const colors = ['255,255,255', '255,255,255', '255,255,255'];
 
             function resize() {
                 const rect = section.getBoundingClientRect();
@@ -738,7 +734,7 @@
                         p.vy += (dy / dist) * force;
                     }
                     p.vx *= 0.98; p.vy *= 0.98;
-                    const a = p.alpha * (0.7 + 0.3 * Math.sin(p.pulse));
+                    const a = p.alpha * (0.5 + 0.2 * Math.sin(p.pulse));
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(${p.color},${a})`;
