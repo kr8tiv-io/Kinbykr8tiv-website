@@ -257,6 +257,18 @@
         </div>
     </section>
 
+    <!-- Horizontal scroll interlude -->
+    <section id="mighty-scroll" style="position:relative; overflow:hidden; height:300vh; background:var(--bg);">
+        <div class="mighty-pin" style="position:sticky; top:0; height:100vh; display:flex; align-items:center; overflow:hidden;">
+            <div class="mighty-track" style="display:flex; gap:6rem; padding:0 10vw; white-space:nowrap; will-change:transform;">
+                <span class="mighty-word" style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(3rem,7vw,6rem); color:var(--cyan); flex-shrink:0;">Though small, he is mighty.</span>
+                <span class="mighty-word" style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(3rem,7vw,6rem); color:var(--magenta); flex-shrink:0;">Don't let the cuteness fool you.</span>
+                <span class="mighty-word" style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(3rem,7vw,6rem); color:var(--gold); flex-shrink:0;">Your KIN is a seriously powerful AI.</span>
+                <span class="mighty-word" style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(3rem,7vw,6rem); color:var(--text); flex-shrink:0;">Cute on the outside. Beast on the inside.</span>
+            </div>
+        </div>
+    </section>
+
     <section id="capabilities" style="background: var(--surface);">
         <h2 class="section-header gs-reveal">What Your KIN Actually Does</h2>
         <p class="intro-text gs-reveal">ChatGPT is a search engine with a chat interface. It waits for you to type. A KIN is a personal employee, a companion, and a concierge that works while you sleep.</p>
@@ -588,6 +600,23 @@
                 if (!isActive) item.classList.add('active');
             });
         });
+        // Mighty horizontal scroll
+        const mightyTrack = document.querySelector('.mighty-track');
+        if (mightyTrack) {
+            const totalWidth = mightyTrack.scrollWidth - window.innerWidth;
+            gsap.to(mightyTrack, {
+                x: -totalWidth,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '#mighty-scroll',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1,
+                    pin: '.mighty-pin',
+                    pinSpacing: false
+                }
+            });
+        }
     </script>
 </body>
 </html>
