@@ -409,10 +409,13 @@
             gsap.from(elem, { scrollTrigger: { trigger: elem, start: "top 85%" }, y: 40, opacity: 0, duration: 1, ease: "power3.out" });
         });
         gsap.utils.toArray('.grid-5, .grid-3, .grid-2').forEach(grid => {
-            gsap.from(grid.querySelectorAll('.gs-card'), {
-                scrollTrigger: { trigger: grid, start: "top 80%" },
-                y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out"
-            });
+            const cards = grid.querySelectorAll('.gs-card');
+            if (cards.length) {
+                gsap.from(cards, {
+                    scrollTrigger: { trigger: grid, start: "top 80%" },
+                    y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out"
+                });
+            }
         });
         document.querySelectorAll('.faq-item').forEach(item => {
             item.addEventListener('click', () => {
