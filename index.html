@@ -97,6 +97,7 @@
         .cap-title { visibility: hidden; }
         .cap-subtitle { visibility: hidden; }
         .cap-card { visibility: hidden; }
+        .cap-card { border-color: rgba(255, 255, 255, 0.25); }
         .card-img-wrapper { margin-bottom: 2rem; border-radius: 16px; overflow: hidden; }
         .creature-name { font-size: 1.8rem; color: var(--cyan); margin-bottom: 1rem; }
         .card .desc { flex-grow: 1; }
@@ -655,32 +656,25 @@
                 0.15
             );
 
-            // Phase 3: Center card punches in from deep behind the screen
+            // Phase 3: Center card drops in from above
             tl.fromTo(cardCenter,
-                { scale: 0, opacity: 0, rotateY: 180, z: -500, transformOrigin: 'center center' },
-                { scale: 1, opacity: 1, rotateY: 0, z: 0, duration: 1, ease: 'back.out(1.4)' },
+                { y: -100, opacity: 0, scale: 0.9 },
+                { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' },
                 0.3
             );
 
-            // Phase 4: Left card gets pulled in from left, rotating in
+            // Phase 4: Left card slides in from left
             tl.fromTo(cardLeft,
-                { x: -350, opacity: 0, rotateY: -45, rotateZ: -8, scale: 0.6 },
-                { x: 0, opacity: 1, rotateY: 0, rotateZ: 0, scale: 1, duration: 0.9, ease: 'power3.out' },
-                0.5
+                { x: -250, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+                0.45
             );
 
-            // Phase 5: Right card mirrors from the right
+            // Phase 5: Right card slides in from right
             tl.fromTo(cardRight,
-                { x: 350, opacity: 0, rotateY: 45, rotateZ: 8, scale: 0.6 },
-                { x: 0, opacity: 1, rotateY: 0, rotateZ: 0, scale: 1, duration: 0.9, ease: 'power3.out' },
-                0.5
-            );
-
-            // Phase 6: Subtle settle — all cards do a micro-bounce
-            tl.fromTo(allCards,
-                { y: -8 },
-                { y: 0, duration: 0.3, stagger: 0.05, ease: 'elastic.out(1, 0.5)' },
-                1.3
+                { x: 250, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+                0.45
             );
 
             // Phase 7: Card border glow pulses sequentially (doesn't override base border)
