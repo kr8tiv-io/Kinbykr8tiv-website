@@ -1357,11 +1357,23 @@
         gsap.ticker.lagSmoothing(0);
 
         // ===== GSAP REVEAL ANIMATIONS =====
+        // Hero elements animate immediately (no scroll trigger — already in viewport)
+        gsap.from('.hero .gs-reveal', {
+            opacity: 0,
+            y: 40,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power2.out',
+            delay: 0.3,
+        });
+
+        // All other gs-reveal elements use scroll trigger
         gsap.utils.toArray('.gs-reveal').forEach((elem) => {
+            if (elem.closest('.hero')) return; // skip hero elements
             gsap.from(elem, {
                 scrollTrigger: {
                     trigger: elem,
-                    start: 'top 80%',
+                    start: 'top 85%',
                     toggleActions: 'play none none none',
                 },
                 opacity: 0,
