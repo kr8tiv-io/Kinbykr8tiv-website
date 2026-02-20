@@ -411,33 +411,33 @@
         <h2 class="section-header gs-reveal">The Genesis Six</h2>
         <p class="intro-text gs-reveal" style="text-wrap:balance; max-width:800px; margin-left:auto; margin-right:auto;">Only these six bloodlines will ever exist as Genesis. Every future KIN descends from them.</p>
         <!-- moved to capabilities section -->
-        <div class="grid-genesis">
-            <div class="card cta-hover gs-card">
+        <div class="grid-genesis" id="genesis-grid">
+            <div class="card cta-hover gs-card genesis-card">
                 <div class="card-img-wrapper"><video autoplay muted loop playsinline style="width:100%; border-radius:16px; animation: float 6s ease-in-out infinite 0s, pulse-glow 4s ease-in-out infinite 0s;"><source src="mischief-video.mp4" type="video/mp4"></video></div>
                 <h3 class="creature-name">Mischief<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Glitch Pup</span></h3>
                 <p class="desc">The ultimate family companion & personal-brand whisperer. Tells bespoke bedtime stories, keeps the calendar, and helps you craft authentic social posts.</p>
             </div>
-            <div class="card cta-hover gs-card">
+            <div class="card cta-hover gs-card genesis-card">
                 <div class="card-img-wrapper"><video autoplay muted loop playsinline style="width:100%; border-radius:16px; animation: float 6s ease-in-out infinite 0.2s, pulse-glow 4s ease-in-out infinite 0.2s;"><source src="vortex-video.mp4" type="video/mp4"></video></div>
                 <h3 class="creature-name" style="color: var(--magenta);">Vortex<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Teal Dragon</span></h3>
                 <p class="desc">Your 24/7 CMO. Generates scroll-stopping content, schedules across all platforms, analyzes what's working, and keeps your brand voice perfect 24/7.</p>
             </div>
-            <div class="card cta-hover gs-card">
+            <div class="card cta-hover gs-card genesis-card">
                 <div class="card-img-wrapper"><video autoplay muted loop playsinline style="width:100%; border-radius:16px; animation: float 6s ease-in-out infinite 0.4s, pulse-glow 4s ease-in-out infinite 0.4s;"><source src="forge-video.mp4" type="video/mp4"></video></div>
                 <h3 class="creature-name" style="color: var(--gold);">Forge<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Cyber Unicorn</span></h3>
                 <p class="desc">The developer's best friend. Debugs code at 3 a.m., architects entire projects, writes clean documentation, and builds custom automations.</p>
             </div>
-            <div class="card cta-hover gs-card">
+            <div class="card cta-hover gs-card genesis-card">
                 <div class="card-img-wrapper"><video autoplay muted loop playsinline style="width:100%; border-radius:16px; animation: float 6s ease-in-out infinite 0.6s, pulse-glow 4s ease-in-out infinite 0.6s;"><source src="aether-video.mp4" type="video/mp4"></video></div>
                 <h3 class="creature-name" style="color: #a855f7;">Aether<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Frost Ape</span></h3>
                 <p class="desc">Infinite creative spark. Part yeti, part genius. Turns vague thoughts into polished scripts, newsletters, books, marketing copy, or magical stories. Your storytelling muse.</p>
             </div>
-            <div class="card cta-hover gs-card">
+            <div class="card cta-hover gs-card genesis-card">
                 <div class="card-img-wrapper"><video autoplay muted loop playsinline style="width:100%; border-radius:16px; animation: float 6s ease-in-out infinite 0.8s, pulse-glow 4s ease-in-out infinite 0.8s;"><source src="catalyst-video.mp4" type="video/mp4"></video></div>
                 <h3 class="creature-name" style="color: #f97316;">Catalyst<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Cosmic Blob</span></h3>
                 <p class="desc">Wealth & personal growth coach. Absorbs market data like a black hole. Tracks habits, manages investments, automates repetitive life tasks, and runs your systems while you sleep.</p>
             </div>
-            <div class="card cta-hover gs-card">
+            <div class="card cta-hover gs-card genesis-card">
                 <div class="card-img-wrapper"><video autoplay muted loop playsinline style="width:100%; border-radius:16px; animation: float 6s ease-in-out infinite 1s, pulse-glow 4s ease-in-out infinite 1s;"><source src="cipher-video.mp4" type="video/mp4"></video></div>
                 <h3 class="creature-name" style="color: var(--cyan);">Cipher<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Code Kraken</span></h3>
                 <p class="desc">Eight tentacles. Eight screens. Zero pixels out of place. Builds immersive, award-worthy websites from raw ideas. Your frontend architect and creative technologist.</p>
@@ -810,6 +810,63 @@
                 });
             }
         });
+        // Genesis Six — gather & release scroll effect
+        (function() {
+            const grid = document.getElementById('genesis-grid');
+            if (!grid) return;
+            const cards = grid.querySelectorAll('.genesis-card');
+            if (cards.length !== 6) return;
+
+            // Offsets: each card starts displaced outward, gathers to center, then releases
+            // Row 1: top-left, top-center, top-right
+            // Row 2: bottom-left, bottom-center, bottom-right
+            const offsets = [
+                { x: -80, y: -50, rotate: -3, scale: 0.92 },   // top-left → pulls right+down
+                { x: 0,   y: -70, rotate: 0,  scale: 0.9 },    // top-center → pulls down
+                { x: 80,  y: -50, rotate: 3,  scale: 0.92 },   // top-right → pulls left+down
+                { x: -80, y: 50,  rotate: 3,  scale: 0.92 },   // bot-left → pulls right+up
+                { x: 0,   y: 70,  rotate: 0,  scale: 0.9 },    // bot-center → pulls up
+                { x: 80,  y: 50,  rotate: -3, scale: 0.92 },   // bot-right → pulls left+up
+            ];
+
+            // Phase 1: Gather — cards pull IN from scattered to tight
+            const gatherTL = gsap.timeline({
+                scrollTrigger: {
+                    trigger: grid,
+                    start: "top 95%",
+                    end: "top 30%",
+                    scrub: 0.8,
+                }
+            });
+
+            cards.forEach((card, i) => {
+                const o = offsets[i];
+                gsap.set(card, { x: o.x, y: o.y, rotation: o.rotate, scale: o.scale, opacity: 0.4 });
+                gatherTL.to(card, {
+                    x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
+                    duration: 1, ease: "power2.inOut"
+                }, 0);
+            });
+
+            // Phase 2: Release — cards drift OUT again as you scroll past
+            const releaseTL = gsap.timeline({
+                scrollTrigger: {
+                    trigger: grid,
+                    start: "bottom 80%",
+                    end: "bottom 10%",
+                    scrub: 0.8,
+                }
+            });
+
+            cards.forEach((card, i) => {
+                const o = offsets[i];
+                releaseTL.to(card, {
+                    x: o.x * 0.5, y: o.y * 0.5, rotation: o.rotate * 0.5, scale: 0.96, opacity: 0.7,
+                    duration: 1, ease: "power2.inOut"
+                }, 0);
+            });
+        })();
+
         // Hero mouse-reactive glow
         const heroEl = document.querySelector('.hero');
         const heroGlow = document.querySelector('.hero-glow');
