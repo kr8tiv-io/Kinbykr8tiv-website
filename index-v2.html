@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIN by KR8TIV — Magic that grows with you</title>
+    <meta name="description" content="Meet your new best friend. AI companions that feel real, grow with you, and earn for you.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --white: #FAFAFA;
+            --pure-white: #FFFFFF;
+            --teal: #5FAFA8;
+            --chartreuse: #C8D87A;
+            --gold: #D4A853;
+            --charcoal: #1A1A2E;
+            --black: #0A0A0F;
+        }
+        
+        html {
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--white);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--teal);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.15s ease;
+        }
+        
+        .cursor.grow {
+            transform: scale(3);
+        }
+        
+        /* Loading Screen */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #loading h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 8rem;
+            color: var(--black);
+            margin-bottom: 2rem;
+            letter-spacing: -0.05em;
+            opacity: 0;
+        }
+        
+        #loading .counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--teal);
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+        
+        nav .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--pure-white);
+            letter-spacing: -0.02em;
+        }
+        
+        nav .cta-btn {
+            padding: 0.75rem 2rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+        
+        nav .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(95, 175, 168, 0.3);
+        }
+        
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            width: 40%;
+            z-index: 10;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 7rem;
+            line-height: 0.95;
+            color: var(--black);
+            margin-bottom: 2rem;
+            letter-spacing: -0.04em;
+        }
+        
+        .hero-content .tagline {
+            font-size: 1.5rem;
+            color: var(--charcoal);
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+        
+        .hero-content .cta-large {
+            padding: 1.25rem 3rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .hero-content .cta-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(95, 175, 168, 0.4);
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .hero-image .placeholder {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, var(--teal), var(--chartreuse));
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.5;
+        }
+        
+        .scroll-indicator span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .scroll-indicator .arrow {
+            width: 1px;
+            height: 40px;
+            background: var(--charcoal);
+            animation: scroll-down 2s ease-in-out infinite;
+        }
+        
+        @keyframes scroll-down {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(10px); opacity: 1; }
+        }
+        
+        /* Story Section */
+        #story {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem;
+        }
+        
+        .story-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 5rem;
+            line-height: 1.2;
+            color: var(--black);
+            text-align: center;
+            max-width: 1200px;
+            letter-spacing: -0.03em;
+        }
+        
+        .story-text .word {
+            display: inline-block;
+            opacity: 0.1;
+        }
+        
+        /* Character Showcase */
+        .character-slide {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .character-slide img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+        
+        .character-slide .placeholder {
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            border-radius: 30px;
+            opacity: 0.2;
+        }
+        
+        .character-slide .caption {
+            position: absolute;
+            bottom: 4rem;
+            left: 4rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--black);
+            opacity: 0.7;
+        }
+        
+        /* Two Products */
+        #two-products {
+            height: 100vh;
+            display: flex;
+        }
+        
+        .product-half {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+        }
+        
+        .product-half.personal {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(200, 216, 122, 0.1));
+        }
+        
+        .product-half.business {
+            background: linear-gradient(135deg, rgba(95, 175, 168, 0.1), rgba(26, 26, 46, 0.05));
+        }
+        
+        .product-half h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 3.5rem;
+            color: var(--black);
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .product-half p {
+            font-size: 1.25rem;
+            color: var(--charcoal);
+            text-align: center;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+        
+        .product-half .placeholder {
+            width: 400px;
+            height: 400px;
+            background: var(--teal);
+            border-radius: 50%;
+            opacity: 0.2;
+            margin-top: 2rem;
+        }
+        
+        /* How It Works */
+        #how-it-works {
+            padding: 8rem 0;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            color: var(--black);
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .horizontal-scroll {
+            display: flex;
+            gap: 4rem;
+            padding: 0 4rem;
+            width: max-content;
+        }
+        
+        .step-card {
+            width: 400px;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(95, 175, 168, 0.2);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .step-card .number {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 6rem;
+            color: var(--teal);
+            opacity: 0.3;
+            line-height: 1;
+        }
+        
+        .step-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--black);
+        }
+        
+        .step-card p {
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            line-height: 1.6;
+        }
+        
+        /* Industry Grid */
+        #industry-grid {
+            padding: 8rem 4rem;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .industry-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(95, 175, 168, 0.15);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        
+        .industry-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--teal);
+            box-shadow: 0 10px 30px rgba(95, 175, 168, 0.2);
+        }
+        
+        .industry-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .industry-card h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+        
+        .industry-card p {
+            font-size: 0.95rem;
+            color: var(--charcoal);
+            opacity: 0.8;
+        }
+        
+        /* Video Section */
+        #video-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-container .placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--teal), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--pure-white);
+        }
+        
+        /* Revenue/NFT Section */
+        #revenue {
+            padding: 8rem 4rem;
+            background: linear-gradient(180deg, rgba(95, 175, 168, 0.05), rgba(212, 168, 83, 0.05));
+        }
+        
+        .revenue-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        
+        .revenue-intro h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .revenue-intro p {
+            font-size: 1.3rem;
+            color: var(--charcoal);
+            line-height: 1.7;
+        }
+        
+        .tiers-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 4rem;
+        }
+        
+        .tier-card {
+            flex: 1;
+            max-width: 350px;
+            padding: 3rem 2rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(95, 175, 168, 0.2);
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .tier-card.featured {
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+        
+        .tier-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--black);
+            margin-bottom: 1rem;
+        }
+        
+        .tier-card .price {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--teal);
+            margin-bottom: 2rem;
+        }
+        
+        .tier-card ul {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .tier-card li {
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--charcoal);
+        }
+        
+        /* Stats Section */
+        #stats {
+            padding: 8rem 4rem;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .stat .number {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 5rem;
+            color: var(--teal);
+            line-height: 1;
+        }
+        
+        .stat .label {
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            font-weight: 500;
+        }
+        
+        /* Pricing */
+        #pricing {
+            padding: 8rem 4rem;
+            background: var(--pure-white);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            margin-top: 4rem;
+        }
+        
+        .price-card {
+            padding: 2.5rem 1.5rem;
+            background: var(--white);
+            border: 2px solid rgba(95, 175, 168, 0.15);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .price-card.popular {
+            border-color: var(--teal);
+            background: rgba(95, 175, 168, 0.05);
+            transform: scale(1.05);
+        }
+        
+        .price-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-card .price {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--teal);
+            margin-bottom: 1.5rem;
+        }
+        
+        .price-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--charcoal);
+        }
+        
+        .price-card ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .price-card li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .price-card li::before {
+            content: '✓';
+            color: var(--teal);
+            font-weight: 700;
+        }
+        
+        .price-card button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+        
+        .price-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(95, 175, 168, 0.3);
+        }
+        
+        /* FAQ */
+        #faq {
+            padding: 8rem 4rem;
+        }
+        
+        .faq-container {
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 4rem;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid rgba(95, 175, 168, 0.2);
+            padding: 2rem 0;
+        }
+        
+        .faq-question {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--black);
+            cursor: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question::after {
+            content: '+';
+            font-size: 2rem;
+            color: var(--teal);
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            font-size: 1.05rem;
+            color: var(--charcoal);
+            line-height: 1.7;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding-top: 1rem;
+        }
+        
+        /* Final CTA */
+        #final-cta {
+            padding: 8rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(95, 175, 168, 0.1), rgba(200, 216, 122, 0.1));
+        }
+        
+        #final-cta h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 4.5rem;
+            color: var(--black);
+            margin-bottom: 3rem;
+            letter-spacing: -0.03em;
+        }
+        
+        #final-cta .cta-large {
+            padding: 1.5rem 4rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        #final-cta .cta-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(95, 175, 168, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(95, 175, 168, 0.2);
+        }
+        
+        footer .brand {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+        }
+        
+        footer .social-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        footer .social-links a {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        footer .social-links a:hover {
+            color: var(--teal);
+        }
+        
+        footer .copyright {
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            opacity: 0.6;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .hero-content h1 { font-size: 4rem; }
+            .story-text { font-size: 3rem; }
+            .section-title { font-size: 3rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .tiers-container { flex-direction: column; align-items: center; }
+        }
+        
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem 2rem; }
+            #hero { flex-direction: column; height: auto; padding: 8rem 2rem 4rem; }
+            .hero-content { width: 100%; text-align: center; }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-image { position: relative; width: 100%; transform: none; margin-top: 3rem; }
+            #two-products { flex-direction: column; height: auto; }
+            .product-half { width: 100%; }
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading">
+        <h1>KIN</h1>
+        <div class="counter">0</div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">KIN by KR8TIV</div>
+        <button class="cta-btn">Awaken Your KIN</button>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Meet your new best friend.</h1>
+            <p class="tagline">Magic that grows with you.</p>
+            <button class="cta-large">Awaken Your KIN</button>
+        </div>
+        <div class="hero-image">
+            <img src="assets/v2/kin-hero-mischief.png" alt="KIN Character" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+    
+    <!-- Story Section -->
+    <section id="story">
+        <div class="story-text">
+            <span class="word">We</span>
+            <span class="word">always</span>
+            <span class="word">wanted</span>
+            <span class="word">our</span>
+            <span class="word">favorite</span>
+            <span class="word">characters</span>
+            <span class="word">to</span>
+            <span class="word">be</span>
+            <span class="word">real.</span>
+            <br>
+            <span class="word">Now</span>
+            <span class="word">they</span>
+            <span class="word">are.</span>
+        </div>
+    </section>
+    
+    <!-- Character Showcase -->
+    <section class="character-slide">
+                <img src="assets/v2/kin-hero-mischief.png" alt="KIN Hero Pose" loading="lazy">
+        <div class="caption">Hero Pose</div>
+    </section>
+    
+    <section class="character-slide">
+                <img src="assets/v2/kin-sitting.png" alt="KIN Sitting" loading="lazy">
+        <div class="caption">Deep in Thought</div>
+    </section>
+    
+    <section class="character-slide">
+                <img src="assets/v2/kin-egg-v2.png" alt="KIN Egg" loading="lazy">
+        <div class="caption">The Beginning</div>
+    </section>
+    
+    <!-- Two Products -->
+    <section id="two-products">
+        <div class="product-half personal">
+            <h2>Personal KIN</h2>
+            <p>Your companion. Your confidant. Growing with you through every moment of life.</p>
+            <img src="assets/v2/kin-personal-v3.png" alt="Personal KIN" style="max-width: 300px; margin-top: 2rem;">
+        </div>
+        <div class="product-half business">
+            <h2>Business KIN</h2>
+            <p>Professional. Focused. Your AI partner that handles operations while you build.</p>
+            <img src="assets/v2/kin-business-v2.png" alt="Business KIN" style="max-width: 300px; margin-top: 2rem;">
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section id="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <div class="horizontal-scroll-container">
+            <div class="horizontal-scroll">
+                <div class="step-card">
+                    <div class="number">01</div>
+                    <h3>Pick</h3>
+                    <p>Choose from 30 unique KIN companions, each with their own personality and expertise.</p>
+                </div>
+                <div class="step-card">
+                    <div class="number">02</div>
+                    <h3>Hatch</h3>
+                    <p>Watch your KIN come to life. It starts as an egg and evolves based on your interactions.</p>
+                </div>
+                <div class="step-card">
+                    <div class="number">03</div>
+                    <h3>Bond</h3>
+                    <p>Build a real relationship. Your KIN learns your patterns, preferences, and personality.</p>
+                </div>
+                <div class="step-card">
+                    <div class="number">04</div>
+                    <h3>Evolve</h3>
+                    <p>Through 5 evolution stages, your companion grows more capable, more personal, more real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Industry Grid -->
+    <section id="industry-grid">
+        <h2 class="section-title">30 Companions. Infinite Possibilities.</h2>
+        <div class="grid-container">
+            <div class="industry-card">
+                <div class="emoji">🎨</div>
+                <h4>Creative Companion</h4>
+                <p>Your artistic partner in design, content, and imagination.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💰</div>
+                <h4>Finance Buddy</h4>
+                <p>Smart money management and investment insights.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏋️</div>
+                <h4>Fitness Coach</h4>
+                <p>Personalized training, nutrition, and wellness guidance.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">📚</div>
+                <h4>Study Partner</h4>
+                <p>Learning companion for students and lifelong learners.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎮</div>
+                <h4>Gaming Sidekick</h4>
+                <p>Strategy, tips, and a teammate who never quits.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🍳</div>
+                <h4>Culinary Guide</h4>
+                <p>Recipe ideas, meal planning, and kitchen creativity.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🧘</div>
+                <h4>Mindfulness Mentor</h4>
+                <p>Mental health support, meditation, and peace.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🚀</div>
+                <h4>Startup Advisor</h4>
+                <p>Business strategy, growth hacking, and launch support.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎵</div>
+                <h4>Music Muse</h4>
+                <p>Songwriting, production tips, and creative inspiration.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">✈️</div>
+                <h4>Travel Planner</h4>
+                <p>Itineraries, local tips, and adventure planning.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💻</div>
+                <h4>Code Partner</h4>
+                <p>Debugging, architecture, and programming wisdom.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">📸</div>
+                <h4>Photography Pro</h4>
+                <p>Composition, editing, and capturing perfect moments.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🌱</div>
+                <h4>Garden Guardian</h4>
+                <p>Plant care, landscaping, and growing green spaces.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎬</div>
+                <h4>Film Buff</h4>
+                <p>Recommendations, analysis, and cinematic discussions.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🐕</div>
+                <h4>Pet Pal</h4>
+                <p>Animal care, training tips, and furry friend advice.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">📖</div>
+                <h4>Writing Companion</h4>
+                <p>Story ideas, editing, and wordcraft mastery.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🔬</div>
+                <h4>Science Specialist</h4>
+                <p>Research, experiments, and curiosity-driven learning.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏠</div>
+                <h4>Home Helper</h4>
+                <p>Organization, cleaning, and domestic bliss.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">⚖️</div>
+                <h4>Legal Advisor</h4>
+                <p>Contract review, rights knowledge, and legal clarity.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎭</div>
+                <h4>Theater Coach</h4>
+                <p>Acting techniques, performance tips, and stage presence.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🛒</div>
+                <h4>Shopping Scout</h4>
+                <p>Best deals, product reviews, and smart purchasing.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🌍</div>
+                <h4>Language Tutor</h4>
+                <p>Conversation practice and cultural immersion.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🔧</div>
+                <h4>DIY Expert</h4>
+                <p>Repair guides, project ideas, and maker wisdom.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💼</div>
+                <h4>Career Coach</h4>
+                <p>Resume building, interview prep, and professional growth.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎪</div>
+                <h4>Event Planner</h4>
+                <p>Party ideas, logistics, and memorable experiences.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🧪</div>
+                <h4>Chemistry Companion</h4>
+                <p>Formulations, reactions, and molecular magic.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏆</div>
+                <h4>Sports Analyst</h4>
+                <p>Stats, strategies, and game-day insights.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎨</div>
+                <h4>Fashion Stylist</h4>
+                <p>Outfit coordination, trends, and personal style.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🌟</div>
+                <h4>Astrology Guide</h4>
+                <p>Birth charts, cosmic insights, and celestial wisdom.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎯</div>
+                <h4>Productivity Partner</h4>
+                <p>Time management, focus techniques, and efficiency hacks.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Video Section -->
+    <section id="video-section">
+        <div class="video-container">
+            <video src="assets/kin-hatching-veo31.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;border-radius:1rem;"></video>
+            <video src="assets/kin-hatching-veo31.mp4" muted loop autoplay playsinline></video>
+        </div>
+    </section>
+    
+    <!-- Revenue/NFT Section -->
+    <section id="revenue">
+        <div class="revenue-intro">
+            <h2>Your buddy earns for you.</h2>
+            <p>KIN Founders get exclusive access to revenue-sharing NFTs. Your companion doesn't just help you — it works for you. No crypto jargon. Just real value.</p>
+        </div>
+        <div class="tiers-container">
+            <div class="tier-card">
+                <h3>Bronze Founder</h3>
+                <div class="price">$99</div>
+                <ul>
+                    <li>Founding member badge</li>
+                    <li>5% revenue share</li>
+                    <li>Early access to all features</li>
+                    <li>Exclusive Discord role</li>
+                </ul>
+            </div>
+            <div class="tier-card featured">
+                <h3>Gold Founder</h3>
+                <div class="price">$499</div>
+                <ul>
+                    <li>Premium founder badge</li>
+                    <li>15% revenue share</li>
+                    <li>Beta access to new KIN types</li>
+                    <li>Direct line to the team</li>
+                    <li>Custom KIN design input</li>
+                </ul>
+            </div>
+            <div class="tier-card">
+                <h3>Platinum Founder</h3>
+                <div class="price">$999</div>
+                <ul>
+                    <li>Legendary founder status</li>
+                    <li>25% revenue share</li>
+                    <li>Co-creation sessions</li>
+                    <li>Lifetime premium access</li>
+                    <li>Your name in the credits</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section id="stats">
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="number" data-target="30">0</div>
+                <div class="label">Companions</div>
+            </div>
+            <div class="stat">
+                <div class="number" data-target="5">0</div>
+                <div class="label">Evolution Stages</div>
+            </div>
+            <div class="stat">
+                <div class="number">24/7</div>
+                <div class="label">By Your Side</div>
+            </div>
+            <div class="stat">
+                <div class="number">∞</div>
+                <div class="label">Possibilities</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing -->
+    <section id="pricing">
+        <h2 class="section-title">Simple Pricing. Real Value.</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>Free</h3>
+                <div class="price">$0<span>/mo</span></div>
+                <ul>
+                    <li>1 KIN companion</li>
+                    <li>Basic personality</li>
+                    <li>Text-only interaction</li>
+                    <li>Community support</li>
+                </ul>
+                <button>Get Started</button>
+            </div>
+            <div class="price-card">
+                <h3>Starter</h3>
+                <div class="price">$9<span>/mo</span></div>
+                <ul>
+                    <li>3 KIN companions</li>
+                    <li>Voice interaction</li>
+                    <li>Memory & learning</li>
+                    <li>Email support</li>
+                    <li>Mobile app access</li>
+                </ul>
+                <button>Awaken Your KIN</button>
+            </div>
+            <div class="price-card popular">
+                <h3>Pro</h3>
+                <div class="price">$29<span>/mo</span></div>
+                <ul>
+                    <li>10 KIN companions</li>
+                    <li>Advanced AI models</li>
+                    <li>Custom personalities</li>
+                    <li>Priority support</li>
+                    <li>API access</li>
+                    <li>Team features</li>
+                </ul>
+                <button>Awaken Your KIN</button>
+            </div>
+            <div class="price-card">
+                <h3>Business</h3>
+                <div class="price">$99<span>/mo</span></div>
+                <ul>
+                    <li>Unlimited KIN</li>
+                    <li>White-label options</li>
+                    <li>Custom integrations</li>
+                    <li>Dedicated account manager</li>
+                    <li>SLA guarantee</li>
+                    <li>Analytics dashboard</li>
+                </ul>
+                <button>Contact Sales</button>
+            </div>
+            <div class="price-card">
+                <h3>Enterprise</h3>
+                <div class="price">Custom</div>
+                <ul>
+                    <li>Everything in Business</li>
+                    <li>On-premise deployment</li>
+                    <li>Custom AI training</li>
+                    <li>Legal & compliance</li>
+                    <li>24/7 phone support</li>
+                    <li>Custom contract</li>
+                </ul>
+                <button>Let's Talk</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ -->
+    <section id="faq">
+        <h2 class="section-title">Questions?</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">What exactly is a KIN?</div>
+                <div class="faq-answer">KIN is your AI companion that evolves with you. Not a chatbot, not a tool — a real companion with personality, memory, and the ability to grow. Think Tamagotchi meets Jarvis meets your best friend.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How does evolution work?</div>
+                <div class="faq-answer">Your KIN starts as an egg and progresses through 5 evolution stages based on your interactions, time spent together, and milestones achieved. Each stage unlocks new capabilities and deeper personality traits.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I have more than one KIN?</div>
+                <div class="faq-answer">Absolutely! Different KIN for different parts of your life. A fitness coach, a business advisor, a creative partner — build your dream team of companions.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Is my data private?</div>
+                <div class="faq-answer">Your conversations with your KIN are encrypted and never used for training other models. Your companion is yours. Period.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What's the revenue-sharing model?</div>
+                <div class="faq-answer">Founding members receive NFTs that entitle them to a percentage of KIN's platform revenue. As the platform grows, so does your passive income. No crypto complexity — just real dividends.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I customize my KIN's personality?</div>
+                <div class="faq-answer">Yes! Pro and Business tiers let you fine-tune personality traits, communication style, and expertise areas. Make your KIN truly yours.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section id="final-cta">
+        <h2>Ready to meet your new best friend?</h2>
+        <button class="cta-large">Awaken Your KIN</button>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="brand">KIN by KR8TIV AI</div>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">Instagram</a>
+            <a href="#">GitHub</a>
+        </div>
+        <div class="copyright">© 2026 KR8TIV AI. Magic that grows with you.</div>
+    </footer>
+    
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        document.querySelectorAll('button, a, .faq-question, .industry-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+        });
+        
+        // Loading Screen
+        let counter = 0;
+        const counterEl = document.querySelector('#loading .counter');
+        const loadingTitle = document.querySelector('#loading h1');
+        const loading = document.getElementById('loading');
+        
+        const counterInterval = setInterval(() => {
+            counter += Math.floor(Math.random() * 15) + 5;
+            if (counter >= 100) {
+                counter = 100;
+                clearInterval(counterInterval);
+                setTimeout(() => {
+                    loading.style.opacity = '0';
+                    loading.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        loading.style.display = 'none';
+                    }, 500);
+                }, 300);
+            }
+            counterEl.textContent = counter;
+        }, 50);
+        
+        // Fade in loading title
+        setTimeout(() => {
+            loadingTitle.style.opacity = '1';
+            loadingTitle.style.transition = 'opacity 1s ease';
+        }, 200);
+        
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+        });
+        
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Hero animations
+        gsap.from('.hero-content h1', {
+            y: 100,
+            opacity: 0,
+            duration: 1.2,
+            delay: 2.5,
+            ease: 'power4.out'
+        });
+        
+        gsap.from('.hero-content .tagline', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 2.8,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.hero-content .cta-large', {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 3.1,
+            ease: 'power2.out'
+        });
+        
+        gsap.from('.hero-image', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1.5,
+            delay: 2.7,
+            ease: 'power4.out'
+        });
+        
+        // Story section word reveal
+        const words = document.querySelectorAll('.story-text .word');
+        gsap.to(words, {
+            opacity: 1,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '#story',
+                start: 'top center',
+                end: 'bottom center',
+                scrub: 1
+            }
+        });
+        
+        // Character slides parallax
+        document.querySelectorAll('.character-slide').forEach((slide, index) => {
+            gsap.to(slide.querySelector('.placeholder, img'), {
+                y: -100,
+                scrollTrigger: {
+                    trigger: slide,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+            
+            gsap.from(slide.querySelector('.caption'), {
+                opacity: 0,
+                y: 30,
+                scrollTrigger: {
+                    trigger: slide,
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        });
+        
+        // Two products split reveal
+        gsap.from('.product-half.personal', {
+            x: -100,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '#two-products',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        gsap.from('.product-half.business', {
+            x: 100,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '#two-products',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // Horizontal scroll for How It Works
+        const horizontalScroll = document.querySelector('.horizontal-scroll');
+        if (horizontalScroll) {
+            gsap.to('.horizontal-scroll', {
+                x: () => -(horizontalScroll.scrollWidth - window.innerWidth + 200),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '#how-it-works',
+                    start: 'top top',
+                    end: () => `+=${horizontalScroll.scrollWidth}`,
+                    scrub: 1,
+                    pin: true,
+                    anticipatePin: 1
+                }
+            });
+        }
+        
+        // Industry cards stagger
+        gsap.from('.industry-card', {
+            y: 50,
+            opacity: 0,
+            stagger: 0.05,
+            scrollTrigger: {
+                trigger: '#industry-grid',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // Video autoplay on scroll
+        const video = document.querySelector('.video-container video');
+        if (video) {
+            ScrollTrigger.create({
+                trigger: '#video-section',
+                start: 'top center',
+                onEnter: () => video.play(),
+                onLeave: () => video.pause(),
+                onEnterBack: () => video.play(),
+                onLeaveBack: () => video.pause()
+            });
+        }
+        
+        // Stats counter animation
+        const animateCounter = (el) => {
+            const target = parseInt(el.getAttribute('data-target'));
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current);
+                }
+            }, 16);
+        };
+        
+        document.querySelectorAll('.stat .number[data-target]').forEach(el => {
+            ScrollTrigger.create({
+                trigger: el,
+                start: 'top 80%',
+                once: true,
+                onEnter: () => animateCounter(el)
+            });
+        });
+        
+        // Pricing cards reveal
+        gsap.from('.price-card', {
+            y: 60,
+            opacity: 0,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '#pricing',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Lazy load images (placeholder for when images exist)
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        });
+        
+        document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
+        
+        // Smooth scroll for nav CTA
+        document.querySelectorAll('.cta-btn, .cta-large').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                lenis.scrollTo('#final-cta', { offset: -100, duration: 2 });
+            });
+        });
+    </script>
+</body>
+</html>
