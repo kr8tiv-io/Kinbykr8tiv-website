@@ -84,8 +84,11 @@
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
         .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1600px; margin: 0 auto; }
-        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; transition: all 0.4s; height: 100%; display: flex; flex-direction: column; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; transition: all 0.4s; height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
         .card:hover { transform: translateY(-10px); border-color: var(--cyan); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.05); }
+        .card-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.08; z-index: 0; pointer-events: none; filter: blur(1px); }
+        .card:hover .card-bg-video { opacity: 0.14; }
+        .card > *:not(.card-bg-video) { position: relative; z-index: 1; }
         .card-img-wrapper { margin-bottom: 2rem; border-radius: 16px; overflow: hidden; }
         .creature-name { font-size: 1.8rem; color: var(--cyan); margin-bottom: 1rem; }
         .card .desc { flex-grow: 1; }
@@ -277,16 +280,19 @@
         <p class="intro-text gs-reveal">ChatGPT is a search engine with a chat interface. It waits for you to type. A KIN is a personal employee, a companion, and a concierge that works while you sleep.</p>
         <div class="grid-3">
             <div class="card cta-hover gs-card">
-                <h3 style="color: var(--cyan); margin-bottom: 1rem;">The Family Concierge</h3>
-                <p>Reads your kids a bedtime story using their real names. Manages your family calendar, books flights, pays with your card securely, and remembers your partner's anniversary. Forever.</p>
+                <video class="card-bg-video" autoplay muted loop playsinline><source src="cap-video-family-web.mp4" type="video/mp4"></video>
+                <h3 style="color: var(--cyan); margin-bottom: 1rem; font-size: 1.4rem;">The Family Concierge</h3>
+                <p style="font-size: 1.1rem; line-height: 1.7;">Reads your kids a bedtime story — using their real names. Manages your family calendar. Books flights. Pays with your card securely. Remembers your partner's anniversary.<br><br><strong style="color:var(--text);">Forever.</strong></p>
             </div>
             <div class="card cta-hover gs-card">
-                <h3 style="color: var(--magenta); margin-bottom: 1rem;">The Digital Executive</h3>
-                <p>Answers your emails while you sleep. Drafts responses, flags urgent messages, runs your social media presence, and keeps your brand voice perfectly consistent.</p>
+                <video class="card-bg-video" autoplay muted loop playsinline><source src="cap-video-exec-web.mp4" type="video/mp4"></video>
+                <h3 style="color: var(--magenta); margin-bottom: 1rem; font-size: 1.4rem;">The Digital Executive</h3>
+                <p style="font-size: 1.1rem; line-height: 1.7;">Answers your emails while you sleep. Drafts responses. Flags urgent messages. Runs your social media presence and keeps your brand voice perfectly consistent.<br><br><strong style="color:var(--text);">24/7. No days off.</strong></p>
             </div>
             <div class="card cta-hover gs-card">
-                <h3 style="color: var(--gold); margin-bottom: 1rem;">The Ghost in the Machine</h3>
-                <p>With your permission, your KIN controls your computer directly. It can operate your browser, debug your codebase at 3am, open crypto wallets, and manage investments.</p>
+                <video class="card-bg-video" autoplay muted loop playsinline><source src="cap-video-ghost-web.mp4" type="video/mp4"></video>
+                <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.4rem;">The Ghost in the Machine</h3>
+                <p style="font-size: 1.1rem; line-height: 1.7;">With your permission, your KIN controls your computer directly. Operates your browser. Debugs your codebase at 3am. Opens crypto wallets. Manages investments.<br><br><strong style="color:var(--text);">You sleep. It works.</strong></p>
             </div>
         </div>
     </section>
