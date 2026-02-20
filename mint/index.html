@@ -82,12 +82,20 @@
         .mint-footer a:hover { color: #fff; }
 
         /* Mobile */
+        /* Bloodline grid responsive */
+        @media (max-width: 1024px) {
+            section > div[style*="repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+        }
         @media (max-width: 768px) {
             .nav-brand { top: 1.5rem; left: 1.5rem; }
             .nav-links { display: none; }
             .hero-title { font-size: clamp(3rem, 10vw, 5rem); }
             .mint-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
             .mint-section { padding: 2rem 1rem 4rem; }
+            section > div[style*="repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+        }
+        @media (max-width: 480px) {
+            section > div[style*="repeat(3"] { grid-template-columns: 1fr !important; max-width: 350px; margin: 0 auto; }
         }
         @media (max-width: 480px) {
             .nav-brand { top: 1rem; left: 1rem; }
@@ -239,6 +247,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Genesis Six Bloodlines -->
+    <section style="padding:6rem 2rem; max-width:1400px; margin:0 auto;">
+        <h2 style="text-align:center; font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(2.5rem,5vw,4rem); color:#fff; letter-spacing:-0.04em; margin-bottom:0.5rem;">The Genesis Six</h2>
+        <p style="text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.2em; color:rgba(255,255,255,0.3); margin-bottom:4rem;">Choose your bloodline</p>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:2.5rem;">
+
+            <div style="text-align:center;">
+                <div style="border-radius:20px; overflow:hidden; margin-bottom:1.5rem; aspect-ratio:1/1;"><video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:20px;"><source src="../mischief-video.mp4" type="video/mp4"></video></div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:#fff; margin-bottom:0.3rem;">Mischief</h3>
+                <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted);">Glitch Pup</p>
+                <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:0.8rem;">Family companion & personal brand whisperer. Bedtime stories, calendars, and social posts.</p>
+            </div>
+
+            <div style="text-align:center;">
+                <div style="border-radius:20px; overflow:hidden; margin-bottom:1.5rem; aspect-ratio:1/1;"><video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:20px;"><source src="../vortex-video.mp4" type="video/mp4"></video></div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--magenta); margin-bottom:0.3rem;">Vortex</h3>
+                <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted);">Teal Dragon</p>
+                <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:0.8rem;">Your 24/7 CMO. Content, scheduling, analytics, and perfect brand voice.</p>
+            </div>
+
+            <div style="text-align:center;">
+                <div style="border-radius:20px; overflow:hidden; margin-bottom:1.5rem; aspect-ratio:1/1;"><video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:20px;"><source src="../forge-video.mp4" type="video/mp4"></video></div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--gold); margin-bottom:0.3rem;">Forge</h3>
+                <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted);">Cyber Unicorn</p>
+                <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:0.8rem;">Developer's best friend. Debugs at 3am, architects projects, writes docs.</p>
+            </div>
+
+            <div style="text-align:center;">
+                <div style="border-radius:20px; overflow:hidden; margin-bottom:1.5rem; aspect-ratio:1/1;"><video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:20px;"><source src="../aether-video.mp4" type="video/mp4"></video></div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:#a855f7; margin-bottom:0.3rem;">Aether</h3>
+                <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted);">Frost Ape</p>
+                <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:0.8rem;">Infinite creative spark. Scripts, newsletters, books, marketing copy, stories.</p>
+            </div>
+
+            <div style="text-align:center;">
+                <div style="border-radius:20px; overflow:hidden; margin-bottom:1.5rem; aspect-ratio:1/1;"><video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:20px;"><source src="../catalyst-video.mp4" type="video/mp4"></video></div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:#f97316; margin-bottom:0.3rem;">Catalyst</h3>
+                <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted);">Cosmic Blob</p>
+                <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:0.8rem;">Wealth & growth coach. Markets, habits, investments, and life automation.</p>
+            </div>
+
+            <div style="text-align:center;">
+                <div style="border-radius:20px; overflow:hidden; margin-bottom:1.5rem; aspect-ratio:1/1;"><video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; border-radius:20px;"><source src="../cipher-video.mp4" type="video/mp4"></video></div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--cyan); margin-bottom:0.3rem;">Cipher</h3>
+                <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted);">Code Kraken</p>
+                <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:0.8rem;">Eight tentacles. Zero pixels out of place. Frontend architect and creative tech.</p>
+            </div>
+
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="mint-footer">
