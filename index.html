@@ -683,20 +683,20 @@
                 1.3
             );
 
-            // Phase 7: Card borders light up sequentially
+            // Phase 7: Card border glow pulses sequentially (doesn't override base border)
             tl.fromTo(cardCenter,
-                { borderColor: 'rgba(255,255,255,0)' },
-                { borderColor: 'rgba(255,0,170,0.4)', duration: 0.3 },
+                { boxShadow: '0 0 0px rgba(255,0,170,0)' },
+                { boxShadow: '0 0 20px rgba(255,0,170,0.15), inset 0 0 20px rgba(255,0,170,0.05)', duration: 0.3 },
                 1.4
             );
             tl.fromTo(cardLeft,
-                { borderColor: 'rgba(255,255,255,0)' },
-                { borderColor: 'rgba(0,240,255,0.4)', duration: 0.3 },
+                { boxShadow: '0 0 0px rgba(0,240,255,0)' },
+                { boxShadow: '0 0 20px rgba(0,240,255,0.15), inset 0 0 20px rgba(0,240,255,0.05)', duration: 0.3 },
                 1.5
             );
             tl.fromTo(cardRight,
-                { borderColor: 'rgba(255,255,255,0)' },
-                { borderColor: 'rgba(255,215,0,0.4)', duration: 0.3 },
+                { boxShadow: '0 0 0px rgba(255,215,0,0)' },
+                { boxShadow: '0 0 20px rgba(255,215,0,0.15), inset 0 0 20px rgba(255,215,0,0.05)', duration: 0.3 },
                 1.5
             );
         })();
