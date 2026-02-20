@@ -126,6 +126,9 @@
         .ps-text.gold:hover { text-shadow: 0 0 50px var(--gold), 0 0 100px rgba(255,215,0,0.3); }
         .ps-divider { width: 80px; height: 2px; background: var(--border); margin: 0 auto; }
         .ps-subtext { font-size: 1.3rem; color: var(--text-muted); max-width: 600px; margin-top: 1.5rem; text-align: center; }
+        .ps-solution-wrap { position: relative; overflow: hidden; }
+        .ps-solution-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; z-index: 0; opacity: 0.25; }
+        .ps-solution-fade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, var(--bg) 0%, transparent 30%, transparent 80%, var(--bg) 100%); pointer-events: none; }
         /* Logo Marquee */
         .trust-bar { padding: 2.5rem 0; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); overflow: hidden; background: var(--bg); }
         .trust-label { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.3em; color: var(--text-muted); margin-bottom: 1.5rem; opacity: 0.5; }
@@ -241,8 +244,12 @@
         <div class="ps-slide" style="min-height:50vh; justify-content:center;">
             <div class="ps-divider" data-ps="fade"></div>
         </div>
-        <div class="ps-slide" style="justify-content:center; flex-direction:column; text-align:center;">
-            <div class="ps-block" data-ps="solution">
+        <div class="ps-slide ps-solution-wrap" style="justify-content:center; flex-direction:column; text-align:center; min-height:80vh;">
+            <video class="ps-solution-video" autoplay muted loop playsinline poster="solution-poster.jpg">
+                <source src="solution-video.mp4" type="video/mp4">
+            </video>
+            <div class="ps-solution-fade"></div>
+            <div class="ps-block" data-ps="solution" style="z-index:2; position:relative;">
                 <span class="ps-label solution">THE SOLUTION</span>
                 <h2 class="ps-text gold" style="font-size:clamp(4rem, 10vw, 10rem);">We build you a friend<br>who handles everything.</h2>
                 <p class="ps-subtext">No servers. No API keys. No technical knowledge.<br>Just a companion who knows you — and works for you.</p>
