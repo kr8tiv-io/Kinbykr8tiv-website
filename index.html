@@ -68,11 +68,12 @@
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .living-img { width: 100%; height: auto; border-radius: 24px; animation: float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite; }
         section { padding: 12vh 4rem; position: relative; }
-        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: space-between; gap: 4rem; background: linear-gradient(-45deg, rgba(0,240,255,0.05), rgba(255,0,170,0.05), rgba(0,0,0,1), rgba(0,0,0,1)); background-size: 400% 400%; animation: aurora 15s ease infinite; padding-top: 15vh; }
-        .hero-content { flex: 1; z-index: 2; }
-        .hero-title { font-size: clamp(4rem, 8vw, 10rem); line-height: 0.9; margin-bottom: 2rem; color: var(--text); text-transform: uppercase; }
-        .hero-subtitle { font-size: clamp(1.2rem, 2vw, 1.8rem); opacity: 0.9; margin-bottom: 3rem; color: var(--text); max-width: 600px; }
-        .hero-image-container { flex: 1; max-width: 600px; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 0; }
+        .hero-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); z-index: 0; object-fit: cover; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.95) 100%); z-index: 1; }
+        .hero-content { z-index: 2; text-align: center; max-width: 900px; padding: 0 2rem; }
+        .hero-title { font-size: clamp(3.5rem, 8vw, 9rem); line-height: 0.9; margin-bottom: 2rem; color: #fff; text-transform: uppercase; }
+        .hero-subtitle { font-size: clamp(1.1rem, 1.8vw, 1.5rem); opacity: 0.9; margin-bottom: 3rem; color: rgba(255,255,255,0.85); max-width: 650px; margin-left: auto; margin-right: auto; }
         .section-header { font-size: clamp(3rem, 5vw, 6rem); text-align: center; margin-bottom: 4rem; color: var(--gold); }
         .intro-text { text-align: center; max-width: 800px; margin: 0 auto 5rem; font-size: 1.25rem; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; }
@@ -116,8 +117,8 @@
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @media (max-width: 768px) {
             section { padding: 8vh 2rem; }
-            .hero { flex-direction: column; text-align: center; justify-content: center; }
-            .hero-content, .hero-image-container { width: 100%; }
+            .hero { text-align: center; }
+            .hero-content { width: 100%; }
             .mode-toggle { top: 1.5rem; right: 1.5rem; padding: 0.4rem 0.8rem; }
             nav { padding: 2rem; }
             .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
@@ -139,16 +140,17 @@
     </nav>
 
     <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline poster="hero-poster.jpg">
+            <source src="hero-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title neon-text-main gs-reveal">We build<br>you a<br>friend.</h1>
+            <h1 class="hero-title gs-reveal">We build<br>you a friend.</h1>
             <p class="hero-subtitle gs-reveal">Everyone else sells you a server or a blank chat box. KIN is a bespoke, fully managed AI companion concierge service. Voice, Telegram, WhatsApp, and total computer control. Zero technical knowledge required.</p>
-            <div class="gs-reveal" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-start;">
+            <div class="gs-reveal" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
                 <a href="#mint" class="cta-magnetic cta-primary cta-hover">The Genesis Mint →</a>
                 <a href="#how-it-works" class="cta-magnetic cta-hover">How it Works</a>
             </div>
-        </div>
-        <div class="hero-image-container gs-reveal">
-            <img src="MKVt4.jpg" alt="Mischief - KIN Hero" class="living-img">
         </div>
     </section>
 
