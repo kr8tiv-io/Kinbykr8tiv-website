@@ -406,28 +406,18 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
         gsap.utils.toArray('.gs-reveal').forEach(elem => {
-            gsap.fromTo(elem,
-                { y: 30, opacity: 0 },
-                { scrollTrigger: { trigger: elem, start: "top 90%", toggleActions: "play none none none" },
-                  y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
-                  clearProps: "opacity,transform" }
-            );
-        });
-        // Fallback: if ScrollTrigger doesn't fire within 2s, show everything
-        setTimeout(() => {
-            document.querySelectorAll('.gs-reveal').forEach(el => {
-                if (getComputedStyle(el).opacity === '0') { el.style.opacity = '1'; el.style.transform = 'none'; }
+            gsap.from(elem, {
+                scrollTrigger: { trigger: elem, start: "top 92%" },
+                y: 25, duration: 0.7, ease: "power2.out"
             });
-        }, 2000);
+        });
         gsap.utils.toArray('.grid-5, .grid-3, .grid-2').forEach(grid => {
             const cards = grid.querySelectorAll('.gs-card');
             if (cards.length) {
-                gsap.fromTo(cards,
-                    { y: 40, opacity: 0 },
-                    { scrollTrigger: { trigger: grid, start: "top 85%", toggleActions: "play none none none" },
-                      y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: "power3.out",
-                      clearProps: "opacity,transform" }
-                );
+                gsap.from(cards, {
+                    scrollTrigger: { trigger: grid, start: "top 88%" },
+                    y: 30, duration: 0.5, stagger: 0.1, ease: "power2.out"
+                });
             }
         });
         document.querySelectorAll('.faq-item').forEach(item => {
