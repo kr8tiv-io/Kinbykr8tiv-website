@@ -110,11 +110,15 @@
         .ps-slide:first-child { padding-top: 10vh; }
         .ps-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--magenta); margin-bottom: 1.5rem; display: block; }
         .ps-label.solution { color: var(--gold); }
-        .ps-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.05; letter-spacing: -0.03em; max-width: 1000px; }
+        .ps-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(3.5rem, 8vw, 8rem); line-height: 1.0; letter-spacing: -0.04em; max-width: 1100px; transition: text-shadow 0.4s ease, transform 0.4s ease; }
+        .ps-text:hover { text-shadow: 0 0 40px var(--cyan), 0 0 80px rgba(0,240,255,0.3); transform: scale(1.02); }
         .ps-text.muted { color: var(--text-muted); }
+        .ps-text.muted:hover { text-shadow: 0 0 30px rgba(255,255,255,0.2); }
         .ps-text em { font-style: normal; color: var(--cyan); }
         .ps-text.tension { color: var(--magenta); text-align: center; }
+        .ps-text.tension:hover { text-shadow: 0 0 50px var(--magenta), 0 0 100px rgba(255,0,170,0.4); }
         .ps-text.gold { color: var(--gold); text-align: center; }
+        .ps-text.gold:hover { text-shadow: 0 0 50px var(--gold), 0 0 100px rgba(255,215,0,0.3); }
         .ps-divider { width: 80px; height: 2px; background: var(--border); margin: 0 auto; }
         .ps-subtext { font-size: 1.3rem; color: var(--text-muted); max-width: 600px; margin-top: 1.5rem; text-align: center; }
         /* Logo Marquee */
@@ -148,7 +152,7 @@
         </div>
     </div>
     <nav>
-        <div class="logo cta-hover">KIN</div>
+        <div class="logo cta-hover"><img src="kin-logo-3d.png" alt="KIN" style="height:45px; width:auto; filter:drop-shadow(0 0 10px rgba(0,240,255,0.3));"></div>
         <div class="token cta-hover">$KR8TIV</div>
     </nav>
 
@@ -159,9 +163,9 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title gs-reveal">We build<br>you a friend.</h1>
-            <div class="gs-reveal" style="display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-bottom:1.5rem; opacity:0.6;">
-                <img src="https://cdn.simpleicons.org/solana/white" alt="Solana" style="height:18px; width:auto;">
-                <span style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.7);">Built on Solana</span>
+            <div class="gs-reveal" style="display:flex; align-items:center; justify-content:center; gap:1rem; margin-bottom:2rem; opacity:0.7;">
+                <img src="https://cdn.simpleicons.org/solana/white" alt="Solana" style="height:40px; width:auto;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:1.6rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.8); font-weight:500;">Built on Solana</span>
             </div>
             <p class="hero-subtitle gs-reveal">Everyone else sells you a server or a blank chat box. KIN is a bespoke, fully managed AI companion concierge service. Voice, Telegram, WhatsApp, and total computer control. Zero technical knowledge required.</p>
             <div class="gs-reveal" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
