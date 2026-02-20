@@ -531,7 +531,6 @@
 
         // Auto-reconnect on page load (if already authorized)
         window.addEventListener('DOMContentLoaded', async () => {
-            // Small delay to let Phantom inject
             await new Promise(r => setTimeout(r, 200));
 
             provider = getProvider();
@@ -540,19 +539,45 @@
                     const resp = await provider.connect({ onlyIfTrusted: true });
                     connectedWallet = resp.publicKey;
                     updateUI();
-                } catch (e) {
-                    // Not previously connected — that's fine
-                }
+                } catch (e) {}
 
-                provider.on('disconnect', () => {
-                    connectedWallet = null;
-                    updateUI();
-                });
-                provider.on('accountChanged', (pk) => {
-                    connectedWallet = pk || null;
-                    updateUI();
-                });
+                provider.on('disconnect', () => { connectedWallet = null; updateUI(); });
+                provider.on('accountChanged', (pk) => { connectedWallet = pk || null; updateUI(); });
             }
+
+            // Lazy-load videos: only play when visible
+            const allVideos = document.querySelectorAll('video');
+            allVideos.forEach(v => {
+                if (v !== allVideos[0]) {
+                    v.pause();
+                    v.preload = 'none';
+                    const source = v.querySelector('source');
+                    if (source && source.src) {
+                        v.dataset.lazySrc = source.src;
+                        source.removeAttribute('src');
+                        v.load();
+                    }
+                }
+            });
+
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        const source = video.querySelector('source');
+                        if (video.dataset.lazySrc && source) {
+                            source.src = video.dataset.lazySrc;
+                            delete video.dataset.lazySrc;
+                            video.load();
+                        }
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { rootMargin: '200px' });
+
+            allVideos.forEach(v => videoObserver.observe(v));
         });
     })();
     </script>
