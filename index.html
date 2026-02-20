@@ -103,6 +103,17 @@
         footer { border-top: 1px solid var(--border); padding: 4rem; text-align: center; background: var(--surface); }
         footer a { color: var(--text-muted); text-decoration: none; margin: 0 1rem; transition: color 0.3s; cursor: none; }
         footer a:hover { color: var(--cyan); }
+        /* Logo Marquee */
+        .trust-bar { padding: 2.5rem 0; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); overflow: hidden; background: var(--bg); }
+        .trust-label { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3em; color: var(--text-muted); margin-bottom: 1.5rem; opacity: 0.5; }
+        .marquee { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+        .marquee:hover { animation-play-state: paused; }
+        .marquee-item { display: flex; align-items: center; gap: 0.6rem; padding: 0 2.5rem; white-space: nowrap; opacity: 0.4; transition: opacity 0.3s; }
+        .marquee-item:hover { opacity: 0.9; }
+        .marquee-item img { height: 22px; width: auto; filter: grayscale(1) brightness(2); }
+        .light-mode .marquee-item img { filter: grayscale(1) brightness(0.3); }
+        .marquee-item span { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.95rem; color: var(--text); letter-spacing: -0.02em; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @media (max-width: 768px) {
             section { padding: 8vh 2rem; }
             .hero { flex-direction: column; text-align: center; justify-content: center; }
@@ -140,6 +151,29 @@
             <img src="MKVt4.jpg" alt="Mischief - KIN Hero" class="living-img">
         </div>
     </section>
+
+    <div class="trust-bar">
+        <div class="trust-label">We build with</div>
+        <div class="marquee">
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/solana/white" alt="Solana"><span>Solana</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/anthropic/white" alt="Anthropic"><span>Anthropic</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/nvidia/white" alt="NVIDIA"><span>NVIDIA</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/googlegemini/white" alt="Gemini"><span>Google Gemini</span></div>
+            <div class="marquee-item"><span style="font-size:1.1rem; font-weight:800;">⚡</span><span>OpenClaw</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/x/white" alt="xAI"><span>xAI</span></div>
+            <div class="marquee-item"><span style="font-size:1.1rem;">👻</span><span>Phantom</span></div>
+            <div class="marquee-item"><span style="font-size:1.1rem;">🌙</span><span>Moonshot AI</span></div>
+            <!-- Duplicate for seamless loop -->
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/solana/white" alt="Solana"><span>Solana</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/anthropic/white" alt="Anthropic"><span>Anthropic</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/nvidia/white" alt="NVIDIA"><span>NVIDIA</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/googlegemini/white" alt="Gemini"><span>Google Gemini</span></div>
+            <div class="marquee-item"><span style="font-size:1.1rem; font-weight:800;">⚡</span><span>OpenClaw</span></div>
+            <div class="marquee-item"><img src="https://cdn.simpleicons.org/x/white" alt="xAI"><span>xAI</span></div>
+            <div class="marquee-item"><span style="font-size:1.1rem;">👻</span><span>Phantom</span></div>
+            <div class="marquee-item"><span style="font-size:1.1rem;">🌙</span><span>Moonshot AI</span></div>
+        </div>
+    </div>
 
     <section id="capabilities" style="background: var(--surface);">
         <h2 class="section-header gs-reveal">What Your KIN Actually Does</h2>
