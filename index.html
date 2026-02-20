@@ -1222,13 +1222,20 @@
         let connectedWallet = null;
         let provider = null;
 
+        // Detect mobile
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Deep link to open this page inside Phantom's in-app browser
+        function openInPhantom() {
+            const currentUrl = encodeURIComponent(window.location.href);
+            window.location.href = 'https://phantom.app/ul/browse/' + currentUrl + '?ref=' + currentUrl;
+        }
+
         // Detect Phantom provider
         function getProvider() {
-            if ('phantom' in window) {
-                const p = window.phantom?.solana;
-                if (p?.isPhantom) return p;
-            }
-            // Check legacy window.solana
+            if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
             if (window.solana?.isPhantom) return window.solana;
             return null;
         }
@@ -1241,8 +1248,8 @@
             const mintBtns = document.querySelectorAll('.mint-btn');
 
             if (connectedWallet) {
-                const short = connectedWallet.toString();
-                btnText.textContent = short.slice(0, 4) + '...' + short.slice(-4);
+                const addr = connectedWallet.toString();
+                btnText.textContent = addr.slice(0, 4) + '···' + addr.slice(-4);
                 btn.style.borderColor = 'rgba(0, 240, 255, 0.5)';
                 btn.style.background = 'linear-gradient(135deg, rgba(0,240,255,0.1), rgba(0,240,255,0.05))';
                 status.textContent = '✓ Wallet connected — choose your tier';
@@ -1253,7 +1260,7 @@
                     b.style.pointerEvents = 'auto';
                 });
             } else {
-                btnText.textContent = 'Connect Wallet';
+                btnText.textContent = 'Connect Phantom';
                 btn.style.borderColor = 'rgba(171,71,188,0.4)';
                 btn.style.background = 'linear-gradient(135deg, rgba(171,71,188,0.15), rgba(103,58,183,0.15))';
                 status.textContent = '';
@@ -1264,12 +1271,20 @@
         window.connectWallet = async function() {
             provider = getProvider();
 
-            if (!provider) {
-                // No Phantom — open install page
+            // Mobile: deep link to Phantom app
+            if (!provider && isMobile()) {
                 const status = document.getElementById('wallet-status');
-                status.textContent = 'Phantom wallet not found. Redirecting to install...';
+                status.textContent = 'Opening in Phantom wallet...';
                 status.style.color = 'var(--gold)';
-                setTimeout(() => window.open('https://phantom.app/', '_blank'), 1000);
+                openInPhantom();
+                return;
+            }
+
+            if (!provider) {
+                const status = document.getElementById('wallet-status');
+                status.textContent = 'Phantom not found — opening install page...';
+                status.style.color = 'var(--gold)';
+                setTimeout(() => window.open('https://phantom.app/', '_blank'), 800);
                 return;
             }
 
