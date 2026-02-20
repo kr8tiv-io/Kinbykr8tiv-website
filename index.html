@@ -86,17 +86,9 @@
         .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1600px; margin: 0 auto; }
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; transition: all 0.4s; height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
         .card:hover { transform: translateY(-10px); border-color: var(--cyan); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.05); }
-        .card-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.08; z-index: 0; pointer-events: none; filter: blur(1px); transition: opacity 0.5s ease, filter 0.5s ease; }
-        .card:hover .card-bg-video { opacity: 0.35; filter: blur(0px); }
-        .card > *:not(.card-bg-video) { position: relative; z-index: 1; }
-        .cap-card h3, .cap-card p { transition: text-shadow 0.5s ease; }
-        .cap-card:hover h3 { text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.6); }
-        .cap-card:hover p { text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5); }
-        #capabilities { min-height: 100vh; display: flex; align-items: center; }
-        .cap-inner { width: 100%; }
-        .cap-title { visibility: hidden; }
-        .cap-subtitle { visibility: hidden; }
-        .cap-card { visibility: hidden; }
+        .card > *:not(.card-top-video) { position: relative; z-index: 1; }
+        .card-top-video { width: calc(100% + 5rem); margin: -2.5rem -2.5rem 1.5rem -2.5rem; height: 220px; object-fit: cover; border-radius: 24px 24px 0 0; opacity: 0.5; transition: opacity 0.5s ease, transform 0.5s ease; display: block; }
+        .card:hover .card-top-video { opacity: 0.8; transform: scale(1.03); }
         .cap-card { border-color: rgba(255, 255, 255, 0.25); }
         .card-img-wrapper { margin-bottom: 2rem; border-radius: 16px; overflow: hidden; }
         .creature-name { font-size: 1.8rem; color: var(--cyan); margin-bottom: 1rem; }
@@ -285,25 +277,23 @@
     </section>
 
     <section id="capabilities" style="background: var(--surface);">
-        <div class="cap-inner">
-            <h2 class="section-header cap-title">What Your KIN Actually Does</h2>
-            <p class="intro-text cap-subtitle">ChatGPT is a search engine with a chat interface. It waits for you to type. A KIN is a personal employee, a companion, and a concierge that works while you sleep.</p>
-            <div class="grid-3 cap-grid">
-                <div class="card cta-hover cap-card cap-card-left">
-                    <video class="card-bg-video" autoplay muted loop playsinline><source src="cap-video-family-web.mp4" type="video/mp4"></video>
-                    <h3 style="color: var(--cyan); margin-bottom: 1rem; font-size: 1.4rem;">The Family Concierge</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.7;">Reads your kids a bedtime story — using their real names. Manages your family calendar. Books flights. Pays with your card securely. Remembers your partner's anniversary.<br><br><strong style="color:var(--text);">Forever.</strong></p>
-                </div>
-                <div class="card cta-hover cap-card cap-card-center">
-                    <video class="card-bg-video" autoplay muted loop playsinline><source src="cap-video-exec-web.mp4" type="video/mp4"></video>
-                    <h3 style="color: var(--magenta); margin-bottom: 1rem; font-size: 1.4rem;">The Digital Executive</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.7;">Answers your emails while you sleep. Drafts responses. Flags urgent messages. Runs your social media presence and keeps your brand voice perfectly consistent.<br><br><strong style="color:var(--text);">24/7. No days off.</strong></p>
-                </div>
-                <div class="card cta-hover cap-card cap-card-right">
-                    <video class="card-bg-video" autoplay muted loop playsinline><source src="cap-video-ghost-web.mp4" type="video/mp4"></video>
-                    <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.4rem;">Your Friend in the Machine</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.7;">With your permission, your KIN controls your computer directly. Operates your browser. Debugs your codebase at 3am. Opens crypto wallets. Manages investments.<br><br><strong style="color:var(--text);">You sleep. It works.</strong></p>
-                </div>
+        <h2 class="section-header gs-reveal">What Your KIN Actually Does</h2>
+        <p class="intro-text gs-reveal">ChatGPT is a search engine with a chat interface. It waits for you to type. A KIN is a personal employee, a companion, and a concierge that works while you sleep.</p>
+        <div class="grid-3">
+            <div class="card cta-hover gs-card cap-card">
+                <video class="card-top-video" autoplay muted loop playsinline><source src="cap-video-family-web.mp4" type="video/mp4"></video>
+                <h3 style="color: var(--cyan); margin-bottom: 1rem; font-size: 1.4rem;">The Family Concierge</h3>
+                <p style="font-size: 1.1rem; line-height: 1.7;">Reads your kids a bedtime story — using their real names. Manages your family calendar. Books flights. Pays with your card securely. Remembers your partner's anniversary.<br><br><strong style="color:var(--text);">Forever.</strong></p>
+            </div>
+            <div class="card cta-hover gs-card cap-card">
+                <video class="card-top-video" autoplay muted loop playsinline><source src="cap-video-exec-web.mp4" type="video/mp4"></video>
+                <h3 style="color: var(--magenta); margin-bottom: 1rem; font-size: 1.4rem;">The Digital Executive</h3>
+                <p style="font-size: 1.1rem; line-height: 1.7;">Answers your emails while you sleep. Drafts responses. Flags urgent messages. Runs your social media presence and keeps your brand voice perfectly consistent.<br><br><strong style="color:var(--text);">24/7. No days off.</strong></p>
+            </div>
+            <div class="card cta-hover gs-card cap-card">
+                <video class="card-top-video" autoplay muted loop playsinline><source src="cap-video-ghost-web.mp4" type="video/mp4"></video>
+                <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.4rem;">Your Friend in the Machine</h3>
+                <p style="font-size: 1.1rem; line-height: 1.7;">With your permission, your KIN controls your computer directly. Operates your browser. Debugs your codebase at 3am. Opens crypto wallets. Manages investments.<br><br><strong style="color:var(--text);">You sleep. It works.</strong></p>
             </div>
         </div>
     </section>
@@ -620,81 +610,6 @@
                 if (!isActive) item.classList.add('active');
             });
         });
-        // === Capabilities — Premium Assembly Animation ===
-        (function() {
-            const section = document.querySelector('#capabilities');
-            const title = section.querySelector('.cap-title');
-            const subtitle = section.querySelector('.cap-subtitle');
-            const cardCenter = section.querySelector('.cap-card-center');
-            const cardLeft = section.querySelector('.cap-card-left');
-            const cardRight = section.querySelector('.cap-card-right');
-            const allCards = section.querySelectorAll('.cap-card');
-
-            // Make visible for GSAP (we control opacity ourselves)
-            gsap.set([title, subtitle, cardCenter, cardLeft, cardRight], { visibility: 'visible' });
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: '#capabilities',
-                    start: 'top 80%',
-                    end: 'bottom 20%',
-                    scrub: 1.2,
-                }
-            });
-
-            // Phase 1: Title crashes down from above with slight 3D rotation
-            tl.fromTo(title,
-                { y: -120, opacity: 0, rotateX: 25, scale: 0.8, transformOrigin: 'center top' },
-                { y: 0, opacity: 1, rotateX: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                0
-            );
-
-            // Phase 2: Subtitle slides in from the left, slightly delayed
-            tl.fromTo(subtitle,
-                { x: -200, opacity: 0, skewX: 8 },
-                { x: 0, opacity: 1, skewX: 0, duration: 0.7, ease: 'power2.out' },
-                0.15
-            );
-
-            // Phase 3: Center card drops in from above
-            tl.fromTo(cardCenter,
-                { y: -100, opacity: 0, scale: 0.9 },
-                { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' },
-                0.3
-            );
-
-            // Phase 4: Left card slides in from left
-            tl.fromTo(cardLeft,
-                { x: -250, opacity: 0 },
-                { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
-                0.45
-            );
-
-            // Phase 5: Right card slides in from right
-            tl.fromTo(cardRight,
-                { x: 250, opacity: 0 },
-                { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
-                0.45
-            );
-
-            // Phase 7: Card border glow pulses sequentially (doesn't override base border)
-            tl.fromTo(cardCenter,
-                { boxShadow: '0 0 0px rgba(255,0,170,0)' },
-                { boxShadow: '0 0 20px rgba(255,0,170,0.15), inset 0 0 20px rgba(255,0,170,0.05)', duration: 0.3 },
-                1.4
-            );
-            tl.fromTo(cardLeft,
-                { boxShadow: '0 0 0px rgba(0,240,255,0)' },
-                { boxShadow: '0 0 20px rgba(0,240,255,0.15), inset 0 0 20px rgba(0,240,255,0.05)', duration: 0.3 },
-                1.5
-            );
-            tl.fromTo(cardRight,
-                { boxShadow: '0 0 0px rgba(255,215,0,0)' },
-                { boxShadow: '0 0 20px rgba(255,215,0,0.15), inset 0 0 20px rgba(255,215,0,0.05)', duration: 0.3 },
-                1.5
-            );
-        })();
-
         // Mighty horizontal scroll
         const mightyTrack = document.querySelector('.mighty-track');
         if (mightyTrack) {
