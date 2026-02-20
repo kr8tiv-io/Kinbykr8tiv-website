@@ -90,6 +90,34 @@
         .card-top-video { width: calc(100% + 5rem); margin: -2.5rem -2.5rem 1.5rem -2.5rem; height: 480px; object-fit: cover; object-position: center top; border-radius: 24px 24px 0 0; opacity: 0.5; transition: opacity 0.5s ease, transform 0.5s ease; display: block; }
         .card:hover .card-top-video { opacity: 0.8; transform: scale(1.03); }
         .cap-card { border-color: rgba(255, 255, 255, 0.25); }
+        .hiw-journey { position: relative; max-width: 800px; margin: 0 auto; }
+        .hiw-line { position: absolute; left: 35px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--cyan), var(--magenta), var(--gold), var(--cyan)); opacity: 0.3; }
+        .hiw-step { display: flex; align-items: flex-start; gap: 3rem; margin-bottom: 5rem; position: relative; opacity: 0; transform: translateX(-30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .hiw-step.active { opacity: 1; transform: translateX(0); }
+        .hiw-step:last-child { margin-bottom: 0; }
+        .hiw-node { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; background: rgba(0,240,255,0.05); border: 2px solid rgba(0,240,255,0.2); transition: all 0.6s ease; }
+        .hiw-step.active .hiw-node { border-color: var(--cyan); background: rgba(0,240,255,0.1); box-shadow: 0 0 30px rgba(0,240,255,0.2), 0 0 60px rgba(0,240,255,0.05); }
+        .hiw-step[data-step="2"].active .hiw-node { border-color: var(--magenta); background: rgba(255,0,170,0.1); box-shadow: 0 0 30px rgba(255,0,170,0.2), 0 0 60px rgba(255,0,170,0.05); }
+        .hiw-step[data-step="3"].active .hiw-node { border-color: var(--gold); background: rgba(255,215,0,0.1); box-shadow: 0 0 30px rgba(255,215,0,0.2), 0 0 60px rgba(255,215,0,0.05); }
+        .hiw-step[data-step="4"].active .hiw-node { border-color: var(--cyan); background: rgba(0,240,255,0.1); box-shadow: 0 0 30px rgba(0,240,255,0.15), 0 0 60px rgba(255,0,170,0.1); }
+        .hiw-node span { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.8rem; color: rgba(255,255,255,0.3); transition: color 0.6s ease; }
+        .hiw-step.active .hiw-node span { color: #fff; }
+        .hiw-node::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(0,240,255,0.08); transition: all 0.6s ease; }
+        .hiw-step.active .hiw-node::after { border-color: rgba(0,240,255,0.15); animation: nodePulse 2s ease-in-out infinite; }
+        @keyframes nodePulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.5; } }
+        .hiw-content h3 { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.6rem; margin-bottom: 0.75rem; color: var(--text); transition: color 0.6s ease; }
+        .hiw-step[data-step="1"].active .hiw-content h3 { color: var(--cyan); }
+        .hiw-step[data-step="2"].active .hiw-content h3 { color: var(--magenta); }
+        .hiw-step[data-step="3"].active .hiw-content h3 { color: var(--gold); }
+        .hiw-step[data-step="4"].active .hiw-content h3 { color: var(--cyan); }
+        .hiw-content p { font-size: 1.15rem; line-height: 1.7; color: var(--text-muted); max-width: 550px; }
+        @media (max-width: 768px) {
+            .hiw-journey { padding-left: 0; }
+            .hiw-step { gap: 1.5rem; }
+            .hiw-node { width: 56px; height: 56px; }
+            .hiw-node span { font-size: 1.4rem; }
+            .hiw-line { left: 27px; }
+        }
         .card-img-wrapper { margin-bottom: 2rem; border-radius: 16px; overflow: hidden; }
         .creature-name { font-size: 1.8rem; color: var(--cyan); margin-bottom: 1rem; }
         .card .desc { flex-grow: 1; }
@@ -298,29 +326,41 @@
         </div>
     </section>
 
-    <section id="how-it-works">
-        <h2 class="section-header gs-reveal">Zero Tech Required</h2>
-        <p class="intro-text gs-reveal">We don't hand you an API key and wish you luck. This is a white-glove, bespoke concierge service.</p>
-        <div class="grid-3 text-center">
-            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
-                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">1</h1>
-                <h3 style="margin: 1rem 0; color: var(--text);">Choose Your KIN</h3>
-                <p>Select your bloodline and complete the Awakening Questionnaire so we can learn your life, your humor, and your needs.</p>
-            </div>
-            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
-                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">2</h1>
-                <h3 style="margin: 1rem 0; color: var(--text);">We Build It</h3>
-                <p>We configure the OpenClaw infrastructure, hook up the APIs, manage the models, and connect it to your devices.</p>
-            </div>
-            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
-                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">3</h1>
-                <h3 style="margin: 1rem 0; color: var(--text);">Talk to Your Friend</h3>
-                <p>Just open Telegram, WhatsApp, or speak out loud. Your KIN is there. If anything ever breaks, you call us. We fix it.</p>
-            </div>
-            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
-                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">4</h1>
-                <h3 style="margin: 1rem 0; color: var(--text);">We Evolve Together</h3>
-                <p>Every month, you tell us what changes you'd like and how we can improve your KIN. Receive regular updates to the best-in-class frontier models — without even asking.</p>
+    <section id="how-it-works" style="position:relative; overflow:hidden; padding: 10vh 4rem;">
+        <canvas id="hiw-canvas" style="position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
+        <div style="position:relative; z-index:1;">
+            <h2 class="section-header gs-reveal">Zero Tech Required</h2>
+            <p class="intro-text gs-reveal" style="margin-bottom:6rem;">We don't hand you an API key and wish you luck. This is a white-glove, bespoke concierge service.</p>
+            <div class="hiw-journey">
+                <div class="hiw-line"></div>
+                <div class="hiw-step" data-step="1">
+                    <div class="hiw-node"><span>1</span></div>
+                    <div class="hiw-content">
+                        <h3>Choose Your KIN</h3>
+                        <p>Select your bloodline and complete the Awakening Questionnaire so we can learn your life, your humor, and your needs.</p>
+                    </div>
+                </div>
+                <div class="hiw-step" data-step="2">
+                    <div class="hiw-node"><span>2</span></div>
+                    <div class="hiw-content">
+                        <h3>We Build It</h3>
+                        <p>We configure the OpenClaw infrastructure, hook up the APIs, manage the models, and connect it to your devices.</p>
+                    </div>
+                </div>
+                <div class="hiw-step" data-step="3">
+                    <div class="hiw-node"><span>3</span></div>
+                    <div class="hiw-content">
+                        <h3>Talk to Your Friend</h3>
+                        <p>Just open Telegram, WhatsApp, or speak out loud. Your KIN is there. If anything ever breaks, you call us. We fix it.</p>
+                    </div>
+                </div>
+                <div class="hiw-step" data-step="4">
+                    <div class="hiw-node"><span>4</span></div>
+                    <div class="hiw-content">
+                        <h3>We Evolve Together</h3>
+                        <p>Every month, you tell us what changes you'd like and how we can improve your KIN. Receive regular updates to the best-in-class frontier models — without even asking.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -610,6 +650,115 @@
                 if (!isActive) item.classList.add('active');
             });
         });
+        // === How It Works — Particle Canvas + Scroll Activation ===
+        (function() {
+            const canvas = document.getElementById('hiw-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const section = document.getElementById('how-it-works');
+            let w, h, particles = [], mouse = { x: -999, y: -999 };
+            const colors = ['0,240,255', '255,0,170', '255,215,0'];
+
+            function resize() {
+                const rect = section.getBoundingClientRect();
+                canvas.width = w = rect.width * (window.devicePixelRatio || 1);
+                canvas.height = h = rect.height * (window.devicePixelRatio || 1);
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+            }
+
+            function createParticles() {
+                particles = [];
+                const count = Math.min(80, Math.floor(w * h / 12000));
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * (w / (window.devicePixelRatio || 1)),
+                        y: Math.random() * (h / (window.devicePixelRatio || 1)),
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.3 + 0.15,
+                        r: Math.random() * 2.5 + 0.5,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        alpha: Math.random() * 0.4 + 0.05,
+                        pulse: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            function draw() {
+                const dpr = window.devicePixelRatio || 1;
+                const rw = w / dpr, rh = h / dpr;
+                ctx.clearRect(0, 0, rw, rh);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.pulse += 0.02;
+                    if (p.x < -10) p.x = rw + 10;
+                    if (p.x > rw + 10) p.x = -10;
+                    if (p.y < -10) p.y = rh + 10;
+                    if (p.y > rh + 10) p.y = -10;
+                    // Mouse repulsion
+                    const dx = p.x - mouse.x, dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        const force = (150 - dist) / 150 * 0.8;
+                        p.vx += (dx / dist) * force;
+                        p.vy += (dy / dist) * force;
+                    }
+                    p.vx *= 0.98; p.vy *= 0.98;
+                    const a = p.alpha * (0.7 + 0.3 * Math.sin(p.pulse));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${p.color},${a})`;
+                    ctx.fill();
+                    // Glow
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${p.color},${a * 0.15})`;
+                    ctx.fill();
+                });
+                // Draw connections between close particles
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            const a = (1 - dist / 120) * 0.06;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(${particles[i].color},${a})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+
+            resize();
+            createParticles();
+            draw();
+            window.addEventListener('resize', () => { resize(); createParticles(); });
+            section.addEventListener('mousemove', e => {
+                const rect = section.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+            section.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+
+            // Scroll-driven step activation
+            document.querySelectorAll('.hiw-step').forEach(step => {
+                ScrollTrigger.create({
+                    trigger: step,
+                    start: 'top 80%',
+                    onEnter: () => step.classList.add('active'),
+                    onLeaveBack: () => step.classList.remove('active')
+                });
+            });
+        })();
+
         // Mighty horizontal scroll
         const mightyTrack = document.querySelector('.mighty-track');
         if (mightyTrack) {
