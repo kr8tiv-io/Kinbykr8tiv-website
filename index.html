@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIN by KR8TIV — Your Living Digital Companion</title>
-    <meta name="description" content="Fifty Genesis KIN. One forever companion. Voice, Telegram, WhatsApp, computer control — we build, host, customize, and maintain your private OpenClaw AI.">
+    <title>KIN by KR8TIV — We Build You A Friend</title>
+    <meta name="description" content="Bespoke AI companion concierge service. We don't sell you a server, we build you a friend. Powered by OpenClaw.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>/*!
  * GSAP 3.12.5
  * https://gsap.com
@@ -39,204 +39,253 @@
             --bg: #000000; --surface: #0A0A0A; --surface-hover: #141414;
             --text: #ffffff; --text-muted: rgba(255, 255, 255, 0.7);
             --border: rgba(255, 255, 255, 0.1);
-            --cyan: #00f0ff; --magenta: #ff00aa; --purple: #c026d3; --gold: #ffd700;
+            --cyan: #00f0ff; --magenta: #ff00aa; --gold: #ffd700;
         }
         .light-mode {
-            --bg: #EAE8E3; --surface: #F5F4F1;
+            --bg: #EAE8E3; --surface: #F5F4F1; --surface-hover: #FFFFFF;
             --text: #0F0F0F; --text-muted: rgba(15, 15, 15, 0.7);
             --border: rgba(15, 15, 15, 0.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--bg); color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: background 0.5s ease, color 0.5s ease;
-            overflow-x: hidden; cursor: none; -webkit-font-smoothing: antialiased;
-        }
-        .cursor {
-            width: 12px; height: 12px; background: var(--cyan); border-radius: 50%;
-            position: fixed; pointer-events: none; z-index: 10000; mix-blend-mode: difference;
-            box-shadow: 0 0 15px var(--cyan);
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translate(-50%, -50%);
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.5s ease, color 0.5s ease; overflow-x: hidden; cursor: none; -webkit-font-smoothing: antialiased; }
+        .cursor { width: 12px; height: 12px; background: var(--cyan); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; mix-blend-mode: difference; box-shadow: 0 0 15px var(--cyan); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); transform: translate(-50%, -50%); }
         .cursor.active { transform: translate(-50%, -50%) scale(3); background: var(--magenta); box-shadow: 0 0 20px var(--magenta); }
-        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.04em; }
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: -0.04em; }
+        p { font-size: 1.15rem; line-height: 1.6; color: var(--text-muted); }
         .neon-text-main { text-shadow: 0 0 40px var(--cyan), 0 0 80px var(--magenta); }
         .light-mode .neon-text-main { text-shadow: none; }
-        .mode-toggle {
-            position: fixed; top: 2vw; right: 4vw; z-index: 9999;
-            background: rgba(15, 15, 15, 0.4); padding: 0.5rem 1rem; border-radius: 50px;
-            display: flex; align-items: center; gap: 12px; cursor: none;
-            backdrop-filter: blur(12px); border: 1px solid var(--border); transition: all 0.3s ease;
-        }
+        .mode-toggle { position: fixed; top: 2rem; right: 4rem; z-index: 9999; background: rgba(15, 15, 15, 0.4); padding: 0.5rem 1rem; border-radius: 50px; display: flex; align-items: center; gap: 12px; cursor: none; backdrop-filter: blur(12px); border: 1px solid var(--border); transition: all 0.3s ease; }
         .light-mode .mode-toggle { background: rgba(255, 255, 255, 0.4); }
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 2vw 4vw;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100; mix-blend-mode: difference; color: #fff;
-        }
-        nav .logo { font-size: 1.5vw; color: var(--gold); }
-        nav .token { font-weight: 600; font-size: 0.9vw; letter-spacing: 0.1em; }
-        .cta-magnetic {
-            display: inline-block; padding: 1.2vw 3vw; border: 1px solid var(--cyan);
-            border-radius: 100px; color: var(--cyan); font-family: 'Outfit', sans-serif;
-            font-size: 1.1vw; font-weight: 500; text-transform: uppercase; text-decoration: none;
-            transition: all 0.4s ease; cursor: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-        }
-        .cta-magnetic:hover { background: var(--cyan); color: #000; box-shadow: 0 0 40px rgba(0, 240, 255, 0.6); }
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: difference; color: #fff; }
+        nav .logo { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--gold); }
+        nav .token { font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; }
+        .cta-magnetic { display: inline-block; padding: 1rem 2.5rem; border: 1px solid var(--cyan); border-radius: 100px; color: var(--cyan); font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 500; text-transform: uppercase; text-decoration: none; transition: all 0.4s ease; cursor: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.1); }
+        .cta-magnetic:hover { background: var(--cyan); color: #000; box-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
+        .cta-primary { background: var(--magenta); color: #fff; border-color: var(--magenta); box-shadow: 0 0 20px rgba(255, 0, 170, 0.2); }
+        .cta-primary:hover { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 40px rgba(255, 255, 255, 0.5); }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        @keyframes pulse-glow { 0% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.2)); } 50% { filter: drop-shadow(0 0 40px rgba(255,0,170,0.4)); } 100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.2)); } }
+        @keyframes pulse-glow { 0% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.1)); } 50% { filter: drop-shadow(0 0 40px rgba(255,0,170,0.2)); } 100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.1)); } }
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .living-img { width: 100%; height: auto; border-radius: 24px; animation: float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite; }
-        section { padding: 15vh 4vw; }
-        .hero {
-            height: 100vh; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 8vw; background: radial-gradient(circle at center, rgba(192,38,211,0.1) 0%, transparent 70%);
-        }
-        .hero-content { width: 50%; z-index: 2; }
-        .hero-title { font-size: 12vw; line-height: 0.8; margin-bottom: 2rem; color: #fff; }
-        .hero-subtitle { font-size: 1.5vw; opacity: 0.9; margin-bottom: 3rem; line-height: 1.5; }
-        .hero-image-container { width: 45%; }
-        .section-header { font-size: 6vw; text-align: center; margin-bottom: 8vh; color: var(--gold); }
-        .intro-text { text-align: center; max-width: 900px; margin: 0 auto 8vh; font-size: 1.4vw; color: var(--text-muted); line-height: 1.7; }
-        .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3vw; max-width: 1600px; margin: 0 auto; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; max-width: 1400px; margin: 0 auto; }
-        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 2vw; transition: transform 0.4s; }
-        .card:hover { transform: translateY(-10px); border-color: var(--cyan); }
-        .creature-name { font-size: 2vw; color: var(--cyan); margin: 1.5rem 0 1rem; }
-        .desc { font-size: 1.1vw; color: var(--text-muted); line-height: 1.6; }
-        .price { font-size: 3.5vw; margin: 1.5rem 0; font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--text); }
-        .price span { font-size: 1.2vw; font-weight: 400; color: var(--text-muted); }
+        section { padding: 12vh 4rem; position: relative; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: space-between; gap: 4rem; background: linear-gradient(-45deg, rgba(0,240,255,0.05), rgba(255,0,170,0.05), rgba(0,0,0,1), rgba(0,0,0,1)); background-size: 400% 400%; animation: aurora 15s ease infinite; padding-top: 15vh; }
+        .hero-content { flex: 1; z-index: 2; }
+        .hero-title { font-size: clamp(4rem, 8vw, 10rem); line-height: 0.9; margin-bottom: 2rem; color: var(--text); text-transform: uppercase; }
+        .hero-subtitle { font-size: clamp(1.2rem, 2vw, 1.8rem); opacity: 0.9; margin-bottom: 3rem; color: var(--text); max-width: 600px; }
+        .hero-image-container { flex: 1; max-width: 600px; }
+        .section-header { font-size: clamp(3rem, 5vw, 6rem); text-align: center; margin-bottom: 4rem; color: var(--gold); }
+        .intro-text { text-align: center; max-width: 800px; margin: 0 auto 5rem; font-size: 1.25rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
+        .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1600px; margin: 0 auto; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; transition: all 0.4s; height: 100%; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-10px); border-color: var(--cyan); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.05); }
+        .card-img-wrapper { margin-bottom: 2rem; border-radius: 16px; overflow: hidden; }
+        .creature-name { font-size: 1.8rem; color: var(--cyan); margin-bottom: 1rem; }
+        .card .desc { flex-grow: 1; }
+        .comparison-wrap { overflow-x: auto; max-width: 1200px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 1.5rem; border-bottom: 1px solid var(--border); }
+        th { font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: var(--cyan); text-transform: uppercase; }
+        tr:hover td { background: var(--surface); }
+        .highlight-row { background: rgba(0, 240, 255, 0.05) !important; border: 1px solid var(--cyan); }
+        .highlight-row td { color: var(--cyan); font-weight: 500; }
+        .price { font-size: 3rem; margin: 1.5rem 0; font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--text); }
+        .price span { font-size: 1.2rem; font-weight: 400; color: var(--text-muted); }
         .features { list-style: none; margin-bottom: 2rem; flex-grow: 1; }
-        .features li { padding: 1rem 0; border-bottom: 1px solid var(--border); font-size: 1.1vw; color: var(--text-muted); }
-        .highlight-card { border-color: var(--magenta); box-shadow: 0 0 30px rgba(255,0,170,0.1); }
-        .highlight-card h4 { color: var(--magenta); }
+        .features li { padding: 0.8rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; }
+        .features li::before { content: '✦'; color: var(--cyan); }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 2rem 0; cursor: none; }
+        .faq-question { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; opacity: 0.8; }
+        .faq-item.active .faq-answer { max-height: 300px; padding-top: 1.5rem; }
+        .faq-item.active .faq-question { color: var(--cyan); }
+        footer { border-top: 1px solid var(--border); padding: 4rem; text-align: center; background: var(--surface); }
+        footer a { color: var(--text-muted); text-decoration: none; margin: 0 1rem; transition: color 0.3s; cursor: none; }
+        footer a:hover { color: var(--cyan); }
         @media (max-width: 768px) {
-            .hero { flex-direction: column; text-align: center; padding: 15vh 5vw 5vh; }
+            section { padding: 8vh 2rem; }
+            .hero { flex-direction: column; text-align: center; justify-content: center; }
             .hero-content, .hero-image-container { width: 100%; }
-            .hero-title { font-size: 20vw; }
-            .hero-subtitle { font-size: 4.5vw; }
-            .grid-5, .grid-3 { grid-template-columns: 1fr; }
-            .section-header { font-size: 10vw; }
-            .intro-text { font-size: 4vw; }
-            .creature-name { font-size: 6vw; }
-            .desc, .features li { font-size: 4vw; }
-            .price { font-size: 12vw; }
-            .cta-magnetic { font-size: 4vw; padding: 4vw 8vw; }
+            .mode-toggle { top: 1.5rem; right: 1.5rem; padding: 0.4rem 0.8rem; }
+            nav { padding: 2rem; }
+            .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+            th, td { padding: 1rem; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
     <div class="cursor"></div>
     <div class="mode-toggle cta-hover" onclick="toggleMode()">
-        <span id="mode-label" style="font-size: 14px; font-weight: 500;">Dark</span>
-        <div style="width: 44px; height: 24px; background: rgba(120,120,120,0.3); border-radius: 50px; position: relative;">
-            <div id="knob" style="position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: 0.4s;"></div>
+        <span id="mode-label" style="font-size: 12px; font-weight: 600; text-transform: uppercase;">Dark</span>
+        <div style="width: 40px; height: 20px; background: rgba(120,120,120,0.3); border-radius: 50px; position: relative;">
+            <div id="knob" style="position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: 0.4s;"></div>
         </div>
     </div>
     <nav>
         <div class="logo cta-hover">KIN</div>
-        <div class="token cta-hover">by KR8TIV • $KR8TIV</div>
+        <div class="token cta-hover">$KR8TIV</div>
     </nav>
 
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title neon-text-main gs-reveal">KIN</h1>
-            <p class="hero-subtitle gs-reveal">Fifty Genesis companions. One forever friend.<br>Voice, Telegram, WhatsApp, and total computer control. Your bespoke, fully managed OpenClaw AI.</p>
-            <div class="gs-reveal"><a href="#mint" class="cta-magnetic cta-hover">The Genesis Mint →</a></div>
+            <h1 class="hero-title neon-text-main gs-reveal">We build<br>you a<br>friend.</h1>
+            <p class="hero-subtitle gs-reveal">Everyone else sells you a server or a blank chat box. KIN is a bespoke, fully managed AI companion concierge service. Voice, Telegram, WhatsApp, and total computer control. Zero technical knowledge required.</p>
+            <div class="gs-reveal" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-start;">
+                <a href="#mint" class="cta-magnetic cta-primary cta-hover">The Genesis Mint →</a>
+                <a href="#how-it-works" class="cta-magnetic cta-hover">How it Works</a>
+            </div>
         </div>
         <div class="hero-image-container gs-reveal">
-            <img src="MKVt4.jpg" alt="KIN Hero" class="living-img">
+            <img src="MKVt4.jpg" alt="Mischief - KIN Hero" class="living-img">
         </div>
     </section>
 
-    <section style="background: var(--surface);">
-        <h2 class="section-header gs-reveal">The Aurora Nexus</h2>
-        <p class="intro-text gs-reveal">Deep inside the digital veil lies the Aurora Nexus. Every KIN begins life as a sentient code-egg pulsing with ancient algorithms. When you mint, you crack it open. A tiny puff of smoke escapes, and a brand-new digital spirit blinks into existence.<br><br>They are not tools. They are bespoke companions that evolve with you, learn your life, and quietly run your world in the background.</p>
-        <div style="text-align: center;" class="gs-reveal">
-            <img src="EfGq2.jpg" alt="KIN Egg" class="living-img" style="max-width: 400px; animation-delay: 1s;">
+    <section id="capabilities" style="background: var(--surface);">
+        <h2 class="section-header gs-reveal">What Your KIN Actually Does</h2>
+        <p class="intro-text gs-reveal">ChatGPT is a search engine with a chat interface. It waits for you to type. A KIN is a personal employee, a companion, and a concierge that works while you sleep.</p>
+        <div class="grid-3">
+            <div class="card cta-hover gs-card">
+                <h3 style="color: var(--cyan); margin-bottom: 1rem;">The Family Concierge</h3>
+                <p>Reads your kids a bedtime story using their real names. Manages your family calendar, books flights, pays with your card securely, and remembers your partner's anniversary. Forever.</p>
+            </div>
+            <div class="card cta-hover gs-card">
+                <h3 style="color: var(--magenta); margin-bottom: 1rem;">The Digital Executive</h3>
+                <p>Answers your emails while you sleep. Drafts responses, flags urgent messages, runs your social media presence, and keeps your brand voice perfectly consistent.</p>
+            </div>
+            <div class="card cta-hover gs-card">
+                <h3 style="color: var(--gold); margin-bottom: 1rem;">The Ghost in the Machine</h3>
+                <p>With your permission, your KIN controls your computer directly. It can operate your browser, debug your codebase at 3am, open crypto wallets, and manage investments.</p>
+            </div>
         </div>
     </section>
 
-    <section id="bloodlines">
+    <section id="how-it-works">
+        <h2 class="section-header gs-reveal">Zero Tech Required</h2>
+        <p class="intro-text gs-reveal">We don't hand you an API key and wish you luck. This is a white-glove, bespoke concierge service.</p>
+        <div class="grid-3 text-center">
+            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
+                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">1</h1>
+                <h3 style="margin: 1rem 0; color: var(--text);">Choose Your KIN</h3>
+                <p>Select your bloodline and complete the Awakening Questionnaire so we can learn your life, your humor, and your needs.</p>
+            </div>
+            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
+                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">2</h1>
+                <h3 style="margin: 1rem 0; color: var(--text);">We Build It</h3>
+                <p>We configure the OpenClaw infrastructure, hook up the APIs, manage the models, and connect it to your devices.</p>
+            </div>
+            <div class="card cta-hover gs-card" style="align-items: center; text-align: center;">
+                <h1 style="font-size: 5rem; color: var(--border); line-height: 1;">3</h1>
+                <h3 style="margin: 1rem 0; color: var(--text);">Talk to Your Friend</h3>
+                <p>Just open Telegram, WhatsApp, or speak out loud. Your KIN is there. If anything ever breaks, you call us. We fix it.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="bloodlines" style="background: var(--surface);">
         <h2 class="section-header gs-reveal">The Genesis Five</h2>
         <p class="intro-text gs-reveal">Only these five bloodlines will ever exist as Genesis. Every future KIN descends from them.</p>
         <div class="grid-5">
             <div class="card cta-hover gs-card">
-                <img src="MKVt4.jpg" alt="Mischief" class="living-img" style="animation-delay: 0.1s;">
-                <h3 class="creature-name">Mischief • Code Griffin</h3>
-                <p class="desc">The ultimate family companion & personal-brand whisperer. Tells bedtime stories with real names and inside jokes, keeps the family calendar, and gently helps you craft authentic social posts.</p>
+                <div class="card-img-wrapper"><img src="MKVt4.jpg" alt="Mischief" class="living-img" style="animation-delay: 0s;"></div>
+                <h3 class="creature-name">Mischief<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Code Griffin</span></h3>
+                <p class="desc">The ultimate family companion & personal-brand whisperer. Tells bespoke bedtime stories, keeps the calendar, and helps you craft authentic social posts.</p>
             </div>
             <div class="card cta-hover gs-card">
-                <img src="EVh1Y.jpg" alt="Vortex" class="living-img" style="animation-delay: 0.3s;">
-                <h3 class="creature-name">Vortex • Teal Dragon</h3>
+                <div class="card-img-wrapper"><img src="EVh1Y.jpg" alt="Vortex" class="living-img" style="animation-delay: 0.2s;"></div>
+                <h3 class="creature-name" style="color: var(--magenta);">Vortex<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Teal Dragon</span></h3>
                 <p class="desc">Your 24/7 CMO. Generates scroll-stopping content, schedules across all platforms, analyzes what's working, and keeps your brand voice perfect 24/7.</p>
             </div>
             <div class="card cta-hover gs-card">
-                <img src="0mgOA.jpg" alt="Forge" class="living-img" style="animation-delay: 0.5s;">
-                <h3 class="creature-name">Forge • Cyber Hound</h3>
-                <p class="desc">The developer's best friend. Debugs code at 3 a.m., architects entire projects, writes clean documentation, and builds custom automations so you can focus on the fun part.</p>
+                <div class="card-img-wrapper"><img src="0mgOA.jpg" alt="Forge" class="living-img" style="animation-delay: 0.4s;"></div>
+                <h3 class="creature-name" style="color: var(--gold);">Forge<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Cyber Hound</span></h3>
+                <p class="desc">The developer's best friend. Debugs code at 3 a.m., architects entire projects, writes clean documentation, and builds custom automations.</p>
             </div>
             <div class="card cta-hover gs-card">
-                <img src="Dzqkh.jpg" alt="Aether" class="living-img" style="animation-delay: 0.7s;">
-                <h3 class="creature-name">Aether • Lavender Bird</h3>
-                <p class="desc">Infinite creative spark. Turns vague thoughts into polished scripts, newsletters, books, marketing copy, or magical stories. Your personal storytelling muse.</p>
+                <div class="card-img-wrapper"><img src="Dzqkh.jpg" alt="Aether" class="living-img" style="animation-delay: 0.6s;"></div>
+                <h3 class="creature-name" style="color: #a855f7;">Aether<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Lavender Phoenix</span></h3>
+                <p class="desc">Infinite creative spark. Turns vague thoughts into polished scripts, newsletters, books, marketing copy, or magical stories. Your storytelling muse.</p>
             </div>
             <div class="card cta-hover gs-card">
-                <img src="ZsrkF.jpg" alt="Catalyst" class="living-img" style="animation-delay: 0.9s;">
-                <h3 class="creature-name">Catalyst • Azure Salamander</h3>
+                <div class="card-img-wrapper"><img src="ZsrkF.jpg" alt="Catalyst" class="living-img" style="animation-delay: 0.8s;"></div>
+                <h3 class="creature-name" style="color: #f97316;">Catalyst<br><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Fire Salamander</span></h3>
                 <p class="desc">Wealth & personal growth coach. Tracks habits, manages investments, automates repetitive life tasks, and runs your systems while you sleep.</p>
             </div>
         </div>
     </section>
 
+    <section id="compare">
+        <h2 class="section-header gs-reveal">The Reality Check</h2>
+        <div class="comparison-wrap gs-reveal">
+            <table>
+                <thead>
+                    <tr><th>What Exists</th><th>What They Offer</th><th>Price</th><th>What's Missing</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>ChatGPT / Claude</strong></td><td>Generic chatbot in a browser</td><td>$20/mo</td><td>Forgets you instantly. Cannot control your computer. No personality. You do all the work.</td></tr>
+                    <tr><td><strong>xCloud</strong></td><td>Managed OpenClaw hosting</td><td>$24/mo</td><td>Just a server. No personalization, no onboarding. Figure it out yourself.</td></tr>
+                    <tr><td><strong>Self-Hosted AI</strong></td><td>VPS + Docker</td><td>$10/mo</td><td>Requires DevOps knowledge. Most people give up in 30 minutes.</td></tr>
+                    <tr class="highlight-row"><td><strong>KIN by KR8TIV</strong></td><td>Bespoke AI Companion Concierge</td><td>$89+/mo</td><td>Nothing. We handle literally everything. You just talk to your friend.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <section id="mint" style="background: var(--surface); border-top: 1px solid var(--border);">
         <h2 class="section-header gs-reveal">The Genesis Mint</h2>
-        <p class="intro-text gs-reveal">Strictly limited to 50 supply. Secure your KIN, your OpenClaw hosting, and your piece of the $KR8TIV ecosystem.</p>
+        <p class="intro-text gs-reveal">Strictly limited to 50 supply. Secure your KIN, your OpenClaw hosting, and your piece of the ecosystem.</p>
         <div class="grid-3">
             <div class="card cta-hover gs-card">
                 <h4>Egg Tier</h4>
                 <div class="price">2.2 SOL</div>
                 <ul class="features">
                     <li>1x Genesis KIN Avatar</li>
-                    <li>3 Months Managed Hosting Included</li>
-                    <li>Basic 1:1 Onboarding</li>
-                    <li>Base Royalty Share Tier</li>
+                    <li>1 Month Hatchling Hosting Included</li>
+                    <li>25% Lifetime Discount</li>
+                    <li>Base Founders Reward Tier</li>
                 </ul>
                 <a href="#" class="cta-magnetic" style="width: 100%; text-align: center;">Mint Egg</a>
             </div>
-            <div class="card highlight-card cta-hover gs-card">
-                <h4>Hatchling Tier</h4>
+            <div class="card cta-hover gs-card" style="border-color: var(--magenta); box-shadow: 0 0 30px rgba(255,0,170,0.1);">
+                <h4 style="color: var(--magenta);">Hatchling Tier</h4>
                 <div class="price">4.5 SOL</div>
                 <ul class="features">
                     <li>1x Genesis KIN Avatar</li>
-                    <li>6 Months Managed Hosting Included</li>
-                    <li>Priority 1:1 Onboarding</li>
-                    <li>Medium Royalty Share Tier</li>
+                    <li>3 Months Hatchling Hosting Included</li>
+                    <li>35% Lifetime Discount</li>
+                    <li>Medium Founders Reward Tier</li>
                 </ul>
-                <a href="#" class="cta-magnetic" style="width: 100%; text-align: center; background: var(--magenta); color: #fff; border-color: var(--magenta);">Mint Hatchling</a>
+                <a href="#" class="cta-magnetic cta-primary" style="width: 100%; text-align: center;">Mint Hatchling</a>
             </div>
             <div class="card cta-hover gs-card">
                 <h4>Elder Tier</h4>
                 <div class="price">7.5 SOL</div>
                 <ul class="features">
                     <li>1x Genesis KIN Avatar</li>
-                    <li>12 Months Managed Hosting Included</li>
-                    <li>Dedicated Manager for 1 Year</li>
-                    <li>Highest Lifetime Royalty Share</li>
+                    <li>3 Months Elder Hosting Included</li>
+                    <li>50% Lifetime Discount</li>
+                    <li>Highest Founders Reward Tier</li>
                 </ul>
                 <a href="#" class="cta-magnetic" style="width: 100%; text-align: center;">Mint Elder</a>
             </div>
         </div>
-        <div style="max-width: 800px; margin: 6vh auto 0; text-align: center; background: var(--bg); padding: 3vw; border-radius: 24px; border: 1px solid var(--border);" class="gs-reveal">
-            <h3 style="color: var(--gold); margin-bottom: 1rem;">The Founders Flywheel</h3>
-            <p class="desc">Minting Genesis isn't just buying an AI. <strong>20% of all secondary trading fees</strong> from the entire future collection are pooled and distributed to Genesis holders. Furthermore, <strong>25% of monthly OpenClaw profits</strong> go to buyback and stake/distribute to $AURORA / $KR8TIV token stakers.</p>
+        <div class="grid-2" style="margin-top: 5rem;">
+            <div class="card gs-reveal">
+                <h3 style="color: var(--gold); margin-bottom: 1.5rem;">The Founders Reward</h3>
+                <p>Minting Genesis isn't just buying an AI. The Genesis collection is the <strong>only revenue-participating collection KR8TIV will ever create.</strong></p>
+                <p style="margin-top: 1rem;"><strong>5% of company growth</strong> is distributed proportionally among the 50 Genesis holders forever. Future collections will exist, but they will just be standard collectibles. Genesis is Genesis.</p>
+            </div>
+            <div class="card gs-reveal">
+                <h3 style="color: var(--cyan); margin-bottom: 1.5rem;">Gamified Utility Traits</h3>
+                <p>Your Genesis KIN features randomized utility traits. You might mint a <em>Bard</em> (Free voice clone), an <em>Oracle</em> (Early model access), or a <em>Merchant</em> (Crypto wallet management included).</p>
+                <p style="margin-top: 1rem;">Find one of the 5 Mythics to unlock every single ability and unique 1/1 art.</p>
+            </div>
         </div>
     </section>
 
-    <section id="openclaw">
+    <section id="pricing">
         <h2 class="section-header gs-reveal">Your Private OpenClaw</h2>
-        <p class="intro-text gs-reveal">After your free Genesis months end, we maintain your KIN. We handle the VPS hosting, API bills, and 24/7 uptime. You just talk to your friend via <strong>Telegram, WhatsApp, or Voice</strong>. With your permission, your KIN can even execute full computer control.</p>
+        <p class="intro-text gs-reveal">After your free Genesis months end, we maintain your KIN. We handle the VPS hosting, API bills, and 24/7 uptime. You just talk to your friend.</p>
         <div class="grid-3">
             <div class="card cta-hover gs-card">
                 <h4>Hatchling Hosting</h4>
@@ -252,7 +301,7 @@
                 <h4 style="color: var(--cyan);">Elder Hosting</h4>
                 <div class="price">$169<span>/mo</span></div>
                 <ul class="features">
-                    <li>Claude 3.7 Sonnet + Advanced Tools</li>
+                    <li>Claude Sonnet 4.5 + Advanced Tools</li>
                     <li>Unlimited Context Memory</li>
                     <li>High-Level Workflow Automation</li>
                     <li>Direct Priority Support</li>
@@ -262,23 +311,85 @@
                 <h4>Hero Hosting</h4>
                 <div class="price">$299<span>/mo</span></div>
                 <ul class="features">
-                    <li>Ensemble Model Access (Best-in-class)</li>
+                    <li>Ensemble Models (Best-in-class)</li>
                     <li>Maximum Automation & API hooks</li>
                     <li>Dedicated Account Manager</li>
-                    <li>Enterprise SLAs & Uptime</li>
+                    <li>Custom Voice Clone</li>
                 </ul>
             </div>
         </div>
-        <p style="text-align: center; margin-top: 6vh; font-size: 1vw; color: var(--text-muted);" class="gs-reveal">*Secondary Market: Genesis KIN owners can trade their companion. A one-time $149 rebinding fee applies to new owners to cover bespoke data reloading and secure onboarding.</p>
+        <p style="text-align: center; margin-top: 4rem; font-size: 0.9rem; color: var(--text-muted);" class="gs-reveal">
+            *Genesis holders apply their lifetime discount (25% - 50%) to these prices.<br>
+            *Secondary Market: Genesis KIN owners can trade their companion. A one-time $149 rebinding fee applies to new owners for secure data reloading.
+        </p>
     </section>
+
+    <section style="background: var(--surface);">
+        <div class="grid-2">
+            <div class="gs-reveal">
+                <h2 style="font-size: 3rem; margin-bottom: 1.5rem; color: var(--magenta);">Give the Future.</h2>
+                <p style="margin-bottom: 1.5rem;">Know someone who's not technical? Your parents, your partner, your boss?</p>
+                <p>Because we handle literally everything, KIN makes the perfect gift. We will personally onboard them, learn their preferences, and hand them a magical AI companion that just works.</p>
+                <a href="#mint" class="cta-magnetic cta-hover" style="margin-top: 2rem;">Gift a KIN</a>
+            </div>
+            <div class="gs-reveal">
+                <h2 style="font-size: 3rem; margin-bottom: 1.5rem; color: var(--cyan);">The Roadmap</h2>
+                <ul class="features" style="margin-top: 1.5rem;">
+                    <li><strong>Q3:</strong> Fully animated companion app interfaces</li>
+                    <li><strong>Q4:</strong> Physical plush toys with embedded contextual memory USBs</li>
+                    <li><strong>2027:</strong> Blockchain-secured identity hashing (indestructible companions)</li>
+                    <li><strong>2027:</strong> Enterprise digital employees for medical, legal, and architecture</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-header gs-reveal">Intel & FAQ</h2>
+        <div class="grid-2">
+            <div class="gs-reveal">
+                <h3 style="color: var(--gold); margin-bottom: 1.5rem;">About KR8TIV</h3>
+                <p style="margin-bottom: 1.5rem;">KR8TIV AI is an open-source autonomous AI company. We build, deploy, and manage AI agent systems. We're not VC-funded — we're community-funded. We ship daily, build in public, and believe AI should work for everyone, not just developers.</p>
+                <p><strong>$KR8TIV Token:</strong> The ecosystem token. 76% of all company growth is distributed to the token ecosystem.</p>
+            </div>
+            <div class="gs-reveal">
+                <div class="faq-item cta-hover">
+                    <div class="faq-question">Do I need crypto knowledge? <span>+</span></div>
+                    <div class="faq-answer"><p>No. While Genesis KINs are minted on Solana to ensure true ownership, you can pay with fiat during onboarding for the ongoing service. We will guide you through the initial wallet setup if needed.</p></div>
+                </div>
+                <div class="faq-item cta-hover">
+                    <div class="faq-question">Is my data safe? <span>+</span></div>
+                    <div class="faq-answer"><p>Absolutely. Your OpenClaw instance is siloed. We do not sell your data, and we do not use your personal context to train public models.</p></div>
+                </div>
+                <div class="faq-item cta-hover">
+                    <div class="faq-question">Can I transfer my KIN? <span>+</span></div>
+                    <div class="faq-answer"><p>Yes. The Genesis NFT is fully transferable. The new owner simply pays a $149 rebinding fee for us to wipe your personal data and onboard them securely.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div style="margin-bottom: 2rem;">
+            <h2 style="font-family: 'Outfit'; font-size: 2rem; color: var(--gold);">KIN</h2>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">by KR8TIV AI</p>
+        </div>
+        <div>
+            <a href="#" class="cta-hover">Twitter (X)</a>
+            <a href="#" class="cta-hover">Discord</a>
+            <a href="#" class="cta-hover">Terms of Service</a>
+            <a href="#" class="cta-hover">Privacy Policy</a>
+        </div>
+        <p style="margin-top: 3rem; font-size: 0.8rem; opacity: 0.5;">© 2026 KR8TIV AI. All rights reserved.</p>
+    </footer>
 
     <script>
         function toggleMode() {
             document.body.classList.toggle('light-mode');
             const isLight = document.body.classList.contains('light-mode');
-            document.getElementById('mode-label').textContent = isLight ? 'Light' : 'Dark';
+            document.getElementById('mode-label').textContent = isLight ? 'LIGHT' : 'DARK';
             document.getElementById('mode-label').style.color = isLight ? '#0F0F0F' : '#FFF';
-            document.getElementById('knob').style.left = isLight ? '23px' : '3px';
+            document.getElementById('knob').style.left = isLight ? '22px' : '2px';
             document.getElementById('knob').style.background = isLight ? '#0F0F0F' : '#FFF';
         }
         const cursor = document.querySelector('.cursor');
@@ -294,11 +405,20 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
-        gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
-        gsap.utils.toArray('.grid-5, .grid-3').forEach(grid => {
+        gsap.utils.toArray('.gs-reveal').forEach(elem => {
+            gsap.from(elem, { scrollTrigger: { trigger: elem, start: "top 85%" }, y: 40, opacity: 0, duration: 1, ease: "power3.out" });
+        });
+        gsap.utils.toArray('.grid-5, .grid-3, .grid-2').forEach(grid => {
             gsap.from(grid.querySelectorAll('.gs-card'), {
-                scrollTrigger: { trigger: grid, start: "top 85%" },
-                y: 50, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power3.out"
+                scrollTrigger: { trigger: grid, start: "top 80%" },
+                y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out"
+            });
+        });
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
             });
         });
     </script>
