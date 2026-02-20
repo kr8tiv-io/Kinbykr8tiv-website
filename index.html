@@ -3,112 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIN — AI Agents That Know Your Industry</title>
+    <title>KIN by KR8TIV — Magic that grows with you</title>
+    <meta name="description" content="Meet your new best friend. AI companions that feel real, grow with you, and earn for you.">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         :root {
-            --bg: #060612;
-            --bg-alt: #0a0a1a;
-            --primary: #9945FF;
-            --accent: #39FF14;
-            --text-primary: rgba(255,255,255,0.9);
-            --text-body: rgba(255,255,255,0.5);
-            --text-subtle: rgba(255,255,255,0.25);
+            --white: #FAFAFA;
+            --pure-white: #FFFFFF;
+            --teal: #5FAFA8;
+            --chartreuse: #C8D87A;
+            --gold: #D4A853;
+            --charcoal: #1A1A2E;
+            --black: #0A0A0F;
+        }
+        
+        html {
+            overflow-x: hidden;
         }
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text-primary);
+            background: var(--white);
+            color: var(--charcoal);
             overflow-x: hidden;
             cursor: none;
         }
         
-        @media (max-width: 768px) {
-            body { cursor: auto; }
-        }
-        
         /* Custom Cursor */
-        #cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 1.5px solid white;
+        .cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--teal);
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-        
-        #cursor.hover {
-            width: 56px;
-            height: 56px;
-        }
-        
-        /* Film Grain */
-        #grain {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             pointer-events: none;
-            opacity: 0.03;
-            z-index: 9998;
-            animation: grain 0.5s steps(6) infinite;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.15s ease;
         }
         
-        @keyframes grain {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -10%); }
-            20% { transform: translate(-15%, 5%); }
-            30% { transform: translate(7%, -25%); }
-            40% { transform: translate(-5%, 25%); }
-            50% { transform: translate(-15%, 10%); }
-            60% { transform: translate(15%, 0%); }
-            70% { transform: translate(0%, 15%); }
-            80% { transform: translate(3%, 25%); }
-            90% { transform: translate(-10%, 10%); }
+        .cursor.grow {
+            transform: scale(3);
         }
         
-        @keyframes scrollPulse {
-            0%, 100% { opacity: 0.3; transform: translateY(0); }
-            50% { opacity: 0.8; transform: translateY(10px); }
-        }
-        
-        /* Loader */
-        #loader {
+        /* Loading Screen */
+        #loading {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background: var(--bg);
-            z-index: 10000;
+            background: var(--white);
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2rem;
         }
         
-        #loader .brand {
+        #loading h1 {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--primary);
-            letter-spacing: 0.3em;
+            font-size: 8rem;
+            color: var(--black);
+            margin-bottom: 2rem;
+            letter-spacing: -0.05em;
+            opacity: 0;
         }
         
-        #loader .counter {
+        #loading .counter {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 5rem;
-            color: var(--text-primary);
+            font-size: 2rem;
+            color: var(--teal);
         }
         
         /* Navigation */
@@ -117,1387 +101,1265 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 72px;
+            padding: 2rem 4rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 4rem;
+            align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(16px);
-            background: rgba(6,6,18,0.6);
-            transition: background 0.3s ease;
-        }
-        
-        nav.scrolled {
-            background: rgba(6,6,18,0.85);
+            mix-blend-mode: difference;
         }
         
         nav .logo {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-        }
-        
-        nav .logo .kin {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
             font-size: 1.5rem;
-        }
-        
-        nav .logo .by {
-            font-size: 0.8rem;
-            opacity: 0.4;
-        }
-        
-        nav .links {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-        
-        nav .links a {
-            color: var(--text-body);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-        
-        nav .links a:hover {
-            color: var(--text-primary);
+            color: var(--pure-white);
+            letter-spacing: -0.02em;
         }
         
         nav .cta-btn {
-            background: var(--primary);
-            color: white;
-            padding: 0.7rem 1.5rem;
+            padding: 0.75rem 2rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
             border-radius: 50px;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: none;
+            transition: all 0.3s ease;
         }
         
         nav .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(153,69,255,0.3);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(95, 175, 168, 0.3);
         }
         
-        /* Hero */
+        /* Hero Section */
         #hero {
-            position: relative;
             height: 100vh;
             display: flex;
             align-items: center;
-            overflow: hidden;
-            background: radial-gradient(ellipse at 70% 50%, rgba(153,69,255,0.08) 0%, transparent 60%);
-        }
-        
-        #hero canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-        
-        #hero .content {
+            padding: 0 4rem;
             position: relative;
-            z-index: 2;
-            max-width: 650px;
-            padding-left: 8vw;
-            text-align: left;
+            overflow: hidden;
         }
         
-        #hero .badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            display: inline-block;
-            margin-bottom: 2rem;
+        .hero-content {
+            width: 40%;
+            z-index: 10;
         }
         
-        #hero h1 {
+        .hero-content h1 {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: clamp(5rem, 12vw, 9rem);
+            font-size: 7rem;
+            line-height: 0.95;
+            color: var(--black);
+            margin-bottom: 2rem;
             letter-spacing: -0.04em;
-            margin-bottom: 1.5rem;
         }
         
-        #hero .subtitle {
-            font-size: 1.25rem;
-            font-weight: 300;
-            margin-bottom: 2.5rem;
-            color: var(--text-primary);
+        .hero-content .tagline {
+            font-size: 1.5rem;
+            color: var(--charcoal);
+            margin-bottom: 3rem;
+            font-weight: 400;
         }
         
-        #hero .buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        #hero .btn-primary {
-            background: linear-gradient(135deg, #8B3DFF 0%, #B066FF 100%);
-            color: white;
-            padding: 1rem 2.5rem;
+        .hero-content .cta-large {
+            padding: 1.25rem 3rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
             border-radius: 50px;
-            text-decoration: none;
-            font-size: 1rem;
-            min-width: 200px;
-            height: 56px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .hero-content .cta-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(95, 175, 168, 0.4);
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 24px rgba(139,61,255,0.3);
         }
         
-        #hero .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(139,61,255,0.5);
+        .hero-image img {
+            max-width: 100%;
+            max-height: 90%;
+            object-fit: contain;
         }
         
-        #hero .btn-ghost {
-            background: transparent;
-            color: var(--text-primary);
-            padding: 1rem 2.5rem;
-            border: none;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: text-decoration 0.3s ease;
-        }
-        
-        #hero .btn-ghost:hover {
-            text-decoration: underline;
-        }
-        
-        #hero .note {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            opacity: 0.4;
+        .hero-image .placeholder {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, var(--teal), var(--chartreuse));
+            border-radius: 50%;
+            opacity: 0.3;
         }
         
         .scroll-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 3rem;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.5;
         }
         
-        .scroll-indicator div {
+        .scroll-indicator span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .scroll-indicator .arrow {
             width: 1px;
             height: 40px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
+            background: var(--charcoal);
+            animation: scroll-down 2s ease-in-out infinite;
         }
         
-        /* Divider */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            margin: 4rem auto;
+        @keyframes scroll-down {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(10px); opacity: 1; }
+        }
+        
+        /* Story Section */
+        #story {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem;
+        }
+        
+        .story-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 5rem;
+            line-height: 1.2;
+            color: var(--black);
+            text-align: center;
+            max-width: 1200px;
+            letter-spacing: -0.03em;
+        }
+        
+        .story-text .word {
+            display: inline-block;
+            opacity: 0.1;
+        }
+        
+        .story-text .word.highlight {
+            color: var(--teal);
+            font-weight: 800;
+        }
+        
+        /* Character Showcase */
+        .character-slide {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .character-slide img {
             max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
         }
         
-        /* Section Base */
-        section {
-            padding: 12rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .character-slide .placeholder {
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            border-radius: 30px;
+            opacity: 0.2;
         }
         
-        section:nth-of-type(even) {
-            background: var(--bg-alt);
+        .character-slide .caption {
+            position: absolute;
+            bottom: 4rem;
+            left: 4rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--black);
+            opacity: 0.7;
         }
         
-        .label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--primary);
+        /* Two Products */
+        #two-products {
+            height: 100vh;
+            display: flex;
+        }
+        
+        .product-half {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+        }
+        
+        .product-half.personal {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(200, 216, 122, 0.1));
+        }
+        
+        .product-half.business {
+            background: linear-gradient(135deg, rgba(95, 175, 168, 0.1), rgba(26, 26, 46, 0.05));
+        }
+        
+        .product-half h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 3.5rem;
+            color: var(--black);
             margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .product-half p {
+            font-size: 1.25rem;
+            color: var(--charcoal);
+            text-align: center;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+        
+        .product-half .placeholder {
+            width: 400px;
+            height: 400px;
+            background: var(--teal);
+            border-radius: 50%;
+            opacity: 0.2;
+            margin-top: 2rem;
+        }
+        
+        /* How It Works */
+        #how-it-works {
+            padding: 8rem 0;
+            overflow: hidden;
         }
         
         .section-title {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            letter-spacing: -0.03em;
-            margin-bottom: 4rem;
-        }
-        
-        /* How It Works */
-        #how-it-works .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 3rem;
-        }
-        
-        .step {
-            position: relative;
-            padding: 2rem;
-        }
-        
-        .step .number {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: 5rem;
-            color: var(--primary);
-            opacity: 0.12;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-        
-        .step h3 {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 1.5rem;
-            margin-bottom: 0.8rem;
-        }
-        
-        .step p {
-            font-weight: 300;
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: var(--text-body);
-            max-width: 540px;
-        }
-        
-        /* KIN Types */
-        #kin-types .search {
-            margin-bottom: 3rem;
-        }
-        
-        #kin-types input {
-            width: 100%;
-            max-width: 600px;
-            padding: 1rem 1.5rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        #kin-types input:focus {
-            border-color: var(--primary);
-        }
-        
-        #kin-types .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .kin-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 12px;
-            padding: 24px 28px;
-            border-left: 3px solid;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            cursor: pointer;
-        }
-        
-        .kin-card:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.12);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        
-        .kin-card.selected {
-            border-left-color: var(--primary) !important;
-            box-shadow: 0 0 24px rgba(153,69,255,0.3);
-        }
-        
-        .kin-card .name {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .kin-card .industry {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.8rem;
-        }
-        
-        .kin-card .description {
-            font-weight: 300;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-body);
-        }
-        
-        /* Social Proof */
-        #proof {
+            font-size: 4rem;
+            color: var(--black);
             text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: -0.03em;
         }
         
-        #proof .stats {
+        .horizontal-scroll {
             display: flex;
-            justify-content: space-around;
-            max-width: 900px;
-            margin: 0 auto;
-            gap: 2rem;
+            gap: 4rem;
+            padding: 0 4rem;
+            width: max-content;
         }
         
-        .stat {
+        .step-card {
+            width: 400px;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(95, 175, 168, 0.2);
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .stat .number {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: clamp(3rem, 6vw, 4.5rem);
-            color: white;
-        }
-        
-        .stat .label {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 300;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.4);
-            text-transform: none;
-            letter-spacing: normal;
-        }
-        
-        /* Pricing */
-        #pricing {
-            background: radial-gradient(ellipse at center, rgba(153,69,255,0.05) 0%, transparent 50%);
-        }
-        
-        #pricing .cards {
-            display: flex;
             gap: 1.5rem;
-            overflow-x: auto;
-            padding-bottom: 2rem;
         }
         
-        .pricing-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 40px 32px;
-            min-width: 280px;
-            flex: 1;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .pricing-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        
-        .pricing-card.featured {
-            transform: translateY(-16px);
-            border: 1px solid rgba(153,69,255,0.4);
-            background: linear-gradient(180deg, rgba(153,69,255,0.08) 0%, rgba(153,69,255,0.02) 100%);
-            box-shadow: 0 0 60px rgba(153,69,255,0.15);
-        }
-        
-        .pricing-card.featured:hover {
-            transform: translateY(-18px) scale(1.02);
-        }
-        
-        .pricing-card .badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            letter-spacing: 0.1em;
-            background: var(--primary);
-            color: white;
-        }
-        
-        .pricing-card .price {
+        .step-card .number {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-size: 6rem;
+            color: var(--teal);
+            opacity: 0.3;
+            line-height: 1;
         }
         
-        .pricing-card .tagline {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-subtle);
+        .step-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--black);
+        }
+        
+        .step-card p {
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            line-height: 1.6;
+        }
+        
+        /* Industry Grid */
+        #industry-grid {
+            padding: 8rem 4rem;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .industry-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(95, 175, 168, 0.15);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        
+        .industry-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--teal);
+            box-shadow: 0 10px 30px rgba(95, 175, 168, 0.2);
+        }
+        
+        .industry-card .emoji {
+            font-size: 3rem;
             margin-bottom: 1rem;
         }
         
-        .pricing-card .model {
-            font-size: 0.9rem;
-            color: var(--text-body);
-            margin-bottom: 2rem;
+        .industry-card h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
         }
         
-        .pricing-card .features {
-            margin-bottom: 2rem;
-            text-align: left;
+        .industry-card p {
+            font-size: 0.95rem;
+            color: var(--charcoal);
+            opacity: 0.8;
         }
         
-        .pricing-card .features li {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 300;
-            font-size: 14px;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 0.75rem;
-            list-style: none;
-            padding-left: 1.5rem;
+        /* Video Section */
+        #video-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
             position: relative;
         }
         
-        .pricing-card .features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .pricing-card .cta {
-            display: block;
-            text-align: center;
-            padding: 1rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: transform 0.3s ease;
-        }
-        
-        .pricing-card .cta:hover {
-            transform: translateY(-2px);
-        }
-        
-        .pricing-card .cta.outline {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .pricing-card .cta.purple {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* Presale */
-        #presale {
-            text-align: center;
-        }
-        
-        #presale .description {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: var(--text-body);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-        
-        .tier-images {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin: 3rem 0;
-        }
-        
-        .tier-images > div {
-            width: 200px;
-            height: 200px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .tier-images img {
+        .video-container video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        #presale .tiers {
+        .video-container .placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--teal), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--pure-white);
+        }
+        
+        /* Revenue/NFT Section */
+        #revenue {
+            padding: 8rem 4rem;
+            background: linear-gradient(180deg, rgba(95, 175, 168, 0.05), rgba(212, 168, 83, 0.05));
+        }
+        
+        .revenue-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        
+        .revenue-intro h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .revenue-intro p {
+            font-size: 1.3rem;
+            color: var(--charcoal);
+            line-height: 1.7;
+        }
+        
+        .tiers-container {
             display: flex;
             gap: 2rem;
             justify-content: center;
-            margin: 3rem 0;
-        }
-        
-        .tier {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 2rem;
-            min-width: 200px;
-        }
-        
-        .tier .name {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .tier .price {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .tier .benefit {
-            font-size: 0.85rem;
-            color: var(--text-subtle);
-        }
-        
-        #presale .cta {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1rem;
-            margin-top: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        #presale .cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(153,69,255,0.4);
-        }
-        
-        /* Evolution */
-        #evolution {
-            padding: 8rem 4rem;
-        }
-        
-        #evolution .timeline {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
             margin-top: 4rem;
         }
         
-        #evolution .timeline::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .stage {
-            position: relative;
-            text-align: center;
+        .tier-card {
             flex: 1;
+            max-width: 350px;
+            padding: 3rem 2rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(95, 175, 168, 0.2);
+            border-radius: 20px;
+            text-align: center;
         }
         
-        .stage .icon {
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
-            margin: 0 auto 1rem;
+        .tier-card.featured {
+            border-color: var(--gold);
+            transform: scale(1.05);
         }
         
-        .stage .name {
+        .tier-card h3 {
             font-family: 'Outfit', sans-serif;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--black);
+            margin-bottom: 1rem;
+        }
+        
+        .tier-card .price {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--teal);
+            margin-bottom: 2rem;
+        }
+        
+        .tier-card ul {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .tier-card li {
+            padding: 0.5rem 0;
             font-size: 1rem;
+            color: var(--charcoal);
+        }
+        
+        /* Stats Section */
+        #stats {
+            padding: 8rem 4rem;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .stat .number {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 5rem;
+            color: var(--teal);
+            line-height: 1;
+        }
+        
+        .stat .label {
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            font-weight: 500;
+        }
+        
+        /* Pricing */
+        #pricing {
+            padding: 8rem 4rem;
+            background: var(--pure-white);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            margin-top: 4rem;
+        }
+        
+        .price-card {
+            padding: 2.5rem 1.5rem;
+            background: var(--white);
+            border: 2px solid rgba(95, 175, 168, 0.15);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .price-card.popular {
+            border-color: var(--teal);
+            background: rgba(95, 175, 168, 0.05);
+            transform: scale(1.05);
+        }
+        
+        .price-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--black);
             margin-bottom: 0.5rem;
         }
         
-        .stage .desc {
-            font-size: 0.85rem;
-            color: var(--text-subtle);
+        .price-card .price {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--teal);
+            margin-bottom: 1.5rem;
+        }
+        
+        .price-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--charcoal);
+        }
+        
+        .price-card ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .price-card li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .price-card li::before {
+            content: '✓';
+            color: var(--teal);
+            font-weight: 700;
+        }
+        
+        .price-card button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+        
+        .price-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(95, 175, 168, 0.3);
         }
         
         /* FAQ */
-        #faq .faq-container {
-            display: flex;
-            gap: 4rem;
-            align-items: flex-start;
+        #faq {
+            padding: 8rem 4rem;
         }
         
-        #faq .faq-left {
-            flex: 0 0 40%;
-            position: sticky;
-            top: 120px;
-        }
-        
-        #faq .faq-right {
-            flex: 1;
+        .faq-container {
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 4rem;
         }
         
         .faq-item {
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(95, 175, 168, 0.2);
             padding: 2rem 0;
-            cursor: pointer;
         }
         
-        .faq-item .question {
+        .faq-question {
             font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--black);
+            cursor: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .faq-item .icon {
-            font-size: 1.5rem;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            border-radius: 50%;
+        .faq-question::after {
+            content: '+';
+            font-size: 2rem;
+            color: var(--teal);
+            transition: transform 0.3s ease;
         }
         
-        .faq-item .icon:hover {
-            background: rgba(153,69,255,0.15);
-        }
-        
-        .faq-item.open .icon {
+        .faq-item.active .faq-question::after {
             transform: rotate(45deg);
         }
         
-        .faq-item .answer {
+        .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: all 0.3s ease;
-            font-weight: 300;
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--text-body);
-            padding-top: 0;
-            opacity: 0;
+            transition: max-height 0.3s ease;
+            font-size: 1.05rem;
+            color: var(--charcoal);
+            line-height: 1.7;
         }
         
-        .faq-item.open .answer {
+        .faq-item.active .faq-answer {
             max-height: 500px;
-            padding-top: 1.5rem;
-            opacity: 1;
+            padding-top: 1rem;
         }
         
         /* Final CTA */
         #final-cta {
+            padding: 8rem 4rem;
             text-align: center;
-            padding: 12rem 4rem;
+            background: linear-gradient(135deg, rgba(95, 175, 168, 0.1), rgba(200, 216, 122, 0.1));
         }
         
         #final-cta h2 {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            margin-bottom: 2rem;
+            font-size: 4.5rem;
+            color: var(--black);
+            margin-bottom: 3rem;
+            letter-spacing: -0.03em;
         }
         
-        #final-cta .wallet {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-subtle);
-            margin-top: 2rem;
-            word-break: break-all;
-            max-width: 600px;
-            margin: 2rem auto 0;
-        }
-        
-        #final-cta .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #8B3DFF, #B066FF);
-            color: #fff;
-            padding: 1.2rem 3rem;
+        #final-cta .cta-large {
+            padding: 1.5rem 4rem;
+            background: var(--teal);
+            color: var(--pure-white);
+            border: none;
             border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.1rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 600;
-            margin-top: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1.3rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
         
-        #final-cta .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(57,255,20,0.4);
+        #final-cta .cta-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(95, 175, 168, 0.4);
         }
         
         /* Footer */
         footer {
-            padding: 80px 4rem 40px;
-            background: #040410;
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(95, 175, 168, 0.2);
         }
         
-        footer .footer-content {
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto 3rem;
-            gap: 4rem;
-        }
-        
-        footer .footer-col {
-            flex: 1;
-        }
-        
-        footer .footer-col h4 {
+        footer .brand {
             font-family: 'Outfit', sans-serif;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 1.2rem;
-            margin-bottom: 1rem;
+            color: var(--black);
+            margin-bottom: 1.5rem;
         }
         
-        footer .footer-col .tagline {
-            font-size: 0.9rem;
-            color: var(--text-subtle);
-            margin-top: 0.5rem;
+        footer .social-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
         }
         
-        footer .footer-col ul {
-            list-style: none;
-        }
-        
-        footer .footer-col ul li {
-            margin-bottom: 0.75rem;
-        }
-        
-        footer .footer-col a {
-            color: var(--text-body);
+        footer .social-links a {
+            color: var(--charcoal);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
             transition: color 0.3s ease;
         }
         
-        footer .footer-col a:hover {
-            color: var(--text-primary);
+        footer .social-links a:hover {
+            color: var(--teal);
         }
         
-        footer .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 0.85rem;
-            color: var(--text-subtle);
+        footer .copyright {
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            opacity: 0.6;
         }
         
-        /* Responsive */
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .hero-content h1 { font-size: 4rem; }
+            .story-text { font-size: 3rem; }
+            .section-title { font-size: 3rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .tiers-container { flex-direction: column; align-items: center; }
+        }
+        
         @media (max-width: 768px) {
-            section { padding: 6rem 2rem; }
-            nav { padding: 0 2rem; }
-            #hero .content { padding-left: 2rem; }
-            #how-it-works .grid { grid-template-columns: 1fr; }
-            #kin-types .grid { grid-template-columns: 1fr; }
-            #pricing .cards { flex-direction: column; }
-            #presale .tiers { flex-direction: column; align-items: center; }
-            .tier-images { flex-direction: column; align-items: center; }
-            #evolution .timeline { flex-direction: column; gap: 2rem; }
-            #evolution .timeline::before { display: none; }
-            #faq .faq-container { flex-direction: column; }
-            #faq .faq-left { position: relative; top: 0; }
-            #proof .stats { flex-wrap: wrap; }
-            footer .footer-content { flex-direction: column; gap: 2rem; }
-            footer .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            nav { padding: 1.5rem 2rem; }
+            #hero { flex-direction: column; height: auto; padding: 8rem 2rem 4rem; }
+            .hero-content { width: 100%; text-align: center; }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-image { position: relative; width: 100%; transform: none; margin-top: 3rem; }
+            #two-products { flex-direction: column; height: auto; }
+            .product-half { width: 100%; }
+            .grid-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div id="cursor"></div>
-    <div id="grain">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <filter id="noiseFilter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
-        </svg>
-    </div>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
     
-    <div id="loader">
-        <div class="brand">KIN</div>
+    <!-- Loading Screen -->
+    <div id="loading">
+        <h1>KIN</h1>
         <div class="counter">0</div>
     </div>
     
+    <!-- Navigation -->
     <nav>
-        <div class="logo">
-            <span class="kin">KIN</span>
-            <span class="by">by KR8TIV</span>
-        </div>
-        <div class="links">
-            <a href="#kin-types">Types</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#faq">FAQ</a>
-            <a href="#final-cta" class="cta-btn">Start Free</a>
-        </div>
+        <div class="logo">KIN by KR8TIV</div>
+        <button class="cta-btn">Awaken Your KIN</button>
     </nav>
     
+    <!-- Hero Section -->
     <section id="hero">
-        <canvas id="particleCanvas"></canvas>
-        <div class="content">
-            <div class="badge">NOW IN BETA — 30 INDUSTRIES</div>
-            <h1>Meet KIN.</h1>
-            <p class="subtitle">Your AI companion that actually knows your world.</p>
-            <div class="buttons">
-                <a href="#final-cta" class="btn-primary">Start Free →</a>
-                <a href="#how-it-works" class="btn-ghost">Explore ↓</a>
-            </div>
-            <p class="note">No credit card. No contracts. No synergy.</p>
+        <div class="hero-content">
+            <h1>Meet your new best friend.</h1>
+            <p class="tagline">An AI companion that remembers you, grows with you, and never leaves your side. Part friend, part genius, 100% yours.</p>
+            <button class="cta-large">Awaken Your KIN</button>
+        </div>
+        <div class="hero-image">
+            <img src="assets/v2/kin-hero-mischief.png" alt="KIN Character" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <div class="scroll-indicator">
-            <div></div>
+            <span>Scroll</span>
+            <div class="arrow"></div>
         </div>
     </section>
     
-    <div class="divider"></div>
+    <!-- Story Section -->
+    <section id="story">
+        <div class="story-text">
+            <span class="word">Remember</span>
+            <span class="word">wanting</span>
+            <span class="word">a</span>
+            <span class="word">Baymax?</span>
+            <span class="word">A</span>
+            <span class="word">Pikachu?</span>
+            <span class="word">A</span>
+            <span class="word">friend</span>
+            <span class="word">that</span>
+            <span class="word">was</span>
+            <span class="word">always</span>
+            <span class="word">there?</span>
+            <br>
+            <span class="word highlight">We</span>
+            <span class="word highlight">built</span>
+            <span class="word highlight">it.</span>
+        </div>
+    </section>
     
+    <!-- Character Showcase -->
+    <section class="character-slide">
+        <img src="assets/v2/kin-hero-mischief.png" alt="KIN Hero Pose" loading="lazy">
+        <div class="caption">It knows something you don't.</div>
+    </section>
+    
+    <section class="character-slide">
+        <img src="assets/v2/kin-sitting.png" alt="KIN Deep in Thought" loading="lazy">
+        <div class="caption">Plotting your next breakthrough.</div>
+    </section>
+    
+    <section class="character-slide">
+        <img src="assets/v2/kin-egg-v2.png" alt="KIN Egg" loading="lazy">
+        <div class="caption">Every legend starts somewhere.</div>
+    </section>
+    
+    <!-- Two Products -->
+    <section id="two-products">
+        <div class="product-half personal">
+            <h2>For Life</h2>
+            <p>Tells your kids bedtime stories. Helps you plan dinner. Remembers the name of that song you hummed last Tuesday. Your KIN lives in the moments that matter.</p>
+            <img src="assets/v2/kin-personal-v3.png" alt="Personal KIN" style="max-width: 300px; margin-top: 2rem;">
+        </div>
+        <div class="product-half business">
+            <h2>For Work</h2>
+            <p>The world's best consultant in your pocket. Drafts contracts while you're in meetings. Analyzes data while you eat lunch. Same cute face. Terrifyingly competent.</p>
+            <img src="assets/v2/kin-business-v2.png" alt="Business KIN" style="max-width: 300px; margin-top: 2rem;">
+        </div>
+    </section>
+    
+    <!-- How It Works -->
     <section id="how-it-works">
-        <div class="label">// HOW IT WORKS</div>
-        <h2 class="section-title">Four steps. Zero complexity.</h2>
-        <div class="grid">
-            <div class="step">
-                <div class="number">01</div>
-                <h3>Pick</h3>
-                <p>Choose from 30 purpose-built companions. Each KIN knows your world inside out — not a chatbot playing pretend.</p>
-            </div>
-            <div class="step">
-                <div class="number">02</div>
-                <h3>Hatch</h3>
-                <p>Your KIN comes to life in seconds. No setup. No training. No waiting. Just a friend who's ready.</p>
-            </div>
-            <div class="step">
-                <div class="number">03</div>
-                <h3>Learn</h3>
-                <p>It learns your style, your voice, your life. Every conversation makes it more yours. It grows with you.</p>
-            </div>
-            <div class="step">
-                <div class="number">04</div>
-                <h3>Win</h3>
-                <p>From bedtime stories to business plans. Your KIN lives across your devices and shows up everywhere you need it.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section id="kin-types">
-        <div class="label">// CHOOSE YOUR KIN</div>
-        <h2 class="section-title">30 companions. One for every world.</h2>
-        <div class="search">
-            <input type="text" id="kinSearch" placeholder="Search by industry or specialty...">
-        </div>
-        <div class="grid" id="kinGrid"></div>
-    </section>
-    
-    <section id="proof">
-        <div class="label">// TRACTION</div>
-        <h2 class="section-title">Numbers don't lie.</h2>
-        <div class="stats">
-            <div class="stat">
-                <span class="number" data-target="30">0</span>
-                <span class="label">Industries</span>
-            </div>
-            <div class="stat">
-                <span class="number" data-target="2400">0</span>
-                <span class="label">Beta Users</span>
-            </div>
-            <div class="stat">
-                <span class="number" data-target="98">0</span>
-                <span class="label">Satisfaction</span>
-            </div>
-            <div class="stat">
-                <span class="number">24/7</span>
-                <span class="label">Available</span>
+        <h2 class="section-title">Four steps to your new favorite creature.</h2>
+        <div class="horizontal-scroll-container">
+            <div class="horizontal-scroll">
+                <div class="step-card">
+                    <div class="number">01</div>
+                    <h3>Choose</h3>
+                    <p>30 companions. Doctors, designers, traders, chefs, coaches — there's a KIN for the life you actually live.</p>
+                </div>
+                <div class="step-card">
+                    <div class="number">02</div>
+                    <h3>Hatch</h3>
+                    <p>Your KIN starts as an egg. Crack it open and watch something magical emerge. It already knows your world. Now it's learning <em>you</em>.</p>
+                </div>
+                <div class="step-card">
+                    <div class="number">03</div>
+                    <h3>Bond</h3>
+                    <p>Talk to it. Work with it. Fall asleep while it tells you a story. The more time you spend together, the more it becomes <em>yours</em>.</p>
+                </div>
+                <div class="step-card">
+                    <div class="number">04</div>
+                    <h3>Evolve</h3>
+                    <p>Five stages. Egg → Hatchling → Toddler → Elder → Hero. Each evolution unlocks new powers. Your KIN grows up — but never grows apart.</p>
+                </div>
             </div>
         </div>
     </section>
     
+    <!-- Industry Grid -->
+    <section id="industry-grid">
+        <h2 class="section-title">One character. Thirty worlds.</h2>
+        <p style="text-align:center; max-width:600px; margin:-1rem auto 3rem; color:#666; font-size:1.1rem;">Same dragon. Different specialty. Every KIN arrives already fluent in your world.</p>
+        <div class="grid-container">
+            <div class="industry-card">
+                <div class="emoji">📣</div>
+                <h4>MarKIN</h4>
+                <p>Campaigns, copy, growth hacks. Your CMO in a cute package.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🩺</div>
+                <h4>MedKIN</h4>
+                <p>HIPAA-aware, patient-ready. Medical knowledge with bedside manner.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💎</div>
+                <h4>CryptoKIN</h4>
+                <p>DeFi, wallets, market alpha. Navigates Web3 so you don't get rekt.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">📚</div>
+                <h4>EduKIN</h4>
+                <p>Bedtime stories to calculus. Makes learning feel like playing.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎮</div>
+                <h4>GameKIN</h4>
+                <p>Strategies, builds, lore. Your raid partner who actually shows up.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🍳</div>
+                <h4>ChefKIN</h4>
+                <p>Recipes from what's in your fridge. Makes you look like you can cook.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🧘</div>
+                <h4>ZenKIN</h4>
+                <p>Breathwork, sleep stories, calm. Your pocket therapist with patience.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🚀</div>
+                <h4>StartKIN</h4>
+                <p>Pitch decks, burn rates, product-market fit. Startup brain, no ego.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎵</div>
+                <h4>MusicKIN</h4>
+                <p>Writes hooks, knows theory, jams at 3am. Producer energy.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">✈️</div>
+                <h4>TravelKIN</h4>
+                <p>Hidden gems, local eats, no tourist traps. Actually good travel advice.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💻</div>
+                <h4>CodeKIN</h4>
+                <p>Debugs at 2am without complaining. Ships clean code. Pair programs.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏋️</div>
+                <h4>FitKIN</h4>
+                <p>Custom workouts, meal plans, trash talk included. Gets you moving.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">⚖️</div>
+                <h4>LawKIN</h4>
+                <p>Contract review, compliance, legal clarity. Not legal advice. (But close.)</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎨</div>
+                <h4>DesignKIN</h4>
+                <p>Brands, layouts, color theory. Knows the difference between good and great.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏠</div>
+                <h4>HomeKIN</h4>
+                <p>Interior design, renovations, "does this go with that?" Finally, answers.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">📖</div>
+                <h4>WriteKIN</h4>
+                <p>Novels, scripts, emails that don't suck. Words are its love language.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">📸</div>
+                <h4>PhotoKIN</h4>
+                <p>Composition, editing, lighting. Sees the shot you almost missed.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🌍</div>
+                <h4>LinguaKIN</h4>
+                <p>Speaks 30+ languages. Actually fun to practice with at midnight.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💼</div>
+                <h4>CareerKIN</h4>
+                <p>Resumes, interviews, salary negotiation. Your professional hype-dragon.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🔬</div>
+                <h4>SciKIN</h4>
+                <p>Research, experiments, hypothesis testing. Curious by nature.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🐕</div>
+                <h4>PetKIN</h4>
+                <p>Training tips, vet reminders, why your cat is staring at you. (No one knows.)</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">👗</div>
+                <h4>StyleKIN</h4>
+                <p>Outfits, trends, "does this work?" Honest answers. Unlike your friends.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏆</div>
+                <h4>SportKIN</h4>
+                <p>Stats, fantasy picks, game breakdowns. Your skip-the-small-talk sports friend.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🏗️</div>
+                <h4>BuildKIN</h4>
+                <p>Architecture, blueprints, project management. Builds things. Like you.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎬</div>
+                <h4>FilmKIN</h4>
+                <p>Editing, storyboards, "that transition is wrong." Your creative director.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🌱</div>
+                <h4>GreenKIN</h4>
+                <p>Sustainability, farming, plant care. Knows why your basil keeps dying.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🧒</div>
+                <h4>KidKIN</h4>
+                <p>Bedtime stories, homework help, endless patience. The babysitter that never sleeps.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🔧</div>
+                <h4>MakerKIN</h4>
+                <p>3D printing, woodwork, "how do I fix this?" Your hands-on problem solver.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">💰</div>
+                <h4>FinKIN</h4>
+                <p>Budgets, investments, "you spent how much on coffee?" Keeps you honest.</p>
+            </div>
+            <div class="industry-card">
+                <div class="emoji">🎯</div>
+                <h4>FocusKIN</h4>
+                <p>ADHD-friendly, distraction-proof, gentle nudges. Gets you back on track.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Video Section -->
+    <section id="video-section">
+        <div class="video-container">
+            <video src="assets/kin-hatching-veo31.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;border-radius:1rem;"></video>
+            <video src="assets/kin-hatching-veo31.mp4" muted loop autoplay playsinline></video>
+        </div>
+    </section>
+    
+    <!-- Revenue/NFT Section -->
+    <section id="revenue">
+        <div class="revenue-intro">
+            <h2>Your little buddy actually earns for you.</h2>
+            <p>Here's the part nobody else is doing. KIN Founders don't just own a companion — they own a piece of the universe. Every time our world expands, founding holders share in the trading fees. Think of it like holding a piece of early Disney history. Except your Disney character also helps you do your taxes.</p>
+        </div>
+        <div class="tiers-container">
+            <div class="tier-card">
+                <h3>Founding Egg</h3>
+                <div class="price">0.5 SOL</div>
+                <ul>
+                    <li>Founding member forever</li>
+                    <li>Revenue sharing from day one</li>
+                    <li>Early access to every new KIN</li>
+                    <li>Limited to 500</li>
+                </ul>
+            </div>
+            <div class="tier-card featured">
+                <h3>Founding Hatchling</h3>
+                <div class="price">1 SOL</div>
+                <ul>
+                    <li>Everything in Egg, plus</li>
+                    <li>Higher revenue share tier</li>
+                    <li>Beta access to evolution stages</li>
+                    <li>Direct input on new KIN types</li>
+                    <li>Limited to 250</li>
+                </ul>
+            </div>
+            <div class="tier-card">
+                <h3>Founding Elder</h3>
+                <div class="price">2.5 SOL</div>
+                <ul>
+                    <li>Everything in Hatchling, plus</li>
+                    <li>Highest revenue share tier</li>
+                    <li>Co-create a KIN with the team</li>
+                    <li>Lifetime premium access</li>
+                    <li>Limited to 100</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section id="stats">
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="number" data-target="30">0</div>
+                <div class="label">Companions</div>
+            </div>
+            <div class="stat">
+                <div class="number" data-target="5">0</div>
+                <div class="label">Evolution Stages</div>
+            </div>
+            <div class="stat">
+                <div class="number">24/7</div>
+                <div class="label">By Your Side</div>
+            </div>
+            <div class="stat">
+                <div class="number">∞</div>
+                <div class="label">Possibilities</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing -->
     <section id="pricing">
-        <div class="label">// PRICING</div>
-        <h2 class="section-title">Start free. Scale when ready.</h2>
-        <div class="cards">
-            <div class="pricing-card">
-                <div class="price">$0</div>
-                <div class="tagline">baby teeth</div>
-                <div class="model">Kimi K2.5</div>
-                <ul class="features">
-                    <li>1 KIN agent</li>
-                    <li>50 messages/day</li>
-                    <li>Community support</li>
-                    <li>Basic analytics</li>
+        <h2 class="section-title">Start free. Grow when you're ready.</h2>
+        <p style="text-align:center; max-width:550px; margin:-1rem auto 3rem; color:#666; font-size:1.1rem;">No credit card. No commitment. Just pick a KIN and go.</p>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>Free</h3>
+                <div class="price">$0<span>/forever</span></div>
+                <ul>
+                    <li>1 KIN companion</li>
+                    <li>Powered by Kimi K2.5</li>
+                    <li>Text conversations</li>
+                    <li>Basic memory</li>
+                    <li>Community access</li>
                 </ul>
-                <a href="#final-cta" class="cta outline">Start Now</a>
+                <button>Start Free</button>
             </div>
-            <div class="pricing-card">
-                <div class="price">$29</div>
-                <div class="tagline">now it bites</div>
-                <div class="model">Claude Haiku</div>
-                <ul class="features">
-                    <li>3 KIN agents</li>
-                    <li>500 messages/day</li>
-                    <li>Email support</li>
-                    <li>Full analytics</li>
-                    <li>Custom persona</li>
+            <div class="price-card">
+                <h3>Starter</h3>
+                <div class="price">$29<span>/mo</span></div>
+                <ul>
+                    <li>3 KIN companions</li>
+                    <li>Faster AI (Haiku)</li>
+                    <li>Voice conversations</li>
+                    <li>Long-term memory</li>
+                    <li>Cross-device sync</li>
                 </ul>
-                <a href="#final-cta" class="cta purple">Get Started</a>
+                <button>Awaken Your KIN</button>
             </div>
-            <div class="pricing-card featured">
-                <div class="badge">POPULAR</div>
-                <div class="price">$59</div>
-                <div class="tagline">full fangs</div>
-                <div class="model">Claude Sonnet</div>
-                <ul class="features">
-                    <li>10 KIN agents</li>
-                    <li>Unlimited messages</li>
-                    <li>Priority support</li>
-                    <li>Advanced analytics</li>
-                    <li>Custom persona</li>
+            <div class="price-card popular">
+                <h3>Growth</h3>
+                <div class="price">$59<span>/mo</span></div>
+                <ul>
+                    <li>10 KIN companions</li>
+                    <li>Smarter AI (Sonnet)</li>
+                    <li>Custom personality tuning</li>
+                    <li>Priority everything</li>
+                    <li>Evolution fast-track</li>
                     <li>API access</li>
                 </ul>
-                <a href="#final-cta" class="cta purple">Get Started</a>
+                <button>Awaken Your KIN</button>
             </div>
-            <div class="pricing-card">
-                <div class="price">$99</div>
-                <div class="tagline">has a job now</div>
-                <div class="model">Sonnet + Tools</div>
-                <ul class="features">
-                    <li>25 KIN agents</li>
-                    <li>Unlimited everything</li>
-                    <li>Dedicated support</li>
-                    <li>White-label option</li>
-                    <li>Multi-agent workflows</li>
-                    <li>Priority queue</li>
+            <div class="price-card">
+                <h3>Pro</h3>
+                <div class="price">$99<span>/mo</span></div>
+                <ul>
+                    <li>Unlimited KIN</li>
+                    <li>Smartest AI (Sonnet + tools)</li>
+                    <li>Full workflow automation</li>
+                    <li>Team collaboration</li>
+                    <li>Analytics dashboard</li>
+                    <li>White-label options</li>
                 </ul>
-                <a href="#final-cta" class="cta purple">Get Started</a>
+                <button>Awaken Your KIN</button>
             </div>
-            <div class="pricing-card">
-                <div class="price">$249</div>
-                <div class="tagline">runs the company</div>
-                <div class="model">Claude Opus</div>
-                <ul class="features">
-                    <li>Unlimited KIN agents</li>
-                    <li>Unlimited everything</li>
-                    <li>24/7 support</li>
-                    <li>Custom deployment</li>
-                    <li>SLA guarantee</li>
-                    <li>Dedicated infrastructure</li>
-                    <li>Custom integrations</li>
+            <div class="price-card">
+                <h3>Enterprise</h3>
+                <div class="price">$249<span>/mo</span></div>
+                <ul>
+                    <li>Everything in Pro</li>
+                    <li>Most powerful AI (Opus)</li>
+                    <li>Custom AI training</li>
+                    <li>On-premise deployment</li>
+                    <li>Dedicated account manager</li>
+                    <li>SLA + compliance</li>
                 </ul>
-                <a href="#final-cta" class="cta purple">Get Started</a>
+                <button>Let's Talk</button>
             </div>
         </div>
     </section>
     
-    <section id="presale">
-        <div class="label">// PRESALE</div>
-        <h2 class="section-title">Own your KIN forever.</h2>
-        <p class="description">Each KIN is minted on Solana. True provenance. Tradeable. Portable. Yours forever.<br>And here's the cool part — your little buddy actually earns for you. Founding holders share in trading fees, fed back through $KR8TIV. Your companion generates revenue just by existing.</p>
-        
-        <div class="tier-images">
-            <div>
-                <img src="assets/kin-egg-final.png" alt="Founding Egg">
-            </div>
-            <div>
-                <img src="assets/kin-hatchling-cute.png" alt="Founding Hatchling">
-            </div>
-            <div>
-                <img src="assets/kin-elder-cute-v2.png" alt="Founding Elder">
-            </div>
-        </div>
-        
-        <div class="tiers">
-            <div class="tier">
-                <div class="name">Founding Egg</div>
-                <div class="price">0.5 SOL</div>
-                <div class="benefit">First 500 minted</div>
-            </div>
-            <div class="tier">
-                <div class="name">Founding Hatchling</div>
-                <div class="price">1 SOL</div>
-                <div class="benefit">Limited edition</div>
-            </div>
-            <div class="tier">
-                <div class="name">Founding Elder</div>
-                <div class="price">2.5 SOL</div>
-                <div class="benefit">Exclusive perks</div>
-            </div>
-        </div>
-        <a href="mailto:hello@kr8tiv.ai?subject=KIN Presale Interest" class="cta">Join the Presale</a>
-    </section>
-    
-    <section id="evolution">
-        <div class="label">// EVOLUTION</div>
-        <h2 class="section-title">From egg to empire.</h2>
-        <div class="timeline">
-            <div class="stage">
-                <div class="icon"></div>
-                <div class="name">Egg</div>
-                <div class="desc">Minted, waiting</div>
-            </div>
-            <div class="stage">
-                <div class="icon"></div>
-                <div class="name">Hatchling</div>
-                <div class="desc">Learning basics</div>
-            </div>
-            <div class="stage">
-                <div class="icon"></div>
-                <div class="name">Apprentice</div>
-                <div class="desc">Getting smart</div>
-            </div>
-            <div class="stage">
-                <div class="icon"></div>
-                <div class="name">Expert</div>
-                <div class="desc">Domain mastery</div>
-            </div>
-            <div class="stage">
-                <div class="icon"></div>
-                <div class="name">Elder</div>
-                <div class="desc">Running the show</div>
-            </div>
-        </div>
-    </section>
-    
+    <!-- FAQ -->
     <section id="faq">
+        <h2 class="section-title">You're going to ask these.</h2>
         <div class="faq-container">
-            <div class="faq-left">
-                <div class="label">// FAQ</div>
-                <h2 class="section-title">Questions we keep getting.</h2>
+            <div class="faq-item">
+                <div class="faq-question">"So it's a chatbot?"</div>
+                <div class="faq-answer">No. Chatbots forget you exist between conversations. KIN remembers your name, your preferences, your kids' birthdays, and that you hate cilantro. It lives on your phone, your laptop, your watch. It grows up. Chatbots answer questions. KIN shows up.</div>
             </div>
-            <div class="faq-right">
-                <div class="faq-item">
-                    <div class="question">
-                        <span>What makes KIN different from a chatbot?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">KIN isn't a chatbot. It's a companion. Each KIN is purpose-built for your world — your industry, your workflows, your life. It grows with you, lives across your devices, and actually remembers who you are. Chatbots answer questions. KIN shows up.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="question">
-                        <span>Do I need to train it?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">Nope. Your KIN arrives already knowing your world. Pick, hatch, go. It adapts to you over time — learning your voice, your preferences, your way of working. But it comes smart from day one.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="question">
-                        <span>Can I switch between KIN types?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">Absolutely. Subscription plans unlock multiple KINs. Run MarKIN for growth, FinKIN for budgets, and LawKIN for contracts — all at once.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="question">
-                        <span>What's this NFT thing about?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">Your KIN is minted as an NFT on Solana — tradeable, portable, provably yours. But it's more than a collectible. Founding KINs share in trading fees, so your cute little companion actually generates revenue for you. Own it, love it, earn from it.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="question">
-                        <span>Is my data safe?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">Yes. Your conversations stay yours. No training on your data. No sharing. Enterprise plans include private deployment options.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="question">
-                        <span>Can I cancel anytime?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">Of course. No contracts. No commitments. No "please don't go" emails. Cancel with one click.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="question">
-                        <span>What if my industry isn't listed?</span>
-                        <span class="icon">+</span>
-                    </div>
-                    <div class="answer">We're adding new KIN types monthly. Email us at hello@kr8tiv.ai with your industry — if enough people ask, we build it.</div>
-                </div>
+            <div class="faq-item">
+                <div class="faq-question">"How does the evolution thing work?"</div>
+                <div class="faq-answer">Your KIN starts as an egg. As you spend time together — talking, working, hanging out — it evolves through five stages: Egg → Hatchling → Toddler → Elder → Hero. Each stage unlocks new abilities and deeper personality. Think Pokémon evolution, but it's happening because you built a real relationship.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">"Can I have more than one?"</div>
+                <div class="faq-answer">That's kind of the point. A FitKIN for the gym, a CodeKIN for work, a KidKIN for bedtime stories. Build your team. They're all different, they're all yours, and yes — they get along.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">"What about my data?"</div>
+                <div class="faq-answer">Your conversations are encrypted and never used to train other models. Your KIN is yours. What you tell it stays between you. We don't sell data, we don't read your messages, we don't even want to. Privacy isn't a feature here — it's the foundation.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">"Wait — it earns money?"</div>
+                <div class="faq-answer">Founding KINs are minted as digital collectibles on Solana. That means you truly own it — it's tradeable, portable, provably yours. And yes, founding holders share in trading fees as the universe grows. Your cute little dragon actually generates value for you. Own it, love it, earn from it.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">"When can I get one?"</div>
+                <div class="faq-answer">Founding presale is opening soon for early believers. Free tier launches right after. Join the waitlist and you'll be first to know when the eggs start hatching.</div>
             </div>
         </div>
     </section>
     
+    <!-- Final CTA -->
     <section id="final-cta">
-        <h2>Ready to meet your new best friend?</h2>
-        <p style="font-size: 1.1rem; color: var(--text-body); margin-bottom: 2rem;">Pick your companion. Start something real. No credit card required.</p>
-        <a href="https://kr8tiv.ai" class="btn">Start Free →</a>
-        <div class="wallet">Treasury: 62Bf2Dc9WWtKcE44YKR49uf7N71E5xKffHp4tpMmBoMv</div>
+        <h2>This is the Steamboat Willie moment.</h2>
+        <p style="max-width:600px; margin:0 auto 2.5rem; color:#666; font-size:1.2rem; line-height:1.6;">You're not buying software. You're adopting the first generation of a universe that will outlive us all. The people who start here will be the ones who say "I was there when it hatched."</p>
+        <button class="cta-large">Awaken Your KIN</button>
     </section>
     
+    <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h4>KIN</h4>
-                <p class="tagline">AI agents that actually know your industry</p>
-            </div>
-            <div class="footer-col">
-                <h4>Products</h4>
-                <ul>
-                    <li><a href="#kin-types">KIN Agents</a></li>
-                    <li><a href="https://kr8tiv.ai">KR8TIV AI</a></li>
-                    <li><a href="https://jarvislife.io">Jarvis LifeOS</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="mailto:hello@kr8tiv.ai">Contact</a></li>
-                    <li><a href="#">Terms</a></li>
-                    <li><a href="#">Privacy</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Connect</h4>
-                <ul>
-                    <li><a href="https://twitter.com/kr8tivai">Twitter</a></li>
-                    <li><a href="https://t.me/kr8tivai">Telegram</a></li>
-                    <li><a href="mailto:hello@kr8tiv.ai">Email</a></li>
-                </ul>
-            </div>
+        <div class="brand">KIN by KR8TIV AI</div>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">Instagram</a>
+            <a href="#">GitHub</a>
         </div>
-        <div class="footer-bottom">
-            <div>© 2024 KR8TIV AI</div>
-            <div>Surfing the singularity</div>
-        </div>
+        <div class="copyright">© 2026 KR8TIV AI. Magic that grows with you.</div>
     </footer>
     
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
     <script>
-        // KIN data
-        const kinTypes = [
-            {name: "MarKIN", industry: "Marketing & Growth", description: "Turns your 'we should post more' into an actual strategy", color: "#FF6B35"},
-            {name: "MedKIN", industry: "Healthcare", description: "Knows more about HIPAA than your compliance officer", color: "#00D4AA"},
-            {name: "LawKIN", industry: "Legal", description: "Reads the fine print so you don't have to", color: "#8B5CF6"},
-            {name: "FinKIN", industry: "Finance", description: "Your money deserves someone who pays attention", color: "#F59E0B"},
-            {name: "PropKIN", industry: "Real Estate", description: "Finds comps faster than your competitor finds excuses", color: "#10B981"},
-            {name: "FitKIN", industry: "Fitness & Wellness", description: "Like a personal trainer that won't judge your 3am pizza", color: "#EF4444"},
-            {name: "TechKIN", industry: "Technology & SaaS", description: "Debugs your code AND your architecture decisions", color: "#06B6D4"},
-            {name: "EduKIN", industry: "Education", description: "Makes learning not suck", color: "#3B82F6"},
-            {name: "RetailKIN", industry: "Retail & E-commerce", description: "Knows why people abandon carts", color: "#EC4899"},
-            {name: "FoodKIN", industry: "Restaurant & Food", description: "Your sous-chef that never calls in sick", color: "#F97316"},
-            {name: "TravelKIN", industry: "Travel & Tourism", description: "Plans trips better than that friend who 'knows a guy'", color: "#14B8A6"},
-            {name: "ConstKIN", industry: "Construction", description: "Keeps your project on time. Yes, seriously.", color: "#78716C"},
-            {name: "AutoKIN", industry: "Automotive", description: "Knows what that weird noise is", color: "#DC2626"},
-            {name: "BeautyKIN", industry: "Beauty & Salon", description: "Never double-books Karen's 2pm", color: "#D946EF"},
-            {name: "AgriKIN", industry: "Agriculture", description: "Your grandpa would be confused but impressed", color: "#84CC16"},
-            {name: "CryptoKIN", industry: "Crypto & DeFi", description: "Finds alpha. Avoids rugs. Doesn't FOMO at the top.", color: "#9945FF"},
-            {name: "ArtKIN", industry: "Art & Creative", description: "Your creative director for less than a latte", color: "#F43F5E"},
-            {name: "MusicKIN", industry: "Music Industry", description: "Gets your track on real playlists", color: "#7C3AED"},
-            {name: "GameKIN", industry: "Gaming", description: "Min-maxes everything", color: "#22D3EE"},
-            {name: "PetKIN", industry: "Pet Care", description: "Knows if Fluffy is sick or just dramatic", color: "#FB923C"},
-            {name: "CleanKIN", industry: "Cleaning Services", description: "Clean more, drive less", color: "#2DD4BF"},
-            {name: "PlumbKIN", industry: "Plumbing & HVAC", description: "Faster than water finds a crack", color: "#6366F1"},
-            {name: "DentKIN", industry: "Dental", description: "Open wide for efficiency", color: "#A7F3D0"},
-            {name: "PhotoKIN", industry: "Photography", description: "Edits your workflow, not your photos", color: "#A855F7"},
-            {name: "EventKIN", industry: "Events & Planning", description: "Makes it look effortless", color: "#F472B6"},
-            {name: "InsureKIN", industry: "Insurance", description: "Almost interesting. Almost.", color: "#0EA5E9"},
-            {name: "AccountKIN", industry: "Accounting & Tax", description: "Finds deductions your accountant missed", color: "#059669"},
-            {name: "HRKIN", industry: "Human Resources", description: "No more 'proficient in Word' 400 times", color: "#7DD3FC"},
-            {name: "LogiKIN", industry: "Logistics", description: "A to B without the crisis", color: "#FCD34D"},
-            {name: "GreenKIN", industry: "Sustainability", description: "Saves the planet AND your bottom line", color: "#4ADE80"}
-        ];
-        
-        // Render KIN cards
-        const kinGrid = document.getElementById('kinGrid');
-        kinTypes.forEach(kin => {
-            const card = document.createElement('div');
-            card.className = 'kin-card';
-            card.style.borderLeftColor = kin.color;
-            card.innerHTML = `
-                <div class="name">${kin.name}</div>
-                <div class="industry">${kin.industry}</div>
-                <div class="description">${kin.description}</div>
-            `;
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.kin-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-            });
-            kinGrid.appendChild(card);
-        });
-        
-        // Search functionality
-        const kinSearch = document.getElementById('kinSearch');
-        kinSearch.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            document.querySelectorAll('.kin-card').forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(query) ? 'block' : 'none';
-            });
-        });
-        
-        // FAQ accordion
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.addEventListener('click', () => {
-                item.classList.toggle('open');
-            });
-        });
-        
-        // Custom cursor
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
         
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
         
-        function updateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
-            requestAnimationFrame(updateCursor);
-        }
-        updateCursor();
-        
-        // Cursor hover effects
-        document.querySelectorAll('a, button, .kin-card, .faq-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        document.querySelectorAll('button, a, .faq-question, .industry-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
         });
         
-        // Hide cursor on touch devices
-        if ('ontouchstart' in window) {
-            cursor.style.display = 'none';
-        }
+        // Loading Screen
+        let counter = 0;
+        const counterEl = document.querySelector('#loading .counter');
+        const loadingTitle = document.querySelector('#loading h1');
+        const loading = document.getElementById('loading');
         
-        // Three.js particle system
-        const canvas = document.getElementById('particleCanvas');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        
-        const particleCount = 600;
-        const positions = new Float32Array(particleCount * 3);
-        const velocities = [];
-        
-        for (let i = 0; i < particleCount; i++) {
-            // Shift particle distribution toward the right
-            const radius = Math.random() * 15 + 5;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.random() * Math.PI;
-            
-            const baseX = radius * Math.sin(phi) * Math.cos(theta);
-            const baseY = radius * Math.sin(phi) * Math.sin(theta);
-            const baseZ = radius * Math.cos(phi);
-            
-            // Bias particles toward the right (positive X)
-            positions[i * 3] = baseX + (Math.random() * 8);
-            positions[i * 3 + 1] = baseY;
-            positions[i * 3 + 2] = baseZ;
-            
-            velocities.push({
-                x: (Math.random() - 0.5) * 0.02,
-                y: (Math.random() - 0.5) * 0.02,
-                z: (Math.random() - 0.5) * 0.02
-            });
-        }
-        
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        
-        const material = new THREE.PointsMaterial({
-            size: 1.5,
-            transparent: true,
-            opacity: 0.6,
-            color: 0x9945FF,
-            blending: THREE.AdditiveBlending
-        });
-        
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
-        
-        // Adjust camera to view shifted particles
-        camera.position.z = 30;
-        camera.position.x = 3;
-        
-        let mouseXNorm = 0, mouseYNorm = 0;
-        document.addEventListener('mousemove', (e) => {
-            mouseXNorm = (e.clientX / window.innerWidth) * 2 - 1;
-            mouseYNorm = -(e.clientY / window.innerHeight) * 2 + 1;
-        });
-        
-        let time = 0;
-        function animateParticles() {
-            time += 0.005;
-            const positions = particles.geometry.attributes.position.array;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const i3 = i * 3;
-                
-                // Breathing effect
-                const breathScale = 0.98 + Math.sin(time * 2) * 0.02;
-                
-                // Rotation
-                positions[i3] += velocities[i].x;
-                positions[i3 + 1] += velocities[i].y;
-                positions[i3 + 2] += velocities[i].z;
-                
-                // Mouse repulsion
-                const dx = positions[i3] / 5 - mouseXNorm * 15;
-                const dy = positions[i3 + 1] / 5 - mouseYNorm * 15;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                
-                if (dist < 3) {
-                    const force = (3 - dist) / 3;
-                    positions[i3] += dx * force * 0.1;
-                    positions[i3 + 1] += dy * force * 0.1;
-                }
-                
-                // Apply breathing
-                positions[i3] *= breathScale;
-                positions[i3 + 1] *= breathScale;
-                positions[i3 + 2] *= breathScale;
+        const counterInterval = setInterval(() => {
+            counter += Math.floor(Math.random() * 15) + 5;
+            if (counter >= 100) {
+                counter = 100;
+                clearInterval(counterInterval);
+                setTimeout(() => {
+                    loading.style.opacity = '0';
+                    loading.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        loading.style.display = 'none';
+                    }, 500);
+                }, 300);
             }
-            
-            particles.geometry.attributes.position.needsUpdate = true;
-            particles.rotation.y += 0.001;
-            
-            renderer.render(scene, camera);
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
+            counterEl.textContent = counter;
+        }, 50);
         
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        // Fade in loading title
+        setTimeout(() => {
+            loadingTitle.style.opacity = '1';
+            loadingTitle.style.transition = 'opacity 1s ease';
+        }, 200);
         
-        // GSAP + Lenis setup
-        gsap.registerPlugin(ScrollTrigger);
-        
+        // Initialize Lenis Smooth Scroll
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
         });
         
         function raf(time) {
@@ -1506,205 +1368,214 @@
         }
         requestAnimationFrame(raf);
         
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => lenis.raf(time * 1000));
-        gsap.ticker.lagSmoothing(0);
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
         
-        // Loader animation
-        const loader = document.getElementById('loader');
-        const counter = loader.querySelector('.counter');
+        // Hero animations
+        gsap.from('.hero-content h1', {
+            y: 100,
+            opacity: 0,
+            duration: 1.2,
+            delay: 2.5,
+            ease: 'power4.out'
+        });
         
-        let count = 0;
-        const interval = setInterval(() => {
-            count += Math.floor(Math.random() * 15) + 5;
-            if (count >= 100) {
-                count = 100;
-                clearInterval(interval);
-                setTimeout(() => {
-                    gsap.to(loader, {
-                        y: '-100%',
-                        duration: 1,
-                        ease: 'power3.inOut',
-                        onComplete: () => {
-                            loader.style.display = 'none';
-                            animateHero();
-                        }
-                    });
-                }, 300);
+        gsap.from('.hero-content .tagline', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 2.8,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.hero-content .cta-large', {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 3.1,
+            ease: 'power2.out'
+        });
+        
+        gsap.from('.hero-image', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1.5,
+            delay: 2.7,
+            ease: 'power4.out'
+        });
+        
+        // Story section word reveal
+        const words = document.querySelectorAll('.story-text .word');
+        gsap.to(words, {
+            opacity: 1,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '#story',
+                start: 'top center',
+                end: 'bottom center',
+                scrub: 1
             }
-            counter.textContent = count;
-        }, 50);
+        });
         
-        function animateHero() {
-            const heroElements = [
-                '#hero .badge',
-                '#hero h1',
-                '#hero .subtitle',
-                '#hero .buttons',
-                '#hero .note'
-            ];
+        // Character slides parallax
+        document.querySelectorAll('.character-slide').forEach((slide, index) => {
+            gsap.to(slide.querySelector('.placeholder, img'), {
+                y: -100,
+                scrollTrigger: {
+                    trigger: slide,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
             
-            gsap.from(heroElements, {
-                y: 60,
+            gsap.from(slide.querySelector('.caption'), {
                 opacity: 0,
-                duration: 1,
-                stagger: 0.15,
-                ease: 'power3.out'
+                y: 30,
+                scrollTrigger: {
+                    trigger: slide,
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        });
+        
+        // Two products split reveal
+        gsap.from('.product-half.personal', {
+            x: -100,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '#two-products',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        gsap.from('.product-half.business', {
+            x: 100,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '#two-products',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // Horizontal scroll for How It Works
+        const horizontalScroll = document.querySelector('.horizontal-scroll');
+        if (horizontalScroll) {
+            gsap.to('.horizontal-scroll', {
+                x: () => -(horizontalScroll.scrollWidth - window.innerWidth + 200),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '#how-it-works',
+                    start: 'top top',
+                    end: () => `+=${horizontalScroll.scrollWidth}`,
+                    scrub: 1,
+                    pin: true,
+                    anticipatePin: 1
+                }
             });
         }
         
-        // Nav blur on scroll
-        const nav = document.querySelector('nav');
-        ScrollTrigger.create({
-            start: 100,
-            onUpdate: (self) => {
-                if (self.scroll() > 100) {
-                    nav.classList.add('scrolled');
-                } else {
-                    nav.classList.remove('scrolled');
-                }
-            }
-        });
-        
-        // Fade particles on scroll
-        gsap.to(particles.material, {
-            opacity: 0,
-            scrollTrigger: {
-                trigger: '#hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true
-            }
-        });
-        
-        // Section animations
-        gsap.utils.toArray('section').forEach(section => {
-            const label = section.querySelector('.label');
-            const title = section.querySelector('.section-title');
-            
-            if (label) {
-                gsap.from(label, {
-                    opacity: 0,
-                    y: 30,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top 80%'
-                    }
-                });
-            }
-            
-            if (title) {
-                gsap.from(title, {
-                    opacity: 0,
-                    y: 40,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top 80%'
-                    },
-                    delay: 0.1
-                });
-            }
-        });
-        
-        // Steps animation
-        gsap.from('.step', {
-            opacity: 0,
+        // Industry cards stagger
+        gsap.from('.industry-card', {
             y: 50,
-            stagger: 0.15,
-            scrollTrigger: {
-                trigger: '#how-it-works',
-                start: 'top 60%'
-            }
-        });
-        
-        // KIN cards animation
-        gsap.from('.kin-card', {
             opacity: 0,
-            y: 30,
-            stagger: 0.04,
+            stagger: 0.05,
             scrollTrigger: {
-                trigger: '#kin-types',
-                start: 'top 60%'
+                trigger: '#industry-grid',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
             }
         });
         
-        // Social proof counter animation
-        gsap.utils.toArray('.stat .number[data-target]').forEach(num => {
-            const target = parseInt(num.getAttribute('data-target'));
-            gsap.to(num, {
-                innerText: target,
-                duration: 2,
-                ease: 'power2.out',
-                snap: { innerText: 1 },
-                scrollTrigger: {
-                    trigger: '#proof',
-                    start: 'top 60%',
-                    once: true
-                },
-                onUpdate: function() {
-                    if (target === 2400) {
-                        num.innerText = Math.floor(parseFloat(num.innerText)) > 999 
-                            ? (parseFloat(num.innerText) / 1000).toFixed(1) + 'K' 
-                            : Math.floor(parseFloat(num.innerText));
-                    } else {
-                        num.innerText = Math.floor(parseFloat(num.innerText));
+        // Video autoplay on scroll
+        const video = document.querySelector('.video-container video');
+        if (video) {
+            ScrollTrigger.create({
+                trigger: '#video-section',
+                start: 'top center',
+                onEnter: () => video.play(),
+                onLeave: () => video.pause(),
+                onEnterBack: () => video.play(),
+                onLeaveBack: () => video.pause()
+            });
+        }
+        
+        // Stats counter animation
+        const animateCounter = (el) => {
+            const target = parseInt(el.getAttribute('data-target'));
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current);
+                }
+            }, 16);
+        };
+        
+        document.querySelectorAll('.stat .number[data-target]').forEach(el => {
+            ScrollTrigger.create({
+                trigger: el,
+                start: 'top 80%',
+                once: true,
+                onEnter: () => animateCounter(el)
+            });
+        });
+        
+        // Pricing cards reveal
+        gsap.from('.price-card', {
+            y: 60,
+            opacity: 0,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '#pricing',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Lazy load images (placeholder for when images exist)
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        imageObserver.unobserve(img);
                     }
                 }
             });
         });
         
-        // Stats animation
-        gsap.from('.stat', {
-            opacity: 0,
-            y: 40,
-            stagger: 0.15,
-            scrollTrigger: {
-                trigger: '#proof',
-                start: 'top 60%'
-            }
-        });
+        document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
         
-        // Pricing cards animation
-        gsap.from('.pricing-card', {
-            opacity: 0,
-            scale: 0.95,
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: '#pricing',
-                start: 'top 60%'
-            }
-        });
-        
-        // Evolution timeline animation
-        gsap.from('.stage', {
-            opacity: 0,
-            x: -30,
-            stagger: 0.15,
-            scrollTrigger: {
-                trigger: '#evolution',
-                start: 'top 60%'
-            }
-        });
-        
-        // FAQ animation
-        gsap.from('.faq-item', {
-            opacity: 0,
-            y: 20,
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: '#faq',
-                start: 'top 60%'
-            }
-        });
-        
-        // Smooth anchor scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        // Smooth scroll for nav CTA
+        document.querySelectorAll('.cta-btn, .cta-large').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    lenis.scrollTo(target, { offset: -72 });
-                }
+                lenis.scrollTo('#final-cta', { offset: -100, duration: 2 });
             });
         });
     </script>
