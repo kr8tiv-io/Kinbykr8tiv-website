@@ -626,6 +626,13 @@
         <h2 class="section-header gs-reveal">The Genesis Mint</h2>
         <p class="gs-reveal" style="text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.2em; color:rgba(255,255,255,0.35); margin-bottom:0.5rem;">Limited Collection</p>
         <p class="gs-reveal" style="text-align:center; font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(1.8rem,4vw,2.8rem); color:#fff; letter-spacing:-0.03em; margin-bottom:1.5rem;">Only 60 will ever exist.</p>
+        <div class="gs-reveal" style="text-align:center; margin-bottom:2.5rem;">
+            <button id="wallet-connect-btn" onclick="connectWallet()" style="display:inline-flex; align-items:center; gap:0.8rem; padding:0.9rem 2.5rem; background:linear-gradient(135deg, rgba(171,71,188,0.15), rgba(103,58,183,0.15)); border:1px solid rgba(171,71,188,0.4); border-radius:12px; color:#fff; font-family:'JetBrains Mono',monospace; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, rgba(171,71,188,0.25), rgba(103,58,183,0.25))'; this.style.borderColor='rgba(171,71,188,0.7)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(171,71,188,0.15), rgba(103,58,183,0.15))'; this.style.borderColor='rgba(171,71,188,0.4)'; this.style.transform='translateY(0)'">
+                <svg width="20" height="20" viewBox="0 0 128 128" fill="none"><path d="M110.4 28.8C97.6 17.6 79.2 12.8 64 12.8S30.4 17.6 17.6 28.8C4.8 40 0 56 0 64s4.8 24 17.6 35.2C30.4 110.4 48.8 115.2 64 115.2s33.6-4.8 46.4-16C123.2 88 128 72 128 64s-4.8-24-17.6-35.2zM64 105.6c-22.4 0-41.6-18.4-41.6-41.6S41.6 22.4 64 22.4s41.6 18.4 41.6 41.6-19.2 41.6-41.6 41.6z" fill="white" opacity="0.9"/><circle cx="48" cy="56" r="8" fill="white"/><circle cx="80" cy="56" r="8" fill="white"/><path d="M48 76c4 6 10 10 16 10s12-4 16-10" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+                <span id="wallet-btn-text">Connect Wallet</span>
+            </button>
+            <p id="wallet-status" style="margin-top:0.8rem; font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:rgba(255,255,255,0.3); letter-spacing:0.1em;"></p>
+        </div>
         <div class="gs-reveal" style="text-align:center; margin-bottom:3rem; padding:1.2rem 2rem; border:1px solid var(--border); border-radius:40px; max-width:500px; margin-left:auto; margin-right:auto; display:flex; align-items:center; justify-content:center; gap:1rem;">
             <span style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.5);">No crypto? No problem.</span>
             <a href="https://www.moonpay.com/de/learn/cryptocurrency/what-is-phantom-wallet" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:none; font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.05em; transition:opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Pay with card via MoonPay →</a>
@@ -649,7 +656,7 @@
                     <div style="display:flex; align-items:flex-start; gap:0.75rem;"><span style="color:var(--gold); font-size:0.7rem; margin-top:2px;">✦</span><span style="font-size:0.95rem; color:rgba(255,255,255,0.75); line-height:1.4;">1% Lifetime Solana Rewards</span></div>
                 </div>
                 <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:rgba(255,255,255,0.25); margin-bottom:1rem;">20 Available</p>
-                <a href="#" style="display:block; text-align:center; padding:0.9rem 0; border:1px solid rgba(255,184,0,0.3); border-radius:10px; color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; text-decoration:none; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,184,0,0.08)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,184,0,0.3)'">Mint Egg</a>
+                <button onclick="mintKIN('egg', 2.5)" class="mint-btn" data-tier="egg" style="display:block; width:100%; text-align:center; padding:0.9rem 0; border:1px solid rgba(255,184,0,0.3); border-radius:10px; color:var(--gold); background:transparent; font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,184,0,0.08)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,184,0,0.3)'">Mint Egg</button>
                 </div>
             </div>
 
@@ -671,7 +678,7 @@
                     <div style="display:flex; align-items:flex-start; gap:0.75rem;"><span style="color:var(--cyan); font-size:0.7rem; margin-top:2px;">✦</span><span style="font-size:0.95rem; color:rgba(255,255,255,0.75); line-height:1.4;">2% Lifetime Solana Rewards</span></div>
                 </div>
                 <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:rgba(255,255,255,0.25); margin-bottom:1rem;">20 Available</p>
-                <a href="#" style="display:block; text-align:center; padding:0.9rem 0; background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.3); border-radius:10px; color:var(--cyan); font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; text-decoration:none; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,240,255,0.15)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(0,240,255,0.08)'; this.style.borderColor='rgba(0,240,255,0.3)'">Mint Hatchling</a>
+                <button onclick="mintKIN('hatchling', 5.3)" class="mint-btn" data-tier="hatchling" style="display:block; width:100%; text-align:center; padding:0.9rem 0; background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.3); border-radius:10px; color:var(--cyan); font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(0,240,255,0.15)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(0,240,255,0.08)'; this.style.borderColor='rgba(0,240,255,0.3)'">Mint Hatchling</button>
                 </div>
             </div>
 
@@ -692,7 +699,7 @@
                     <div style="display:flex; align-items:flex-start; gap:0.75rem;"><span style="color:var(--magenta); font-size:0.7rem; margin-top:2px;">✦</span><span style="font-size:0.95rem; color:rgba(255,255,255,0.75); line-height:1.4;">3% Lifetime Solana Rewards</span></div>
                 </div>
                 <p style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.15em; color:rgba(255,255,255,0.25); margin-bottom:1rem;">20 Available</p>
-                <a href="#" style="display:block; text-align:center; padding:0.9rem 0; border:1px solid rgba(255,0,170,0.3); border-radius:10px; color:var(--magenta); font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; text-decoration:none; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,170,0.08)'; this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,0,170,0.3)'">Mint Elder</a>
+                <button onclick="mintKIN('elder', 8.3)" class="mint-btn" data-tier="elder" style="display:block; width:100%; text-align:center; padding:0.9rem 0; border:1px solid rgba(255,0,170,0.3); border-radius:10px; color:var(--magenta); background:transparent; font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,0,170,0.08)'; this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,0,170,0.3)'">Mint Elder</button>
                 </div>
             </div>
 
@@ -1190,6 +1197,216 @@
                 }
             });
         }
+    </script>
+
+    <!-- Solana Web3.js -->
+    <script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
+
+    <!-- Wallet Connect & Mint Logic -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Treasury wallet — all mint payments go here
+        const TREASURY = '62Bf2Dc9WWtKcE44YKR49uf7N71E5xKffHp4tpMmBoMv';
+        const SOLANA_RPC = 'https://api.mainnet-beta.solana.com';
+        const LAMPORTS_PER_SOL = 1000000000;
+
+        // Tier config
+        const TIERS = {
+            egg: { name: 'Egg', sol: 2.5, color: '#FFB800' },
+            hatchling: { name: 'Hatchling', sol: 5.3, color: '#00F0FF' },
+            elder: { name: 'Elder', sol: 8.3, color: '#FF00AA' }
+        };
+
+        let connectedWallet = null;
+        let provider = null;
+
+        // Detect Phantom provider
+        function getProvider() {
+            if ('phantom' in window) {
+                const p = window.phantom?.solana;
+                if (p?.isPhantom) return p;
+            }
+            // Check legacy window.solana
+            if (window.solana?.isPhantom) return window.solana;
+            return null;
+        }
+
+        // Update UI state
+        function updateUI() {
+            const btn = document.getElementById('wallet-connect-btn');
+            const btnText = document.getElementById('wallet-btn-text');
+            const status = document.getElementById('wallet-status');
+            const mintBtns = document.querySelectorAll('.mint-btn');
+
+            if (connectedWallet) {
+                const short = connectedWallet.toString();
+                btnText.textContent = short.slice(0, 4) + '...' + short.slice(-4);
+                btn.style.borderColor = 'rgba(0, 240, 255, 0.5)';
+                btn.style.background = 'linear-gradient(135deg, rgba(0,240,255,0.1), rgba(0,240,255,0.05))';
+                status.textContent = '✓ Wallet connected — choose your tier';
+                status.style.color = 'var(--cyan)';
+
+                mintBtns.forEach(b => {
+                    b.style.opacity = '1';
+                    b.style.pointerEvents = 'auto';
+                });
+            } else {
+                btnText.textContent = 'Connect Wallet';
+                btn.style.borderColor = 'rgba(171,71,188,0.4)';
+                btn.style.background = 'linear-gradient(135deg, rgba(171,71,188,0.15), rgba(103,58,183,0.15))';
+                status.textContent = '';
+            }
+        }
+
+        // Connect wallet
+        window.connectWallet = async function() {
+            provider = getProvider();
+
+            if (!provider) {
+                // No Phantom — open install page
+                const status = document.getElementById('wallet-status');
+                status.textContent = 'Phantom wallet not found. Redirecting to install...';
+                status.style.color = 'var(--gold)';
+                setTimeout(() => window.open('https://phantom.app/', '_blank'), 1000);
+                return;
+            }
+
+            try {
+                const resp = await provider.connect();
+                connectedWallet = resp.publicKey;
+                updateUI();
+                console.log('[KIN Mint] Connected:', connectedWallet.toString());
+            } catch (err) {
+                console.error('[KIN Mint] Connect failed:', err);
+                const status = document.getElementById('wallet-status');
+                if (err.code === 4001) {
+                    status.textContent = 'Connection declined. Click to try again.';
+                } else {
+                    status.textContent = 'Connection failed. Please try again.';
+                }
+                status.style.color = 'var(--magenta)';
+            }
+        };
+
+        // Mint (send SOL to treasury)
+        window.mintKIN = async function(tier, solAmount) {
+            // If not connected, connect first
+            if (!connectedWallet) {
+                await window.connectWallet();
+                if (!connectedWallet) return; // User declined
+            }
+
+            provider = getProvider();
+            if (!provider) return;
+
+            const tierInfo = TIERS[tier];
+            const btn = document.querySelector(`.mint-btn[data-tier="${tier}"]`);
+            const originalText = btn.textContent;
+            const status = document.getElementById('wallet-status');
+
+            try {
+                btn.textContent = 'Confirming...';
+                btn.style.opacity = '0.6';
+                btn.style.pointerEvents = 'none';
+                status.textContent = `Preparing ${tierInfo.name} mint transaction...`;
+                status.style.color = tierInfo.color;
+
+                const connection = new solanaWeb3.Connection(SOLANA_RPC, 'confirmed');
+                const treasuryPubkey = new solanaWeb3.PublicKey(TREASURY);
+                const lamports = Math.round(solAmount * LAMPORTS_PER_SOL);
+
+                // Create transfer transaction
+                const transaction = new solanaWeb3.Transaction().add(
+                    solanaWeb3.SystemProgram.transfer({
+                        fromPubkey: connectedWallet,
+                        toPubkey: treasuryPubkey,
+                        lamports: lamports
+                    })
+                );
+
+                // Get recent blockhash
+                const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+                transaction.recentBlockhash = blockhash;
+                transaction.feePayer = connectedWallet;
+                transaction.lastValidBlockHeight = lastValidBlockHeight;
+
+                // Sign and send via Phantom
+                const { signature } = await provider.signAndSendTransaction(transaction);
+
+                status.textContent = `Transaction sent! Confirming...`;
+                status.style.color = 'var(--cyan)';
+                btn.textContent = 'Confirming...';
+
+                // Wait for confirmation
+                const confirmation = await connection.confirmTransaction({
+                    signature,
+                    blockhash,
+                    lastValidBlockHeight
+                }, 'confirmed');
+
+                if (confirmation.value.err) {
+                    throw new Error('Transaction failed on-chain');
+                }
+
+                // Success!
+                btn.textContent = '✓ Minted!';
+                btn.style.background = 'rgba(0,240,255,0.15)';
+                btn.style.borderColor = 'var(--cyan)';
+                btn.style.color = 'var(--cyan)';
+                status.innerHTML = `✓ ${tierInfo.name} mint confirmed! <a href="https://solscan.io/tx/${signature}" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:underline;">View on Solscan →</a>`;
+                status.style.color = 'var(--cyan)';
+
+                console.log('[KIN Mint] Success! Signature:', signature);
+
+            } catch (err) {
+                console.error('[KIN Mint] Mint failed:', err);
+                btn.textContent = originalText;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+
+                if (err.code === 4001 || err.message?.includes('rejected')) {
+                    status.textContent = 'Transaction cancelled. No SOL was sent.';
+                } else if (err.message?.includes('insufficient')) {
+                    status.textContent = `Insufficient balance. ${tierInfo.name} requires ${solAmount} SOL + gas.`;
+                } else {
+                    status.textContent = 'Transaction failed. Please try again.';
+                }
+                status.style.color = 'var(--magenta)';
+            }
+        };
+
+        // Try eager connect on load (if previously approved)
+        window.addEventListener('DOMContentLoaded', async () => {
+            provider = getProvider();
+            if (provider) {
+                try {
+                    const resp = await provider.connect({ onlyIfTrusted: true });
+                    connectedWallet = resp.publicKey;
+                    updateUI();
+                } catch (e) {
+                    // Not previously connected — that's fine
+                }
+            }
+
+            // Listen for disconnect
+            if (provider) {
+                provider.on('disconnect', () => {
+                    connectedWallet = null;
+                    updateUI();
+                });
+                provider.on('accountChanged', (publicKey) => {
+                    if (publicKey) {
+                        connectedWallet = publicKey;
+                    } else {
+                        connectedWallet = null;
+                    }
+                    updateUI();
+                });
+            }
+        });
+    })();
     </script>
 </body>
 </html>
