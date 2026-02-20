@@ -354,7 +354,7 @@
     <div id="toast" class="toast"></div>
 
     <!-- Metaplex Candy Machine Mint Bundle -->
-    <script src="kin-mint.js"></script>
+    <script src="kin-mint.js" onerror="document.getElementById('wallet-status').textContent='Error: Mint module failed to load. Please hard refresh (Ctrl+Shift+R).'; document.getElementById('wallet-status').style.color='#FF00AA';"></script>
 
     <!-- Wallet Connect & Candy Machine Mint Logic -->
     <script>
@@ -522,7 +522,21 @@
 
         // Auto-reconnect on page load (if already authorized)
         window.addEventListener('DOMContentLoaded', async () => {
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 300));
+
+            // Check if Candy Machine module loaded
+            if (typeof window.mintFromCandyMachine !== 'function') {
+                console.error('[KIN] Mint module not loaded!');
+                var s = document.getElementById('wallet-status');
+                if (s) { s.textContent = 'Mint module loading error. Please hard refresh.'; s.style.color = '#FF00AA'; }
+            } else {
+                console.log('[KIN] Mint module verified ✓');
+                // Fetch candy machine state
+                try {
+                    var state = await window.getCandyMachineState();
+                    if (state) console.log('[KIN] Available:', state.itemsRemaining, '/', state.itemsAvailable);
+                } catch(e) { console.warn('[KIN] Could not fetch state:', e); }
+            }
 
             provider = getProvider();
             if (provider) {
