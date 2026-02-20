@@ -362,7 +362,7 @@
         'use strict';
 
         const TREASURY = '7BLHKsHRGjsTKQdZYaC3tRDeUChJ9E2XsMPpg2Tv23cf';
-        const SOLANA_RPC = 'https://mainnet.helius-rpc.com/?api-key=95014bec-7a2f-46af-9750-48be929844f4';
+        const SOLANA_RPC = 'https://madelena-tbtq8y-fast-mainnet.helius-rpc.com';
         const LAMPORTS_PER_SOL = 1000000000;
 
         const TIERS = {
@@ -561,7 +561,9 @@
                     showToast('Insufficient SOL balance', 'error');
                 } else {
                     console.error('Mint error:', err);
-                    status.textContent = 'Transaction failed — please try again.';
+                    var errMsg = err.message || String(err);
+                    if (errMsg.length > 120) errMsg = errMsg.substring(0, 120) + '...';
+                    status.textContent = 'Error: ' + errMsg;
                     showToast('Transaction failed', 'error');
                 }
                 status.style.color = 'var(--magenta)';
