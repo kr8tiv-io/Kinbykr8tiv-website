@@ -11,7 +11,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #050510;
+            --bg: #060612;
+            --bg-alt: #0a0a1a;
             --primary: #9945FF;
             --accent: #39FF14;
             --text-primary: rgba(255,255,255,0.9);
@@ -75,6 +76,11 @@
             90% { transform: translate(-10%, 10%); }
         }
         
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.8; transform: translateY(10px); }
+        }
+        
         /* Loader */
         #loader {
             position: fixed;
@@ -117,12 +123,13 @@
             justify-content: space-between;
             padding: 0 4rem;
             z-index: 1000;
-            transition: backdrop-filter 0.3s ease;
+            backdrop-filter: blur(16px);
+            background: rgba(6,6,18,0.6);
+            transition: background 0.3s ease;
         }
         
         nav.scrolled {
-            backdrop-filter: blur(20px);
-            background: rgba(5,5,16,0.8);
+            background: rgba(6,6,18,0.85);
         }
         
         nav .logo {
@@ -179,11 +186,9 @@
             position: relative;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
             overflow: hidden;
+            background: radial-gradient(ellipse at 70% 50%, rgba(153,69,255,0.08) 0%, transparent 60%);
         }
         
         #hero canvas {
@@ -198,8 +203,9 @@
         #hero .content {
             position: relative;
             z-index: 2;
-            max-width: 1200px;
-            padding: 0 2rem;
+            max-width: 650px;
+            padding-left: 8vw;
+            text-align: left;
         }
         
         #hero .badge {
@@ -218,7 +224,7 @@
         #hero h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: clamp(4rem, 10vw, 8rem);
+            font-size: clamp(5rem, 12vw, 9rem);
             letter-spacing: -0.04em;
             margin-bottom: 1.5rem;
         }
@@ -226,58 +232,70 @@
         #hero .subtitle {
             font-size: 1.25rem;
             font-weight: 300;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        
-        #hero .subtext {
-            font-size: 0.9rem;
-            font-weight: 300;
-            opacity: 0.3;
             margin-bottom: 2.5rem;
+            color: var(--text-primary);
         }
         
         #hero .buttons {
             display: flex;
             gap: 1rem;
-            justify-content: center;
             margin-bottom: 1.5rem;
         }
         
         #hero .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, #8B3DFF 0%, #B066FF 100%);
             color: white;
             padding: 1rem 2.5rem;
             border-radius: 50px;
             text-decoration: none;
             font-size: 1rem;
+            min-width: 200px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 24px rgba(139,61,255,0.3);
         }
         
         #hero .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(153,69,255,0.4);
+            box-shadow: 0 8px 32px rgba(139,61,255,0.5);
         }
         
         #hero .btn-ghost {
             background: transparent;
             color: var(--text-primary);
             padding: 1rem 2.5rem;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: none;
             text-decoration: none;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: text-decoration 0.3s ease;
         }
         
         #hero .btn-ghost:hover {
-            border-color: rgba(255,255,255,0.5);
+            text-decoration: underline;
         }
         
         #hero .note {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             opacity: 0.4;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        
+        .scroll-indicator div {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
         }
         
         /* Divider */
@@ -293,6 +311,10 @@
             padding: 12rem 4rem;
             max-width: 1400px;
             margin: 0 auto;
+        }
+        
+        section:nth-of-type(even) {
+            background: var(--bg-alt);
         }
         
         .label {
@@ -379,23 +401,25 @@
         }
         
         .kin-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 24px 28px;
             border-left: 3px solid;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             cursor: pointer;
         }
         
         .kin-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.12);
             transform: translateY(-4px);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         
         .kin-card.selected {
-            border-left-color: var(--accent) !important;
-            box-shadow: 0 0 24px rgba(57,255,20,0.2);
+            border-left-color: var(--primary) !important;
+            box-shadow: 0 0 24px rgba(153,69,255,0.3);
         }
         
         .kin-card .name {
@@ -421,7 +445,46 @@
             color: var(--text-body);
         }
         
+        /* Social Proof */
+        #proof {
+            text-align: center;
+        }
+        
+        #proof .stats {
+            display: flex;
+            justify-content: space-around;
+            max-width: 900px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .stat .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            color: white;
+        }
+        
+        .stat .label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        
         /* Pricing */
+        #pricing {
+            background: radial-gradient(ellipse at center, rgba(153,69,255,0.05) 0%, transparent 50%);
+        }
+        
         #pricing .cards {
             display: flex;
             gap: 1.5rem;
@@ -433,7 +496,7 @@
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 16px;
-            padding: 2.5rem;
+            padding: 40px 32px;
             min-width: 280px;
             flex: 1;
             position: relative;
@@ -445,6 +508,17 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         
+        .pricing-card.featured {
+            transform: translateY(-16px);
+            border: 1px solid rgba(153,69,255,0.4);
+            background: linear-gradient(180deg, rgba(153,69,255,0.08) 0%, rgba(153,69,255,0.02) 100%);
+            box-shadow: 0 0 60px rgba(153,69,255,0.15);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: translateY(-18px) scale(1.02);
+        }
+        
         .pricing-card .badge {
             position: absolute;
             top: 1rem;
@@ -454,14 +528,6 @@
             padding: 0.4rem 0.8rem;
             border-radius: 20px;
             letter-spacing: 0.1em;
-        }
-        
-        .pricing-card .badge.free {
-            background: var(--accent);
-            color: #000;
-        }
-        
-        .pricing-card .badge.popular {
             background: var(--primary);
             color: white;
         }
@@ -486,6 +552,30 @@
             margin-bottom: 2rem;
         }
         
+        .pricing-card .features {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .pricing-card .features li {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 0.75rem;
+            list-style: none;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .pricing-card .features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
         .pricing-card .cta {
             display: block;
             text-align: center;
@@ -500,9 +590,10 @@
             transform: translateY(-2px);
         }
         
-        .pricing-card .cta.green {
-            background: var(--accent);
-            color: #000;
+        .pricing-card .cta.outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
         }
         
         .pricing-card .cta.purple {
@@ -521,6 +612,28 @@
             color: var(--text-body);
             max-width: 700px;
             margin: 0 auto 2rem;
+        }
+        
+        .tier-images {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+        
+        .tier-images > div {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .tier-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         #presale .tiers {
@@ -624,9 +737,20 @@
         }
         
         /* FAQ */
-        #faq .accordion {
-            max-width: 900px;
-            margin: 0 auto;
+        #faq .faq-container {
+            display: flex;
+            gap: 4rem;
+            align-items: flex-start;
+        }
+        
+        #faq .faq-left {
+            flex: 0 0 40%;
+            position: sticky;
+            top: 120px;
+        }
+        
+        #faq .faq-right {
+            flex: 1;
         }
         
         .faq-item {
@@ -646,7 +770,17 @@
         
         .faq-item .icon {
             font-size: 1.5rem;
-            transition: transform 0.3s ease;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+        
+        .faq-item .icon:hover {
+            background: rgba(153,69,255,0.15);
         }
         
         .faq-item.open .icon {
@@ -656,17 +790,19 @@
         .faq-item .answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: all 0.3s ease;
             font-weight: 300;
             font-size: 1rem;
             line-height: 1.8;
             color: var(--text-body);
             padding-top: 0;
+            opacity: 0;
         }
         
         .faq-item.open .answer {
             max-height: 500px;
             padding-top: 1.5rem;
+            opacity: 1;
         }
         
         /* Final CTA */
@@ -694,8 +830,8 @@
         
         #final-cta .btn {
             display: inline-block;
-            background: var(--accent);
-            color: #000;
+            background: linear-gradient(135deg, #8B3DFF, #B066FF);
+            color: #fff;
             padding: 1.2rem 3rem;
             border-radius: 50px;
             text-decoration: none;
@@ -712,52 +848,82 @@
         
         /* Footer */
         footer {
-            padding: 4rem;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 80px 4rem 40px;
+            background: #040410;
         }
         
-        footer .brand {
+        footer .footer-content {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            gap: 4rem;
+        }
+        
+        footer .footer-col {
+            flex: 1;
+        }
+        
+        footer .footer-col h4 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 1.2rem;
             margin-bottom: 1rem;
         }
         
-        footer .links {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin: 1.5rem 0;
+        footer .footer-col .tagline {
+            font-size: 0.9rem;
+            color: var(--text-subtle);
+            margin-top: 0.5rem;
         }
         
-        footer .links a {
+        footer .footer-col ul {
+            list-style: none;
+        }
+        
+        footer .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        footer .footer-col a {
             color: var(--text-body);
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.3s ease;
         }
         
-        footer .links a:hover {
+        footer .footer-col a:hover {
             color: var(--text-primary);
         }
         
-        footer .tagline {
+        footer .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
             font-size: 0.85rem;
             color: var(--text-subtle);
-            margin-top: 1.5rem;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             section { padding: 6rem 2rem; }
             nav { padding: 0 2rem; }
+            #hero .content { padding-left: 2rem; }
             #how-it-works .grid { grid-template-columns: 1fr; }
             #kin-types .grid { grid-template-columns: 1fr; }
             #pricing .cards { flex-direction: column; }
             #presale .tiers { flex-direction: column; align-items: center; }
+            .tier-images { flex-direction: column; align-items: center; }
             #evolution .timeline { flex-direction: column; gap: 2rem; }
             #evolution .timeline::before { display: none; }
+            #faq .faq-container { flex-direction: column; }
+            #faq .faq-left { position: relative; top: 0; }
+            #proof .stats { flex-wrap: wrap; }
+            footer .footer-content { flex-direction: column; gap: 2rem; }
+            footer .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
@@ -796,12 +962,14 @@
             <div class="badge">NOW IN BETA — 30 INDUSTRIES</div>
             <h1>Meet KIN.</h1>
             <p class="subtitle">An AI agent that actually knows your industry.</p>
-            <p class="subtext">Not another chatbot that googles things.</p>
             <div class="buttons">
                 <a href="#final-cta" class="btn-primary">Start Free →</a>
-                <a href="#how-it-works" class="btn-ghost">Explore</a>
+                <a href="#how-it-works" class="btn-ghost">Explore ↓</a>
             </div>
             <p class="note">No credit card. No contracts. No synergy.</p>
+        </div>
+        <div class="scroll-indicator">
+            <div></div>
         </div>
     </section>
     
@@ -843,40 +1011,100 @@
         <div class="grid" id="kinGrid"></div>
     </section>
     
+    <section id="proof">
+        <div class="label">// TRACTION</div>
+        <h2 class="section-title">Numbers don't lie.</h2>
+        <div class="stats">
+            <div class="stat">
+                <span class="number" data-target="30">0</span>
+                <span class="label">Industries</span>
+            </div>
+            <div class="stat">
+                <span class="number" data-target="2400">0</span>
+                <span class="label">Beta Users</span>
+            </div>
+            <div class="stat">
+                <span class="number" data-target="98">0</span>
+                <span class="label">Satisfaction</span>
+            </div>
+            <div class="stat">
+                <span class="number">24/7</span>
+                <span class="label">Available</span>
+            </div>
+        </div>
+    </section>
+    
     <section id="pricing">
         <div class="label">// PRICING</div>
         <h2 class="section-title">Start free. Scale when ready.</h2>
         <div class="cards">
             <div class="pricing-card">
-                <div class="badge free">FREE FOREVER</div>
                 <div class="price">$0</div>
                 <div class="tagline">baby teeth</div>
                 <div class="model">Kimi K2.5</div>
-                <a href="#final-cta" class="cta green">Start Now</a>
+                <ul class="features">
+                    <li>1 KIN agent</li>
+                    <li>50 messages/day</li>
+                    <li>Community support</li>
+                    <li>Basic analytics</li>
+                </ul>
+                <a href="#final-cta" class="cta outline">Start Now</a>
             </div>
             <div class="pricing-card">
                 <div class="price">$29</div>
                 <div class="tagline">now it bites</div>
                 <div class="model">Claude Haiku</div>
+                <ul class="features">
+                    <li>3 KIN agents</li>
+                    <li>500 messages/day</li>
+                    <li>Email support</li>
+                    <li>Full analytics</li>
+                    <li>Custom persona</li>
+                </ul>
                 <a href="#final-cta" class="cta purple">Get Started</a>
             </div>
-            <div class="pricing-card">
-                <div class="badge popular">POPULAR</div>
+            <div class="pricing-card featured">
+                <div class="badge">POPULAR</div>
                 <div class="price">$59</div>
                 <div class="tagline">full fangs</div>
                 <div class="model">Claude Sonnet</div>
+                <ul class="features">
+                    <li>10 KIN agents</li>
+                    <li>Unlimited messages</li>
+                    <li>Priority support</li>
+                    <li>Advanced analytics</li>
+                    <li>Custom persona</li>
+                    <li>API access</li>
+                </ul>
                 <a href="#final-cta" class="cta purple">Get Started</a>
             </div>
             <div class="pricing-card">
                 <div class="price">$99</div>
                 <div class="tagline">has a job now</div>
                 <div class="model">Sonnet + Tools</div>
+                <ul class="features">
+                    <li>25 KIN agents</li>
+                    <li>Unlimited everything</li>
+                    <li>Dedicated support</li>
+                    <li>White-label option</li>
+                    <li>Multi-agent workflows</li>
+                    <li>Priority queue</li>
+                </ul>
                 <a href="#final-cta" class="cta purple">Get Started</a>
             </div>
             <div class="pricing-card">
                 <div class="price">$249</div>
                 <div class="tagline">runs the company</div>
                 <div class="model">Claude Opus</div>
+                <ul class="features">
+                    <li>Unlimited KIN agents</li>
+                    <li>Unlimited everything</li>
+                    <li>24/7 support</li>
+                    <li>Custom deployment</li>
+                    <li>SLA guarantee</li>
+                    <li>Dedicated infrastructure</li>
+                    <li>Custom integrations</li>
+                </ul>
                 <a href="#final-cta" class="cta purple">Get Started</a>
             </div>
         </div>
@@ -886,6 +1114,19 @@
         <div class="label">// PRESALE</div>
         <h2 class="section-title">Own your KIN forever.</h2>
         <p class="description">Each KIN is minted as a compressed NFT on Solana. Tradeable. Portable. Yours.<br>Founding KINs get lifetime discounts.</p>
+        
+        <div class="tier-images">
+            <div>
+                <img src="assets/kin-egg-final.png" alt="Founding Egg">
+            </div>
+            <div>
+                <img src="assets/kin-hatchling-cute.png" alt="Founding Hatchling">
+            </div>
+            <div>
+                <img src="assets/kin-elder-cute-v2.png" alt="Founding Elder">
+            </div>
+        </div>
+        
         <div class="tiers">
             <div class="tier">
                 <div class="name">Founding Egg</div>
@@ -939,57 +1180,61 @@
     </section>
     
     <section id="faq">
-        <div class="label">// FAQ</div>
-        <h2 class="section-title">Questions we keep getting.</h2>
-        <div class="accordion">
-            <div class="faq-item">
-                <div class="question">
-                    <span>What makes KIN different from ChatGPT?</span>
-                    <span class="icon">+</span>
-                </div>
-                <div class="answer">KIN isn't generic AI with a prompt. Each agent is trained on your industry's knowledge, workflows, and nuance. It's the difference between hiring a specialist and asking a smart friend who might google it.</div>
+        <div class="faq-container">
+            <div class="faq-left">
+                <div class="label">// FAQ</div>
+                <h2 class="section-title">Questions we keep getting.</h2>
             </div>
-            <div class="faq-item">
-                <div class="question">
-                    <span>Do I need to train it?</span>
-                    <span class="icon">+</span>
+            <div class="faq-right">
+                <div class="faq-item">
+                    <div class="question">
+                        <span>What makes KIN different from ChatGPT?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">KIN isn't generic AI with a prompt. Each agent is trained on your industry's knowledge, workflows, and nuance. It's the difference between hiring a specialist and asking a smart friend who might google it.</div>
                 </div>
-                <div class="answer">Nope. Your KIN arrives pre-trained on your industry. You just pick, hatch, and go. It learns your specific workflow as you use it, but it already knows your domain.</div>
-            </div>
-            <div class="faq-item">
-                <div class="question">
-                    <span>Can I switch between KIN types?</span>
-                    <span class="icon">+</span>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Do I need to train it?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">Nope. Your KIN arrives pre-trained on your industry. You just pick, hatch, and go. It learns your specific workflow as you use it, but it already knows your domain.</div>
                 </div>
-                <div class="answer">Absolutely. Subscription plans unlock multiple KINs. Run MarKIN for growth, FinKIN for budgets, and LawKIN for contracts — all at once.</div>
-            </div>
-            <div class="faq-item">
-                <div class="question">
-                    <span>What's this NFT thing about?</span>
-                    <span class="icon">+</span>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Can I switch between KIN types?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">Absolutely. Subscription plans unlock multiple KINs. Run MarKIN for growth, FinKIN for budgets, and LawKIN for contracts — all at once.</div>
                 </div>
-                <div class="answer">Your KIN is minted as a compressed NFT on Solana. That means you own it — tradeable, portable, provably yours. Founding KINs from presale get lifetime perks.</div>
-            </div>
-            <div class="faq-item">
-                <div class="question">
-                    <span>Is my data safe?</span>
-                    <span class="icon">+</span>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>What's this NFT thing about?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">Your KIN is minted as a compressed NFT on Solana. That means you own it — tradeable, portable, provably yours. Founding KINs from presale get lifetime perks.</div>
                 </div>
-                <div class="answer">Yes. Your conversations stay yours. No training on your data. No sharing. Enterprise plans include private deployment options.</div>
-            </div>
-            <div class="faq-item">
-                <div class="question">
-                    <span>Can I cancel anytime?</span>
-                    <span class="icon">+</span>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Is my data safe?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">Yes. Your conversations stay yours. No training on your data. No sharing. Enterprise plans include private deployment options.</div>
                 </div>
-                <div class="answer">Of course. No contracts. No commitments. No "please don't go" emails. Cancel with one click.</div>
-            </div>
-            <div class="faq-item">
-                <div class="question">
-                    <span>What if my industry isn't listed?</span>
-                    <span class="icon">+</span>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Can I cancel anytime?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">Of course. No contracts. No commitments. No "please don't go" emails. Cancel with one click.</div>
                 </div>
-                <div class="answer">We're adding new KIN types monthly. Email us at hello@kr8tiv.ai with your industry — if enough people ask, we build it.</div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>What if my industry isn't listed?</span>
+                        <span class="icon">+</span>
+                    </div>
+                    <div class="answer">We're adding new KIN types monthly. Email us at hello@kr8tiv.ai with your industry — if enough people ask, we build it.</div>
+                </div>
             </div>
         </div>
     </section>
@@ -1002,15 +1247,40 @@
     </section>
     
     <footer>
-        <div class="brand">KIN by KR8TIV AI</div>
-        <div class="links">
-            <a href="https://kr8tiv.ai">KR8TIV</a>
-            <a href="https://twitter.com/kr8tivai">Twitter</a>
-            <a href="mailto:hello@kr8tiv.ai">Contact</a>
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>KIN</h4>
+                <p class="tagline">AI agents that actually know your industry</p>
+            </div>
+            <div class="footer-col">
+                <h4>Products</h4>
+                <ul>
+                    <li><a href="#kin-types">KIN Agents</a></li>
+                    <li><a href="https://kr8tiv.ai">KR8TIV AI</a></li>
+                    <li><a href="https://jarvislife.io">Jarvis LifeOS</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="mailto:hello@kr8tiv.ai">Contact</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://twitter.com/kr8tivai">Twitter</a></li>
+                    <li><a href="https://t.me/kr8tivai">Telegram</a></li>
+                    <li><a href="mailto:hello@kr8tiv.ai">Email</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="tagline">Surfing the singularity since 2024</div>
+        <div class="footer-bottom">
+            <div>© 2024 KR8TIV AI</div>
+            <div>Surfing the singularity</div>
+        </div>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
@@ -1130,13 +1400,19 @@
         const velocities = [];
         
         for (let i = 0; i < particleCount; i++) {
+            // Shift particle distribution toward the right
             const radius = Math.random() * 15 + 5;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.random() * Math.PI;
             
-            positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-            positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-            positions[i * 3 + 2] = radius * Math.cos(phi);
+            const baseX = radius * Math.sin(phi) * Math.cos(theta);
+            const baseY = radius * Math.sin(phi) * Math.sin(theta);
+            const baseZ = radius * Math.cos(phi);
+            
+            // Bias particles toward the right (positive X)
+            positions[i * 3] = baseX + (Math.random() * 8);
+            positions[i * 3 + 1] = baseY;
+            positions[i * 3 + 2] = baseZ;
             
             velocities.push({
                 x: (Math.random() - 0.5) * 0.02,
@@ -1159,7 +1435,9 @@
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
         
+        // Adjust camera to view shifted particles
         camera.position.z = 30;
+        camera.position.x = 3;
         
         let mouseXNorm = 0, mouseYNorm = 0;
         document.addEventListener('mousemove', (e) => {
@@ -1262,7 +1540,6 @@
                 '#hero .badge',
                 '#hero h1',
                 '#hero .subtitle',
-                '#hero .subtext',
                 '#hero .buttons',
                 '#hero .note'
             ];
@@ -1302,24 +1579,31 @@
         
         // Section animations
         gsap.utils.toArray('section').forEach(section => {
-            gsap.from(section.querySelector('.label'), {
-                opacity: 0,
-                y: 30,
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%'
-                }
-            });
+            const label = section.querySelector('.label');
+            const title = section.querySelector('.section-title');
             
-            gsap.from(section.querySelector('.section-title'), {
-                opacity: 0,
-                y: 40,
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%'
-                },
-                delay: 0.1
-            });
+            if (label) {
+                gsap.from(label, {
+                    opacity: 0,
+                    y: 30,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%'
+                    }
+                });
+            }
+            
+            if (title) {
+                gsap.from(title, {
+                    opacity: 0,
+                    y: 40,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%'
+                    },
+                    delay: 0.1
+                });
+            }
         });
         
         // Steps animation
@@ -1340,6 +1624,42 @@
             stagger: 0.04,
             scrollTrigger: {
                 trigger: '#kin-types',
+                start: 'top 60%'
+            }
+        });
+        
+        // Social proof counter animation
+        gsap.utils.toArray('.stat .number[data-target]').forEach(num => {
+            const target = parseInt(num.getAttribute('data-target'));
+            gsap.to(num, {
+                innerText: target,
+                duration: 2,
+                ease: 'power2.out',
+                snap: { innerText: 1 },
+                scrollTrigger: {
+                    trigger: '#proof',
+                    start: 'top 60%',
+                    once: true
+                },
+                onUpdate: function() {
+                    if (target === 2400) {
+                        num.innerText = Math.floor(parseFloat(num.innerText)) > 999 
+                            ? (parseFloat(num.innerText) / 1000).toFixed(1) + 'K' 
+                            : Math.floor(parseFloat(num.innerText));
+                    } else {
+                        num.innerText = Math.floor(parseFloat(num.innerText));
+                    }
+                }
+            });
+        });
+        
+        // Stats animation
+        gsap.from('.stat', {
+            opacity: 0,
+            y: 40,
+            stagger: 0.15,
+            scrollTrigger: {
+                trigger: '#proof',
                 start: 'top 60%'
             }
         });
