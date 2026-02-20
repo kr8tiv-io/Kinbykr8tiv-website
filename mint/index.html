@@ -457,66 +457,73 @@
         };
 
         window.mintKIN = async function(tier, solAmount) {
-            // If no wallet, connect first
-            if (!connectedWallet) {
-                await window.connectWallet();
-                if (!connectedWallet) return;
-            }
-
-            provider = getProvider();
-            if (!provider) {
-                showToast('Wallet not available', 'error');
-                return;
-            }
-
-            const tierInfo = TIERS[tier];
-            const btn = document.querySelector('.mint-btn[data-tier="' + tier + '"]');
-            const originalText = btn.textContent;
-            const status = document.getElementById('wallet-status');
+            var status = document.getElementById('wallet-status');
+            var btn = document.querySelector('.mint-btn[data-tier="' + tier + '"]');
+            var originalText = btn ? btn.textContent : '';
 
             try {
-                // Disable button
-                btn.textContent = 'Confirming in wallet...';
+                // Step 1: Check wallet
+                status.textContent = 'Step 1: Checking wallet...';
+                status.style.color = 'var(--gold)';
+
+                if (!connectedWallet) {
+                    await window.connectWallet();
+                    if (!connectedWallet) return;
+                }
+
+                provider = getProvider();
+                if (!provider) {
+                    status.textContent = 'Error: Phantom wallet not detected';
+                    status.style.color = 'var(--magenta)';
+                    return;
+                }
+
+                var tierInfo = TIERS[tier];
+                btn.textContent = 'Minting...';
                 btn.style.opacity = '0.6';
                 btn.style.pointerEvents = 'none';
-                status.textContent = 'Preparing ' + tierInfo.name + ' mint via Candy Machine...';
+
+                // Step 2: Check module
+                status.textContent = 'Step 2: Loading mint module...';
+                if (typeof window.mintFromCandyMachine !== 'function') {
+                    throw new Error('Mint module not loaded. Hard refresh the page.');
+                }
+
+                // Step 3: Call Candy Machine
+                status.textContent = 'Step 3: Building Candy Machine transaction...';
                 status.style.color = tierInfo.color;
 
-                // Use Metaplex Candy Machine to mint — this handles payment AND NFT delivery atomically
-                const result = await window.mintFromCandyMachine(tierInfo.group, provider);
+                var result = await window.mintFromCandyMachine(tierInfo.group, provider);
 
-                // Success!
+                // Success
                 btn.textContent = '✓ Minted!';
                 btn.style.background = 'rgba(0,240,255,0.15)';
                 btn.style.borderColor = 'var(--cyan)';
                 btn.style.color = 'var(--cyan)';
                 btn.style.opacity = '1';
 
-                var sigStr = Array.from(result.signature).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
-                status.innerHTML = '✓ ' + tierInfo.name + ' KIN minted! Your NFT is in your wallet. <a href="https://solscan.io/tx/' + sigStr + '" target="_blank" style="color:var(--cyan); text-decoration:underline;">View on Solscan →</a>';
+                var sigStr = '';
+                try { sigStr = Array.from(result.signature).map(function(b){return b.toString(16).padStart(2,'0')}).join(''); } catch(e) { sigStr = String(result.signature); }
+                status.innerHTML = '✓ ' + tierInfo.name + ' KIN minted! <a href="https://solscan.io/tx/' + sigStr + '" target="_blank" style="color:var(--cyan); text-decoration:underline;">View on Solscan →</a>';
                 status.style.color = 'var(--cyan)';
-                showToast(tierInfo.name + ' Genesis KIN minted! NFT delivered to your wallet.', 'success');
+                showToast(tierInfo.name + ' Genesis KIN minted!', 'success');
 
             } catch (err) {
-                // Re-enable button
-                btn.textContent = originalText;
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
+                if (btn) { btn.textContent = originalText; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
 
-                if (err.code === 4001 || (err.message && err.message.includes('rejected'))) {
+                var errMsg = (err && err.message) ? err.message : String(err);
+                console.error('[KIN] Full error:', err);
+
+                if (err && (err.code === 4001 || errMsg.indexOf('rejected') !== -1 || errMsg.indexOf('User rejected') !== -1)) {
                     status.textContent = 'Transaction cancelled — no SOL was sent.';
-                    showToast('Transaction cancelled', 'error');
-                } else if (err.message && err.message.includes('insufficient')) {
-                    status.textContent = 'Insufficient balance. ' + tierInfo.name + ' requires ' + solAmount + ' SOL + gas.';
-                    showToast('Insufficient SOL balance', 'error');
+                } else if (errMsg.indexOf('insufficient') !== -1 || errMsg.indexOf('Attempt to debit') !== -1) {
+                    status.textContent = 'Insufficient SOL. Need ' + solAmount + ' SOL + ~0.01 gas.';
                 } else {
-                    console.error('Mint error:', err);
-                    var errMsg = err.message || String(err);
-                    if (errMsg.length > 150) errMsg = errMsg.substring(0, 150) + '...';
-                    status.textContent = 'Error: ' + errMsg;
-                    showToast('Mint failed — see error below', 'error');
+                    if (errMsg.length > 200) errMsg = errMsg.substring(0, 200) + '...';
+                    status.textContent = 'Error at step: ' + errMsg;
                 }
                 status.style.color = 'var(--magenta)';
+                showToast('Mint failed — see error below', 'error');
             }
         };
 
