@@ -21,10 +21,18 @@ The mint flow is fully client-side and runs on static hosting (no Node backend r
   - Candy Guard: `Guard1JwRhJkVH6XZhzoYxeBVQe872VH6QggF4BWmS9g`
   - Token Metadata: `metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s`
 
-On-chain mint accounts used by this deployment:
-- Candy Machine: `CC3nsKDxKgkS5uZwoFLRaDkL4pCfSxLvVRNnFt8F8JWU`
-- Candy Guard: `BnAUBBg7Un9iwg2S2hrdoRr8B6uEnRw2Bx2SUYH4jC99`
+On-chain mint accounts used by the current production relaunch:
+- Egg tier
+  - Candy Machine: `5T1krpsDZRuiSGRJD66AjRsi7wfA7VgGNaukmTQU3LNe`
+  - Candy Guard: `K2eMqjz5JVFGLhEY58m7FHmVYmnccyMfntzXeS9NPZn`
+- Hatchling tier
+  - Candy Machine: `DY2owgAYja3xjuwKqLQnizHQpR3jKhPVJhKWtutfZLS4`
+  - Candy Guard: `Cq8zEi6d4UHogmmFgfdACoenLsyC2DT1SnGeYNL51GLJ`
+- Elder tier
+  - Candy Machine: `7DeYqQKxM1ivwK8YNPibHUsfBYbPfbXLX8Aeeh7eYv6b`
+  - Candy Guard: `7WGeMkZWZdBfjnU9YjM47zrYLXgRyA8htJWhk2Sx8KsS`
 - Treasury destination: `7BLHKsHRGjsTKQdZYaC3tRDeUChJ9E2XsMPpg2Tv23cf`
+- Legacy machine (kept inactive in UI): `CC3nsKDxKgkS5uZwoFLRaDkL4pCfSxLvVRNnFt8F8JWU`
 
 ## Tier Configuration
 
@@ -56,6 +64,7 @@ Success policy:
 - `diagnosticsEnabled`
 - `rpcPrimary` (default: `/rpc`)
 - `rpcFallback` (default: `https://api.mainnet-beta.solana.com`)
+- `tierMachines` (per-tier `{ candyMachine, candyGuard, groupLabel, expectedLamports }`)
 
 ## Security Model
 
@@ -77,6 +86,8 @@ Recommended production setup:
 - Release baseline: `docs/ops/2026-02-21-mint-release-baseline.md`
 - Rollback manifest: `docs/ops/rollback-manifest.md`
 - Go-live checklist: `docs/ops/go-live-checklist.md`
+- Fresh 60 relaunch record: `docs/plans/2026-02-21-kin-fresh-60-egg-only-relaunch.md`
+- Egg mapping manifest: `mint/egg-mapping-manifest.json`
 
 ## Local Development
 

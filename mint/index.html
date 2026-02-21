@@ -365,12 +365,35 @@
             preRevealMode: true,
             diagnosticsEnabled: true,
             rpcPrimary: '/rpc',
-            rpcFallback: 'https://madelena-tbtq8y-fast-mainnet.helius-rpc.com'
+            rpcFallback: 'https://madelena-tbtq8y-fast-mainnet.helius-rpc.com',
+            tierMachines: {
+                egg: {
+                    tierKey: 'egg',
+                    groupLabel: 'egg',
+                    expectedLamports: 2500000000,
+                    candyMachine: '5T1krpsDZRuiSGRJD66AjRsi7wfA7VgGNaukmTQU3LNe',
+                    candyGuard: 'K2eMqjz5JVFGLhEY58m7FHmVYmnccyMfntzXeS9NPZn'
+                },
+                hatchling: {
+                    tierKey: 'hatchling',
+                    groupLabel: 'hatch',
+                    expectedLamports: 5300000000,
+                    candyMachine: 'DY2owgAYja3xjuwKqLQnizHQpR3jKhPVJhKWtutfZLS4',
+                    candyGuard: 'Cq8zEi6d4UHogmmFgfdACoenLsyC2DT1SnGeYNL51GLJ'
+                },
+                elder: {
+                    tierKey: 'elder',
+                    groupLabel: 'elder',
+                    expectedLamports: 8300000000,
+                    candyMachine: '7DeYqQKxM1ivwK8YNPibHUsfBYbPfbXLX8Aeeh7eYv6b',
+                    candyGuard: '7WGeMkZWZdBfjnU9YjM47zrYLXgRyA8htJWhk2Sx8KsS'
+                }
+            }
         }, window.KIN_RUNTIME_CONFIG || {});
     </script>
 
     <!-- Metaplex Candy Machine Mint Bundle -->
-    <script src="kin-mint.797fb33b.js" onerror="document.getElementById('wallet-status').textContent='Error: Mint module failed to load. Please hard refresh (Ctrl+Shift+R).'; document.getElementById('wallet-status').style.color='#FF00AA';"></script>
+    <script src="kin-mint.360fc73e.js" onerror="document.getElementById('wallet-status').textContent='Error: Mint module failed to load. Please hard refresh (Ctrl+Shift+R).'; document.getElementById('wallet-status').style.color='#FF00AA';"></script>
 <!-- Wallet Connect & Candy Machine Mint Logic -->
     <script>
     (function() {
