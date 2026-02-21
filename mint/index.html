@@ -215,7 +215,7 @@
                 </div>
                 <div class="mint-card-body">
                     <p class="tier-label" style="color:var(--gold);">Egg Tier</p>
-                    <div class="tier-price" style="color:var(--gold);">2.5</div>
+                    <div class="tier-price" style="color:var(--gold);">0.1</div>
                     <p class="tier-sol">SOL</p>
                     <div class="tier-features">
                         <div class="tier-feature"><span style="color:var(--gold);">✦</span><span>Genesis KIN Avatar</span></div>
@@ -224,7 +224,7 @@
                         <div class="tier-feature"><span style="color:var(--gold);">✦</span><span>1% Lifetime Solana Rewards</span></div>
                     </div>
                     <p class="tier-avail">20 Available</p>
-                    <button onclick="mintKIN('egg', 2.5)" class="mint-btn" data-tier="egg" style="border:1px solid rgba(255,184,0,0.3); color:var(--gold);" onmouseover="this.style.background='rgba(255,184,0,0.08)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,184,0,0.3)'">Mint Egg — 2.5 SOL</button>
+                    <button onclick="mintKIN('egg', 0.1)" class="mint-btn" data-tier="egg" style="border:1px solid rgba(255,184,0,0.3); color:var(--gold);" onmouseover="this.style.background='rgba(255,184,0,0.08)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,184,0,0.3)'">Mint Egg — 0.1 SOL</button>
                 </div>
             </div>
 
@@ -237,7 +237,7 @@
                 </div>
                 <div class="mint-card-body">
                     <p class="tier-label" style="color:var(--cyan);">Hatchling Tier</p>
-                    <div class="tier-price" style="color:var(--cyan);">5.3</div>
+                    <div class="tier-price" style="color:var(--cyan);">0.2</div>
                     <p class="tier-sol">SOL</p>
                     <div class="tier-features">
                         <div class="tier-feature"><span style="color:var(--cyan);">✦</span><span>Genesis KIN Avatar</span></div>
@@ -246,7 +246,7 @@
                         <div class="tier-feature"><span style="color:var(--cyan);">✦</span><span>2% Lifetime Solana Rewards</span></div>
                     </div>
                     <p class="tier-avail">20 Available</p>
-                    <button onclick="mintKIN('hatchling', 5.3)" class="mint-btn" data-tier="hatchling" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.3); color:var(--cyan);" onmouseover="this.style.background='rgba(0,240,255,0.15)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(0,240,255,0.08)'; this.style.borderColor='rgba(0,240,255,0.3)'">Mint Hatchling — 5.3 SOL</button>
+                    <button onclick="mintKIN('hatchling', 0.2)" class="mint-btn" data-tier="hatchling" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.3); color:var(--cyan);" onmouseover="this.style.background='rgba(0,240,255,0.15)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(0,240,255,0.08)'; this.style.borderColor='rgba(0,240,255,0.3)'">Mint Hatchling — 0.2 SOL</button>
                 </div>
             </div>
 
@@ -258,7 +258,7 @@
                 </div>
                 <div class="mint-card-body">
                     <p class="tier-label" style="color:var(--magenta);">Elder Tier</p>
-                    <div class="tier-price" style="color:var(--magenta);">8.3</div>
+                    <div class="tier-price" style="color:var(--magenta);">0.3</div>
                     <p class="tier-sol">SOL</p>
                     <div class="tier-features">
                         <div class="tier-feature"><span style="color:var(--magenta);">✦</span><span>Genesis KIN Avatar</span></div>
@@ -267,7 +267,7 @@
                         <div class="tier-feature"><span style="color:var(--magenta);">✦</span><span>3% Lifetime Solana Rewards</span></div>
                     </div>
                     <p class="tier-avail">20 Available</p>
-                    <button onclick="mintKIN('elder', 8.3)" class="mint-btn" data-tier="elder" style="border:1px solid rgba(255,0,170,0.3); color:var(--magenta);" onmouseover="this.style.background='rgba(255,0,170,0.08)'; this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,0,170,0.3)'">Mint Elder — 8.3 SOL</button>
+                    <button onclick="mintKIN('elder', 0.3)" class="mint-btn" data-tier="elder" style="border:1px solid rgba(255,0,170,0.3); color:var(--magenta);" onmouseover="this.style.background='rgba(255,0,170,0.08)'; this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,0,170,0.3)'">Mint Elder — 0.3 SOL</button>
                 </div>
             </div>
 
@@ -362,9 +362,9 @@
         'use strict';
 
         const TIERS = {
-            egg:       { name: 'Egg',       sol: 2.5, color: '#FFB800', group: 'egg' },
-            hatchling: { name: 'Hatchling', sol: 5.3, color: '#00F0FF', group: 'hatch' },
-            elder:     { name: 'Elder',     sol: 8.3, color: '#FF00AA', group: 'elder' }
+            egg:       { name: 'Egg',       sol: 0.1, color: '#FFB800', group: 'egg' },
+            hatchling: { name: 'Hatchling', sol: 0.2, color: '#00F0FF', group: 'hatch' },
+            elder:     { name: 'Elder',     sol: 0.3, color: '#FF00AA', group: 'elder' }
         };
 
         let connectedWallet = null;
