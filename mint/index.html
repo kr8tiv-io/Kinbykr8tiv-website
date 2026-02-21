@@ -7,6 +7,7 @@
     <meta name="description" content="Mint your Genesis KIN on Solana. Three tiers - Egg, Hatchling, Elder. Only 60 will ever exist. Bespoke AI companion with a dedicated human concierge. Built by KR8TIV AI.">
     <meta name="keywords" content="KIN mint, KR8TIV, Solana NFT, AI companion, Genesis collection, Phantom wallet, AI concierge">
     <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://madelena-tbtq8y-fast-mainnet.helius-rpc.com https://api.mainnet-beta.solana.com; base-uri 'self';">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -223,7 +224,7 @@
                         <div class="tier-feature"><span style="color:var(--gold);">*</span><span>25% Lifetime Discount</span></div>
                         <div class="tier-feature"><span style="color:var(--gold);">*</span><span>1% Lifetime Solana Rewards</span></div>
                     </div>
-                    <p class="tier-avail">20 Available</p>
+                    <p class="tier-avail" data-tier-avail="egg">Loading availability...</p>
                     <button onclick="mintKIN('egg')" class="mint-btn" data-tier="egg" data-default-label="Mint Egg - 2.5 SOL" style="border:1px solid rgba(255,184,0,0.3); color:var(--gold);" onmouseover="this.style.background='rgba(255,184,0,0.08)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,184,0,0.3)'">Mint Egg - 2.5 SOL</button>
                 </div>
             </div>
@@ -245,7 +246,7 @@
                         <div class="tier-feature"><span style="color:var(--cyan);">*</span><span>25% Lifetime Discount</span></div>
                         <div class="tier-feature"><span style="color:var(--cyan);">*</span><span>2% Lifetime Solana Rewards</span></div>
                     </div>
-                    <p class="tier-avail">20 Available</p>
+                    <p class="tier-avail" data-tier-avail="hatchling">Loading availability...</p>
                     <button onclick="mintKIN('hatchling')" class="mint-btn" data-tier="hatchling" data-default-label="Mint Hatchling - 5.3 SOL" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.3); color:var(--cyan);" onmouseover="this.style.background='rgba(0,240,255,0.15)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(0,240,255,0.08)'; this.style.borderColor='rgba(0,240,255,0.3)'">Mint Hatchling - 5.3 SOL</button>
                 </div>
             </div>
@@ -266,7 +267,7 @@
                         <div class="tier-feature"><span style="color:var(--magenta);">*</span><span>25% Lifetime Discount</span></div>
                         <div class="tier-feature"><span style="color:var(--magenta);">*</span><span>3% Lifetime Solana Rewards</span></div>
                     </div>
-                    <p class="tier-avail">20 Available</p>
+                    <p class="tier-avail" data-tier-avail="elder">Loading availability...</p>
                     <button onclick="mintKIN('elder')" class="mint-btn" data-tier="elder" data-default-label="Mint Elder - 8.3 SOL" style="border:1px solid rgba(255,0,170,0.3); color:var(--magenta);" onmouseover="this.style.background='rgba(255,0,170,0.08)'; this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,0,170,0.3)'">Mint Elder - 8.3 SOL</button>
                 </div>
             </div>
@@ -356,8 +357,20 @@
     <!-- Phantom Browser SDK Bundle -->
     <script src="phantom-browser-sdk.d3f8a5a0.js"></script>
 
+    <!-- Runtime safety config -->
+    <script>
+        window.KIN_RUNTIME_CONFIG = Object.assign({
+            publicMintEnabled: true,
+            pauseReason: '',
+            preRevealMode: true,
+            diagnosticsEnabled: true,
+            rpcPrimary: '/rpc',
+            rpcFallback: 'https://madelena-tbtq8y-fast-mainnet.helius-rpc.com'
+        }, window.KIN_RUNTIME_CONFIG || {});
+    </script>
+
     <!-- Metaplex Candy Machine Mint Bundle -->
-    <script src="kin-mint.176fd40e.js" onerror="document.getElementById('wallet-status').textContent='Error: Mint module failed to load. Please hard refresh (Ctrl+Shift+R).'; document.getElementById('wallet-status').style.color='#FF00AA';"></script>
+    <script src="kin-mint.797fb33b.js" onerror="document.getElementById('wallet-status').textContent='Error: Mint module failed to load. Please hard refresh (Ctrl+Shift+R).'; document.getElementById('wallet-status').style.color='#FF00AA';"></script>
 <!-- Wallet Connect & Candy Machine Mint Logic -->
     <script>
     (function() {
@@ -374,6 +387,101 @@
         let browserSdk = null;
         let browserSdkProvider = null;
         let browserSdkEventsBound = false;
+        const tierMintLocks = new Set();
+        const RECENT_MINT_TTL_MS = 60000;
+
+        function getRuntimeConfig() {
+            const base = {
+                publicMintEnabled: true,
+                pauseReason: '',
+                preRevealMode: true,
+                diagnosticsEnabled: true
+            };
+            const current = (window.KIN_RUNTIME_CONFIG && typeof window.KIN_RUNTIME_CONFIG === 'object')
+                ? window.KIN_RUNTIME_CONFIG
+                : {};
+            return Object.assign(base, current);
+        }
+
+        function setStatusText(message, color) {
+            const status = document.getElementById('wallet-status');
+            if (!status) return;
+            status.textContent = message;
+            if (color) {
+                status.style.color = color;
+            }
+        }
+
+        function setStatusWithTxLink(prefixText, signature, color) {
+            const status = document.getElementById('wallet-status');
+            if (!status) return;
+            status.textContent = '';
+            const textNode = document.createTextNode(prefixText + ' ');
+            const link = document.createElement('a');
+            link.href = 'https://solscan.io/tx/' + String(signature);
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.style.color = 'var(--cyan)';
+            link.style.textDecoration = 'underline';
+            link.textContent = 'View on Solscan ->';
+            status.appendChild(textNode);
+            status.appendChild(link);
+            status.style.color = color || 'var(--cyan)';
+        }
+
+        function getRecentMintKey(walletAddress, tier) {
+            return 'kin_recent_mint:' + normalizeAddress(walletAddress) + ':' + String(tier || '');
+        }
+
+        function markRecentMint(walletAddress, tier, signature) {
+            try {
+                const key = getRecentMintKey(walletAddress, tier);
+                const value = JSON.stringify({
+                    signature: String(signature || ''),
+                    at: Date.now()
+                });
+                localStorage.setItem(key, value);
+            } catch (e) {}
+        }
+
+        function getRecentMint(walletAddress, tier) {
+            try {
+                const key = getRecentMintKey(walletAddress, tier);
+                const raw = localStorage.getItem(key);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                if (!parsed || typeof parsed.at !== 'number') return null;
+                if ((Date.now() - parsed.at) > RECENT_MINT_TTL_MS) {
+                    localStorage.removeItem(key);
+                    return null;
+                }
+                return parsed;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function updateAvailabilityLabels(state) {
+            const totalRemaining = (state && typeof state.itemsRemainingTotal === 'number')
+                ? state.itemsRemainingTotal
+                : (state && typeof state.itemsRemaining === 'number' ? state.itemsRemaining : null);
+            const groupRemaining = state && state.groupRemaining && typeof state.groupRemaining === 'object'
+                ? state.groupRemaining
+                : null;
+
+            document.querySelectorAll('[data-tier-avail]').forEach(function(node) {
+                const tier = node.getAttribute('data-tier-avail');
+                if (groupRemaining && typeof groupRemaining[tier] === 'number') {
+                    node.textContent = groupRemaining[tier] + ' Available';
+                    return;
+                }
+                if (typeof totalRemaining === 'number') {
+                    node.textContent = totalRemaining + ' Total Remaining';
+                    return;
+                }
+                node.textContent = 'Availability unavailable';
+            });
+        }
 
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -561,7 +669,8 @@
         }
 
         function isWalletAllowedForMint() {
-            if (window.MINT_PUBLIC_ENABLED === true) return true;
+            const runtime = getRuntimeConfig();
+            if (runtime.publicMintEnabled === true) return true;
             if (!connectedWallet) return false;
             const allowed = Array.isArray(window.TESTER_WALLETS) ? window.TESTER_WALLETS : [];
             const walletAddr = normalizeAddress(connectedWallet.toString());
@@ -571,6 +680,8 @@
         function applyMintAccessControl() {
             const status = document.getElementById('wallet-status');
             const mintAllowed = isWalletAllowedForMint();
+            const runtime = getRuntimeConfig();
+            const pauseReason = (runtime.pauseReason || '').trim();
 
             document.querySelectorAll('.mint-btn').forEach(function(button) {
                 if (!button.dataset.defaultLabel) {
@@ -600,8 +711,10 @@
                 }
             });
 
-            if (!mintAllowed && window.MINT_PUBLIC_ENABLED !== true && status && (!status.textContent || status.textContent.indexOf('Wallet connected') !== -1)) {
-                status.textContent = 'Public mint paused for verification. Tester wallets only.';
+            if (!mintAllowed && runtime.publicMintEnabled !== true && status && (!status.textContent || status.textContent.indexOf('Wallet connected') !== -1)) {
+                status.textContent = pauseReason
+                    ? ('Public mint paused: ' + pauseReason)
+                    : 'Public mint paused for verification. Tester wallets only.';
                 status.style.color = 'var(--gold)';
             }
         }
@@ -621,6 +734,12 @@
                 }
             } else if (err.kind === 'mint_disabled') {
                 message = 'Mint failed: Public mint is paused during verification.';
+            } else if (err.kind === 'simulation_failed') {
+                message = message || 'Mint failed: Simulation failed before signing.';
+            } else if (err.kind === 'rpc_unavailable') {
+                message = message || 'Mint failed: Network/RPC issue. Please retry shortly.';
+            } else if (err.kind === 'config_mismatch') {
+                message = message || 'Mint failed: On-chain configuration mismatch.';
             }
 
             if (message.length > 220) {
@@ -698,11 +817,18 @@
             const tierInfo = TIERS[tier];
             const defaultButtonLabel = btn ? (btn.dataset.defaultLabel || btn.textContent) : '';
             const previousStatusReporter = window.__KIN_SET_STATUS;
+            const lockKey = String(tier || '');
 
             try {
                 if (!tierInfo || !btn) {
                     throw new Error('Invalid tier selection.');
                 }
+
+                if (tierMintLocks.has(lockKey)) {
+                    setStatusText('Mint already in progress for this tier. Please wait...', 'var(--gold)');
+                    return;
+                }
+                tierMintLocks.add(lockKey);
 
                 status.textContent = 'Building transaction...';
                 status.style.color = tierInfo.color;
@@ -716,9 +842,24 @@
                     }
                 }
 
+                const walletAddress = connectedWallet.toString();
+                const recent = getRecentMint(walletAddress, tier);
+                if (recent && recent.signature) {
+                    setStatusWithTxLink(
+                        'Recent mint already submitted. Please wait a few seconds before minting this tier again.',
+                        recent.signature,
+                        'var(--gold)'
+                    );
+                    return;
+                }
+
                 applyMintAccessControl();
                 if (!isWalletAllowedForMint()) {
-                    status.textContent = 'Mint failed: Public mint is paused during verification.';
+                    const runtime = getRuntimeConfig();
+                    const reason = (runtime.pauseReason || '').trim();
+                    status.textContent = reason
+                        ? ('Mint failed: Public mint is paused (' + reason + ').')
+                        : 'Mint failed: Public mint is paused during verification.';
                     status.style.color = 'var(--magenta)';
                     return;
                 }
@@ -748,6 +889,7 @@
                     throw new Error('Mint did not return a confirmed signature.');
                 }
 
+                markRecentMint(walletAddress, tier, result.signature);
                 btn.textContent = 'Minted';
                 btn.style.background = 'rgba(0,240,255,0.15)';
                 btn.style.borderColor = 'var(--cyan)';
@@ -755,9 +897,24 @@
                 btn.style.opacity = '1';
 
                 const sigStr = String(result.signature);
-                status.innerHTML = tierInfo.name + ' KIN minted. <a href="https://solscan.io/tx/' + sigStr + '" target="_blank" style="color:var(--cyan); text-decoration:underline;">View on Solscan -></a>';
-                status.style.color = 'var(--cyan)';
-                showToast(tierInfo.name + ' Genesis KIN minted', 'success');
+                if (result.verificationStatus === 'delayed') {
+                    setStatusWithTxLink(
+                        tierInfo.name + ' KIN confirmed on-chain. Verification delayed.',
+                        sigStr,
+                        'var(--gold)'
+                    );
+                    showToast(tierInfo.name + ' mint confirmed (verification delayed)', 'success');
+                } else if (result.verificationStatus === 'content_mismatch') {
+                    setStatusWithTxLink(
+                        tierInfo.name + ' KIN confirmed on-chain. Content mapping needs review.',
+                        sigStr,
+                        'var(--gold)'
+                    );
+                    showToast(tierInfo.name + ' mint confirmed (content mapping flagged)', 'success');
+                } else {
+                    setStatusWithTxLink(tierInfo.name + ' KIN minted.', sigStr, 'var(--cyan)');
+                    showToast(tierInfo.name + ' Genesis KIN minted', 'success');
+                }
             } catch (err) {
                 console.error('[KIN] Full error:', err);
 
@@ -771,6 +928,7 @@
                 status.style.color = 'var(--magenta)';
                 showToast('Mint failed', 'error');
             } finally {
+                tierMintLocks.delete(lockKey);
                 window.__KIN_SET_STATUS = previousStatusReporter;
             }
         };
@@ -789,9 +947,10 @@
                 console.log('[KIN] Mint module verified');
                 try {
                     const state = await window.getCandyMachineState();
+                    updateAvailabilityLabels(state);
                     if (state && state.isActive) {
                         console.log('[KIN] On-chain groups:', (state.groups || []).join(', '));
-                        console.log('[KIN] Available:', state.itemsRemaining, '/', state.itemsAvailable);
+                        console.log('[KIN] Available:', state.itemsRemainingTotal, '/', state.itemsAvailable);
                         document.querySelectorAll('.mint-btn').forEach(function(button) {
                             button.dataset.forcePaused = '';
                         });
@@ -799,7 +958,7 @@
                     } else if (state && state.error) {
                         const st = document.getElementById('wallet-status');
                         if (st) {
-                            st.textContent = state.error;
+                            st.textContent = 'Mint paused: ' + state.error;
                             st.style.color = '#FF00AA';
                         }
                         document.querySelectorAll('.mint-btn').forEach(function(button) {
@@ -812,6 +971,7 @@
                     }
                 } catch (e) {
                     console.warn('[KIN] Could not fetch state:', e);
+                    updateAvailabilityLabels(null);
                 }
             }
 

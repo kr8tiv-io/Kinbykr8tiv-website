@@ -1,0 +1,12 @@
+name = "kin-mint-rpc-gateway"
+main = "rpc-gateway-worker.js"
+compatibility_date = "2026-02-21"
+
+[vars]
+# Comma-separated origins allowed to use this proxy.
+ALLOWED_ORIGINS = "https://www.meetyourkin.com,https://meetyourkin.com"
+
+# Use a restricted private RPC here (Helius/QuickNode/etc).
+# Example:
+# RPC_UPSTREAM = "https://mainnet.helius-rpc.com/?api-key=REPLACE_ME"
+RPC_UPSTREAM = ""

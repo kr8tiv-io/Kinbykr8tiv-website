@@ -1,113 +1,102 @@
-# KIN by KR8TIV — We Build You A Friend
+# KIN by KR8TIV Website
 
-<p align="center">
-  <img src="https://kr8tiv.ai/favicon.ico" alt="KR8TIV" width="48">
-</p>
+Public static website and Solana mint frontend for KIN Genesis.
 
-<p align="center">
-  <strong>Bespoke AI companion concierge service, built on Solana.</strong><br>
-  We don't sell you a server — we build you a friend.
-</p>
+## Purpose
 
-<p align="center">
-  <a href="https://kin.kr8tiv.ai">Live Site</a> •
-  <a href="https://kr8tiv.ai">KR8TIV AI</a> •
-  <a href="https://x.com/kr8tivai">@kr8tivai</a>
-</p>
+This repository hosts:
+- Main marketing site (`index.html`)
+- Live mint page (`mint/index.html`)
+- Client-side Candy Machine mint logic (`mint/kin-mint.*.js`)
 
----
+The mint flow is fully client-side and runs on static hosting (no Node backend required in production).
 
-## What is KIN?
+## Mint Architecture
 
-KIN is a premium AI companion service by [KR8TIV AI](https://kr8tiv.ai). Every KIN is a bespoke, fully managed AI agent — powered by the world's best models (Claude, GPT, Gemini, Grok) — with a dedicated human concierge who handles everything.
+- Network: Solana mainnet
+- Wallet UX: Phantom (injected wallet and Phantom browser SDK support)
+- Mint protocol: Metaplex Candy Machine v3 + Candy Guard
+- Program IDs:
+  - Candy Machine Core: `CndyV3LdqHUfDLmE5naZjVN8rBZz4tqhdefbAnjHG3JR`
+  - Candy Guard: `Guard1JwRhJkVH6XZhzoYxeBVQe872VH6QggF4BWmS9g`
+  - Token Metadata: `metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s`
 
-No prompts. No settings. No technical knowledge required. Just talk to your KIN, and it knows you.
+On-chain mint accounts used by this deployment:
+- Candy Machine: `CC3nsKDxKgkS5uZwoFLRaDkL4pCfSxLvVRNnFt8F8JWU`
+- Candy Guard: `BnAUBBg7Un9iwg2S2hrdoRr8B6uEnRw2Bx2SUYH4jC99`
+- Treasury destination: `7BLHKsHRGjsTKQdZYaC3tRDeUChJ9E2XsMPpg2Tv23cf`
 
-### The Genesis Mint
+## Tier Configuration
 
-60 Genesis KIN NFTs on Solana. Three tiers:
+Guard groups and prices:
+- `egg`: `2_500_000_000` lamports (`2.5 SOL`)
+- `hatch`: `5_300_000_000` lamports (`5.3 SOL`)
+- `elder`: `8_300_000_000` lamports (`8.3 SOL`)
 
-| Tier | Price | Includes |
-|------|-------|----------|
-| 🥚 **Egg** | 2.5 SOL | 1 month service + 25% lifetime discount + 1% Solana rewards |
-| 🐣 **Hatchling** | 5.3 SOL | 3 months service + 25% lifetime discount + 2% Solana rewards |
-| 🐉 **Elder** | 8.3 SOL | 3 months Elder tier + 25% lifetime discount + 3% Solana rewards |
+## Client-Side Mint Flow
 
-## Tech Stack
+1. Validate on-chain Candy Machine and Guard config at startup.
+2. Build mint transaction for selected group.
+3. Pre-sign simulation with `sigVerify:false`.
+4. Request Phantom signature.
+5. Send raw transaction with `skipPreflight:false`.
+6. Confirm signature on-chain.
+7. Run non-blocking post-confirm verification.
 
-- **Frontend:** Vanilla JS, HTML5, CSS3 — no frameworks, no bloat
-- **Animations:** GSAP + ScrollTrigger for scroll-driven effects
-- **Smooth Scroll:** Lenis
-- **Wallet:** Phantom (Solana) via `@solana/web3.js`
-- **Hosting:** GitHub Pages
-- **Blockchain:** Solana (mainnet)
+Success policy:
+- Confirmed on-chain signature is treated as mint success.
+- Post-confirm verification issues are surfaced as delayed/content warnings, not false mint failures.
 
-## Features
+## Runtime Controls
 
-- ✨ Full-screen hero with background video + mouse-reactive glow
-- 🎬 Scroll-driven Problem → Solution narrative with GSAP scrub
-- 🔗 Phantom wallet connect + live SOL mint transactions
-- 📱 Fully responsive — optimized for mobile, tablet, and desktop
-- 🌙 Dark mode native with cyan/magenta/gold accent system
-- ⚡ Custom cursor, film grain overlay, magnetic CTAs
-- 🏷️ Three-tier Genesis NFT pricing cards with video backgrounds
-- 🔒 Privacy policy + Terms of Service included
+`window.KIN_RUNTIME_CONFIG` supports live operations:
+- `publicMintEnabled`
+- `pauseReason`
+- `preRevealMode`
+- `diagnosticsEnabled`
+- `rpcPrimary` (default: `/rpc`)
+- `rpcFallback` (default: `https://api.mainnet-beta.solana.com`)
 
-## Development
+## Security Model
 
-This is a static site — no build step required.
+- No private keys are stored in frontend code.
+- Treasury private key must never be committed.
+- CSP is set on the mint page.
+- Mint status links are rendered with safe DOM APIs (no `innerHTML` tx injection path).
+- Dedupe lock and short localStorage replay window reduce duplicate-click mint attempts.
+
+## RPC Hardening
+
+Recommended production setup:
+- Use `/rpc` Cloudflare Worker proxy (see `infra/cloudflare/`)
+- Restrict upstream private RPC key by origin/rate limits
+- Keep direct fallback endpoint restricted and monitored
+
+## Operations Docs
+
+- Release baseline: `docs/ops/2026-02-21-mint-release-baseline.md`
+- Rollback manifest: `docs/ops/rollback-manifest.md`
+- Go-live checklist: `docs/ops/go-live-checklist.md`
+
+## Local Development
+
+Static site only:
 
 ```bash
-# Clone
-git clone https://github.com/kr8tiv-io/Kinbykr8tiv-website.git
-cd Kinbykr8tiv-website
-
-# Serve locally (any static server works)
-npx serve .
-# or
-python3 -m http.server 8080
+python -m http.server 8080
 ```
 
-Open `http://localhost:8080` (or whatever port your server uses).
+Open:
+- `http://localhost:8080/`
+- `http://localhost:8080/mint/`
 
-## Project Structure
+## Deployment
 
-```
-├── index.html          # Main site (single page)
-├── privacy.html        # Privacy policy
-├── terms.html          # Terms of service
-├── assets/             # Static assets
-├── nft-videos/         # NFT card video backgrounds
-├── *.mp4               # Section background videos
-├── *.svg / *.png       # Logos and graphics
-└── README.md           # You're here
-```
-
-## Powered By
-
-<p>
-  <img src="https://cdn.simpleicons.org/solana/white" height="20" alt="Solana">
-  <img src="https://cdn.simpleicons.org/anthropic/white" height="20" alt="Anthropic">
-  <img src="https://cdn.simpleicons.org/openai/white" height="20" alt="OpenAI">
-  <img src="https://cdn.simpleicons.org/googlegemini/white" height="20" alt="Google Gemini">
-</p>
-
-Built with the best models in AI — Claude, GPT, Gemini, Grok — orchestrated through [OpenClaw](https://openclaw.ai) and enhanced with [Supermemory](https://supermemory.ai).
-
-## About KR8TIV AI
-
-KR8TIV AI is an open-source autonomous AI company. We build, deploy, and manage AI agent systems. Community-funded, not VC-funded. We ship daily, build in public, and believe AI should work for everyone — not just developers.
-
-- 🌐 [kr8tiv.ai](https://kr8tiv.ai)
-- 🐦 [@kr8tivai](https://x.com/kr8tivai)
-- 💬 [Telegram](https://t.me/kr8tivai)
+Deploy static files to your host (GitHub Pages, Hostinger, FTP, etc). For mint releases, always deploy:
+- `mint/index.html`
+- active `mint/kin-mint.<hash>.js`
+- related media assets if changed
 
 ## License
 
-© 2026 KR8TIV AI. All rights reserved.
-
----
-
-<p align="center">
-  <em>We handle everything. They just enjoy it.</em> 🔥
-</p>
+All rights reserved by KR8TIV AI unless otherwise stated.
